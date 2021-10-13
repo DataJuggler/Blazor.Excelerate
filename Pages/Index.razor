@@ -1,0 +1,80 @@
+﻿@page "/"
+@using BlazorStyled
+@using DataJuggler.Blazor.Components
+@using DataJuggler.Blazor.Components.Enumerations
+
+<Styled @bind-Classname="Slogan">
+    font-family: Verdana;
+    font-size: @LargeTextSizeStyle;
+    position: absolute;
+    top: 8.4vh;
+    left: .4%;
+    white-space: nowrap;    
+</Styled>
+<Styled @bind-Classname="SideBarElementText">
+    text-align: center;
+    font-family: Verdana;
+    font-size: @TextSizeStyle;
+    font-weight: bold;
+</Styled>
+<Styled @bind-Classname="SideBarSmallText">
+    text-align: left;
+    font-family: Verdana;
+    font-size: @TextSizeStyle;
+    font-weight: normal;
+</Styled>
+<Styled @bind-Classname="DownloadLink">    
+    color: rgb(48, 88, 184);  
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    font-family: Verdana;
+    text-decoration: none;
+    cursor: pointer;    
+    height: 2.04vh;
+    line-height: 2.04vh;
+    font-size: @TextSizeStyle;
+    font-weight: normal;
+    position: fixed;    
+    display: inline;
+    left: 2.8%;
+    margin-top: .4vh;
+</Styled>
+
+<div class="sidebar">
+    <div class="sidebarelement">
+       <div class="@SideBarElementText">
+            Downloads
+        </div>
+        <div class="displayinline">
+            <div class="smallicon">
+                <a class="@DownloadLink" download="MemberData.xlsx" href="@SampleMemberDataPath" target="_blank">MemberData.xlsx</a>
+            </div>
+            <div class="@SideBarSmallText">
+                This workbook contains 20,000 sample records on both sheets:<br />
+                Member<br />
+                Address
+            </div>
+        </div>        
+    </div>    
+    <div class="bottomsidebar">
+        
+    </div>
+</div>
+
+<div class="logo"></div>
+<div class="topbar">
+    <div class="logotext">
+    </div>
+    <div class="@Slogan">
+        An online demo of Nuget package DataJuggler.Excelerate
+    </div>
+</div>
+
+
+<div class="topright">
+    <ComboBox OnChange="SelectionChanged" Parent="this" Name="TextSizeComboBox" 
+              LabelSize="30" LabelText="Text Size:" TextSize="TextSizeEnum.Large">
+    </ComboBox>
+</div>
+

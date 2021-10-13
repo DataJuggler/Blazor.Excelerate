@@ -1,0 +1,165 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+.bottomsidebar
+{
+    position: fixed;    
+    bottom: 6vh;  
+    left: .4%;    
+    width: 13.2%;    
+    height: auto;
+    min-height: 12vh;
+    background-color: pink; 
+}
+.contentmain
+{
+    width: 92%;
+    height: 86vh;
+    position: fixed;
+    left: 14%;
+    top: 14vh;
+    flex-direction: column;
+    background-image: url('../images/BlueBody.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;    
+}
+.displayinline
+{
+    display: inline;
+}
+
+.logo
+{
+    background-image: url('../images/ExcelerateLogoSmallWhite.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;    
+    width: 8.4%;
+    height: 10.8vh;
+    margin-left: auto;
+    margin-right: auto;
+    position: fixed;
+    left: 2.68%;
+    top: 2vh;    
+}
+.logotext
+{
+    background-image: url('../images/LogoTextSparkled.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    position: fixed;
+    left: 14%;    
+    top: 1.6vh;
+    width: 42.65%;
+    height: 7.8vh;
+}
+.sidebar 
+{
+    width: clamp(280px, 14%, 14%);
+    max-width: clamp(280px, 14%, 14%);
+    min-width: clamp(280px, 14%, 14%);
+    height: 100vh;
+    position: fixed;
+    left: 0%;
+    top: 0%;
+    flex-direction: column;
+    background-image: url('../images/OrangeBlueSideBar.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.sidebarelement
+{  
+    position: fixed;    
+    top: 19.2vh;  
+    left: .4%;    
+    width: 13.2%;    
+    height: auto;
+    min-height: 12vh;    
+}
+.smallicon
+{  
+    background-image: url('../images/ExcelIcon.png');
+    height: 3.2vh;
+    width: 16%;
+    background-size: 100% 100%;
+    display: inline-block;
+    position: relative;
+    left: 0%;
+}
+.topbar 
+{
+    width: 86%;
+    height: 14vh;
+    position: fixed;
+    left: 14%;
+    top: 0%;
+    flex-direction: column;
+    background-image: url('../images/OrangeTopBar.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.topright
+{  
+    position: absolute;
+    right: 12%;
+    top: 4vh;
+    height: 4vh;
+    width: 18%;    
+    z-index: 200;
+}
+
+body 
+{    
+    width: 100%;
+    height: 100%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: darkgray;
+    overflow: hidden;
+}
+html{
+    font-family: Verdana, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+a, .btn-link {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.content {
+    padding-top: 1.1rem;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }

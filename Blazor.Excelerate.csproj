@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>aspnet-Blazor.Excelerate-876FFF73-4C9C-474B-829F-829715B5A572</UserSecretsId>
+    <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BlazorStyled" Version="3.1.0" />
+    <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="1.6.0" />
+    <PackageReference Include="DataJuggler.Excelerate" Version="1.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataJuggler.Blazor.Components\DataJuggler.Blazor.Components.csproj" />
+  </ItemGroup>
+
+</Project>
