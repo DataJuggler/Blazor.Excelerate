@@ -12,8 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorStyled" Version="3.1.0" />
-    <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="1.6.0" />
-    <PackageReference Include="DataJuggler.Excelerate" Version="1.1.5" />
+    <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="1.6.1" />
+    <PackageReference Include="DataJuggler.Excelerate" Version="1.1.6" />
   </ItemGroup>
 
   <ItemGroup>

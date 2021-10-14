@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using BlazorStyled
+@using DataJuggler.UltimateHelper 
 @using DataJuggler.Blazor.Components
+@using DataJuggler.Blazor.FileUpload
 @using DataJuggler.Blazor.Components.Enumerations
 
 <Styled @bind-Classname="Slogan">
@@ -61,7 +63,6 @@
         
     </div>
 </div>
-
 <div class="logo"></div>
 <div class="topbar">
     <div class="logotext">
@@ -70,11 +71,39 @@
         An online demo of Nuget package DataJuggler.Excelerate
     </div>
 </div>
-
-
 <div class="topright">
-    <ComboBox OnChange="SelectionChanged" Parent="this" Name="TextSizeComboBox" 
-              LabelSize="30" LabelText="Text Size:" TextSize="TextSizeEnum.Large">
+    <ComboBox OnChange="SelectionChanged" Parent="this" Name="TextSizeComboBox" ButtonText="Medium"
+          Height="6" Width="100" LabelSize="30" LabelText="Text Size:" TextSize="TextSizeEnum.Large">
     </ComboBox>
 </div>
+<div class="contentmain">
+    <div class="row displayinline contentmaintoprow">
+        <FileUpload CustomSuccessMessage="Your file uploaded successfully." 
+            OnReset="OnReset" ResetButtonClassName="localbutton" ShowStatus="false"
+            PartialGuidLength="12" MaxFileSize=@UploadLimit FilterByExtension="true" 
+            ShowCustomButton="true"  ButtonText="Upload Excel" OnChange="OnFileUploaded"
+            CustomButtonClassName="orangeButton" AllowedExtensions=".xlsx"
+            ShowResetButton="false" AppendPartialGuid="true"
+            CustomExtensionMessage="Only .xlsx extensions are allowed." 
+            InputFileClassName="customfileupload" Visible=false Status="Refresh"
+            FileTooLargeMessage=@FileTooLargeMessage>
+        </FileUpload>       
+    </div>
+    <div class="row selectclasses">
+        <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox"
+                LabelColor="White" Position="relative" Visible="true" 
+                Left="0" Top="0" Width="120"  LabelSize="30"
+                LabelText="Sheets:" TextSize="TextSizeEnum.Large">
+        </ComboBox>
+    </div>
+    <div>
+        <div class="row">
+            <ImageButton ButtonNumber="2" ButtonText="Generate Classes" Name="GenerateClassesButton"                
+                Left="14" Top="24" Height="4.4" Width="104" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>        
+        </div>
+    </div>
+</div>
+
+    
+
 

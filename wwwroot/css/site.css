@@ -8,7 +8,7 @@
     width: 13.2%;    
     height: auto;
     min-height: 12vh;
-    background-color: pink; 
+    background-color: pink;    
 }
 .contentmain
 {
@@ -20,13 +20,43 @@
     flex-direction: column;
     background-image: url('../images/BlueBody.png');
     background-repeat: no-repeat;
-    background-size: 100% 100%;    
+    background-size: 100% 100%;
+}
+.contentmaintoprow
+{
+    width: 100%;
+    height: 10vh;    
+    position: fixed;
+    left: 14%;
+    top: 14vh;
+}
+.customfileupload
+{  
+    display: inline-block;
+    cursor: pointer;
+    height: 48px;
+    min-height: 48px;
+    visibility: hidden;
+    display: none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
 }
 .displayinline
 {
     display: inline;
 }
-
+.displayinlineblock
+{
+    display: inline-block;
+}
+.horizontal-center 
+{
+  margin: 0;
+  position: absolute;
+  left: 50%;  
+  transform: translateX(-50%);
+}
 .logo
 {
     background-image: url('../images/ExcelerateLogoSmallWhite.png');
@@ -51,6 +81,30 @@
     width: 42.65%;
     height: 7.8vh;
 }
+.orangeButton
+{
+    position: fixed;
+    background-color: transparent;
+    border: 0px;
+    outline: none;
+    background-image: url('../images/OrangeButton.png');
+    background-repeat: no-repeat;
+    top: 22.8vh;
+    left: 26%;
+    width: 11.92%;
+    height: 4%;
+    background-size: 100% 100%;    
+    cursor: pointer;
+    text-align: center;
+}
+.selectclasses
+{  
+    width: 20%;
+    height: 6vh;
+    position: absolute;
+    top: 16vh;
+    left: 12.8%;
+}
 .sidebar 
 {
     width: clamp(280px, 14%, 14%);
@@ -61,7 +115,7 @@
     left: 0%;
     top: 0%;
     flex-direction: column;
-    background-image: url('../images/OrangeBlueSideBar.png');
+    background-image: url('../images/TwoToneOrange.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
@@ -102,8 +156,15 @@
     right: 12%;
     top: 4vh;
     height: 4vh;
-    width: 18%;    
+    width: 28%;    
     z-index: 200;
+}
+.vertical-center 
+{
+  margin: 0;
+  position: absolute;
+  top: 50%;  
+  transform: translateY(-50%);
 }
 
 body 
@@ -115,6 +176,15 @@ body
     background-color: darkgray;
     overflow: hidden;
 }
+
+input[type=file], /* FF, IE7+, chrome (except button) */
+input[type=file]::-webkit-file-upload-button
+{
+    cursor: pointer;
+    display: none;
+    visibility: hidden;
+}
+
 html{
     font-family: Verdana, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
