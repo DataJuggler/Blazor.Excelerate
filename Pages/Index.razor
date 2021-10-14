@@ -49,6 +49,17 @@
     top: 14.8vh;
     left: @LeftStyle;
 </Styled>
+<Styled @bind-Classname="StatusStyle">  
+    text-align: center;
+    position: absolute;
+    top: 22vh;
+    left: -4%;
+    width: 60%;
+    height: 2.8vh;
+    line-height: 2.8vh;
+    font-size: @LargeTextSizeStyle;
+    color: tomato;
+</Styled>
 
 <div class="sidebar">
     <div class="sidebarelement">
@@ -79,7 +90,7 @@
     </div>
 </div>
 <div class="topright">
-    <ComboBox OnChange="SelectionChanged" Parent="this" Name="TextSizeComboBox" ButtonText="Medium"
+    <ComboBox OnChange="SelectionChanged" Parent="this" Name="TextSizeComboBox"
           Height="6" Width="100" LabelSize="30" LabelText="Text Size:" TextSize="TextSizeEnum.Large">
     </ComboBox>
 </div>
@@ -105,9 +116,16 @@
     </div>
     <div>
         <div class="row .zindex5">
-            <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"                
-                Left="28" Top="8.8" Height="4" Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>        
+            <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"
+                TextSize="TextSizeEnum.Large" Left="28" Top="8.8" Height="4" 
+                Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>
+            <ValidationComponent Name="NamespaceComponent" Parent="this" Caption="Namespace"
+                LabelColor="White" IsRequired="true" ValidationMessage="You must enter a namespace"
+                Top="14"></ValidationComponent>
         </div>
+    </div>
+    <div class="@StatusStyle">
+        <label class="text-center">@Status</label>
     </div>
 </div>
 

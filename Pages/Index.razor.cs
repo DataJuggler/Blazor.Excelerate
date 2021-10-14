@@ -50,6 +50,10 @@ namespace Blazor.Excelerate.Pages
         private string selectClasses;
         private double left;
         private string leftStyle;
+        private string excelPath;
+        private ValidationComponent namespaceComponent;
+        private string status;
+        private string statusStyle;
 
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -87,13 +91,10 @@ namespace Blazor.Excelerate.Pages
             /// <param name="buttonText"></param>
             public void ButtonClicked(int buttonNumber, string buttonText)
             {
-                if (buttonNumber == 1)
+                if ((buttonNumber == 2) && (HasSheetNamesComboBox))
                 {
-                    // Test only
-                    this.Workbook = new Workbook();
-
-                    // Update the UI
-                    Refresh();
+                    // Handle creating the class
+                    HandleGenerateClass();
                 }
             }
             #endregion
@@ -186,6 +187,62 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region HandleGenerateClass()
+            /// <summary>
+            /// Handle Generate Class
+            /// </summary>
+            public void HandleGenerateClass()
+            {
+                // if the NamespaceComponent exists
+                if (HasNamespaceComponent)
+                {
+                    // Make sure we have a Namespace
+                    bool isValid = NamespaceComponent.Validate();
+
+                    // Set the value
+                    NamespaceComponent.IsValid = isValid;
+
+                    // if valid
+                    if (isValid)
+                    {
+                        // erase any validation messages
+                        Status = "";
+
+                        // Get the sheetName
+                        string sheetName = SheetNamesComboBox.ButtonText;
+
+                        // Create a new instance of a 'LoadWorksheetInfo' object.
+                        LoadWorksheetInfo loadWorksheetInfo = new LoadWorksheetInfo();
+
+                        // Set the SheetName
+                        loadWorksheetInfo.SheetName = sheetName;
+
+                        // Load all columns
+                        loadWorksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;
+
+                        // Load the worksheet
+                        Worksheet worksheet = ExcelDataLoader.LoadWorksheet(ExcelPath, loadWorksheetInfo);
+
+                        // Set the outputFolder
+                        string outputFolder = Path.GetFullPath(@"~\Downloads\Classes");
+
+                        // Create a new codeGenerator
+                        CodeGenerator codeGenerator = new CodeGenerator(worksheet, outputFolder, sheetName);
+
+                        
+                    }
+                    else
+                    {
+                        // Set Status
+                        Status = "Namespace is required.";
+                    }
+
+                    // Update UI
+                    Refresh();
+                }
+            }
+            #endregion
+            
             #region OnAfterRenderAsync(bool firstRender)
             /// <summary>
             /// This method is used to verify a user
@@ -196,6 +253,22 @@ namespace Blazor.Excelerate.Pages
             {
                 // call the base
                 await base.OnAfterRenderAsync(firstRender);
+
+                // if FinishedLoading is false and the TextSizeComboBox exists
+                if ((!FinishedLoading) && (HasTextSizeComboBox))
+                {
+                    // Create a new instance of a 'ChangeEventArgs' object.
+                    ChangeEventArgs changeEventArgs = new ChangeEventArgs();
+
+                    // Set to Medium
+                    changeEventArgs.Value = TextSizeEnum.Medium;
+
+                    // Select Medium
+                    TextSizeComboBox.SelectionChanged(changeEventArgs);
+
+                    // Only fire once
+                    FinishedLoading = true;
+                }
             }
             #endregion
             
@@ -208,6 +281,9 @@ namespace Blazor.Excelerate.Pages
                 // if the file was uploaded
                 if (!file.Aborted)
                 {
+                    // Store this for later
+                    ExcelPath = file.FullPath;
+
                     // Get the SheetNames
                     this.SheetNames = await GetSheetNames(file.FullPath);
 
@@ -363,7 +439,7 @@ namespace Blazor.Excelerate.Pages
                     this.TextSizeComboBox = component as ComboBox;
 
                     // Create the items for TextSizes                    
-                    TextSizeComboBox.LoadItems(typeof(TextSizeEnum));
+                    TextSizeComboBox.LoadItems(typeof(TextSizeEnum));                    
                 }
                 else if (TextHelper.IsEqual(component.Name, "UploadExcelButton"))
                 {
@@ -385,7 +461,12 @@ namespace Blazor.Excelerate.Pages
                 {   
                     // Register the SheetNamesComboBox
                     this.SheetNamesComboBox = component as ComboBox;
-                }                
+                }
+                else if (TextHelper.IsEqual(component.Name, "NamespaceComponent"))
+                {
+                    // Store the NamespaceComponent
+                    NamespaceComponent = component as ValidationComponent;
+                }
             }
             #endregion
 
@@ -397,6 +478,16 @@ namespace Blazor.Excelerate.Pages
             {
                 // Set the selectedItem
                 SelectedTextSizeItem = selectedItem.Value as Item;
+
+                // if exists
+                if (HasTextSizeComboBox)
+                {
+                    // Set the Text
+                    TextSizeComboBox.SetButtonText(selectedItem.Value.ToString());
+                }
+
+                // Update the UI
+                Refresh();
             }
             #endregion
             
@@ -501,6 +592,17 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region ExcelPath
+            /// <summary>
+            /// This property gets or sets the value for 'ExcelPath'.
+            /// </summary>
+            public string ExcelPath
+            {
+                get { return excelPath; }
+                set { excelPath = value; }
+            }
+            #endregion
+            
             #region FinishedLoading
             /// <summary>
             /// This property gets or sets the value for 'FinishedLoading'.
@@ -540,6 +642,23 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region HasNamespaceComponent
+            /// <summary>
+            /// This property returns true if this object has a 'NamespaceComponent'.
+            /// </summary>
+            public bool HasNamespaceComponent
+            {
+                get
+                {
+                    // initial value
+                    bool hasNamespaceComponent = (this.NamespaceComponent != null);
+                    
+                    // return value
+                    return hasNamespaceComponent;
+                }
+            }
+            #endregion
+            
             #region HasSelectedTextSizeItem
             /// <summary>
             /// This property returns true if this object has a 'SelectedTextSizeItem'.
@@ -570,6 +689,23 @@ namespace Blazor.Excelerate.Pages
                     
                     // return value
                     return hasSheetNamesComboBox;
+                }
+            }
+            #endregion
+            
+            #region HasTextSizeComboBox
+            /// <summary>
+            /// This property returns true if this object has a 'TextSizeComboBox'.
+            /// </summary>
+            public bool HasTextSizeComboBox
+            {
+                get
+                {
+                    // initial value
+                    bool hasTextSizeComboBox = (this.TextSizeComboBox != null);
+                    
+                    // return value
+                    return hasTextSizeComboBox;
                 }
             }
             #endregion
@@ -627,6 +763,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return leftStyle; }
                 set { leftStyle = value; }
+            }
+            #endregion
+            
+            #region NamespaceComponent
+            /// <summary>
+            /// This property gets or sets the value for 'NamespaceComponent'.
+            /// </summary>
+            public ValidationComponent NamespaceComponent
+            {
+                get { return namespaceComponent; }
+                set { namespaceComponent = value; }
             }
             #endregion
             
@@ -726,6 +873,28 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return slogan; }
                 set { slogan = value; }
+            }
+            #endregion
+            
+            #region Status
+            /// <summary>
+            /// This property gets or sets the value for 'Status'.
+            /// </summary>
+            public string Status
+            {
+                get { return status; }
+                set { status = value; }
+            }
+            #endregion
+            
+            #region StatusStyle
+            /// <summary>
+            /// This property gets or sets the value for 'StatusStyle'.
+            /// </summary>
+            public string StatusStyle
+            {
+                get { return statusStyle; }
+                set { statusStyle = value; }
             }
             #endregion
             
