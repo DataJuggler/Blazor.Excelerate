@@ -42,6 +42,13 @@
     left: 2.8%;
     margin-top: .4vh;
 </Styled>
+<Styled @bind-Classname="SelectClasses">
+    width: 20%;
+    height: 6vh;
+    position: fixed;
+    top: 14.8vh;
+    left: @LeftStyle;
+</Styled>
 
 <div class="sidebar">
     <div class="sidebarelement">
@@ -89,17 +96,17 @@
             FileTooLargeMessage=@FileTooLargeMessage>
         </FileUpload>       
     </div>
-    <div class="row selectclasses">
+    <div class="@SelectClasses">
         <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox"
                 LabelColor="White" Position="relative" Visible="true" 
-                Left="0" Top="0" Width="120"  LabelSize="30"
+                Left="0" Top="8" Width="120"  LabelSize="30"
                 LabelText="Sheets:" TextSize="TextSizeEnum.Large">
         </ComboBox>
     </div>
     <div>
-        <div class="row">
-            <ImageButton ButtonNumber="2" ButtonText="Generate Classes" Name="GenerateClassesButton"                
-                Left="14" Top="24" Height="4.4" Width="104" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>        
+        <div class="row .zindex5">
+            <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"                
+                Left="28" Top="8.8" Height="4" Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>        
         </div>
     </div>
 </div>

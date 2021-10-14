@@ -20,7 +20,7 @@
     flex-direction: column;
     background-image: url('../images/BlueBody.png');
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: 100% 100%;    
 }
 .contentmaintoprow
 {
@@ -28,7 +28,7 @@
     height: 10vh;    
     position: fixed;
     left: 14%;
-    top: 14vh;
+    top: 20vh;
 }
 .customfileupload
 {  
@@ -97,14 +97,6 @@
     cursor: pointer;
     text-align: center;
 }
-.selectclasses
-{  
-    width: 20%;
-    height: 6vh;
-    position: absolute;
-    top: 16vh;
-    left: 12.8%;
-}
 .sidebar 
 {
     width: clamp(280px, 14%, 14%);
@@ -165,6 +157,10 @@
   position: absolute;
   top: 50%;  
   transform: translateY(-50%);
+}
+.zindex5
+{
+    z-index: 5;
 }
 
 body 

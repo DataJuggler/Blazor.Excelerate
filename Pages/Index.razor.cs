@@ -47,6 +47,9 @@ namespace Blazor.Excelerate.Pages
         private Workbook workbook;
         private List<Item> sheetItems;
         private bool finishedLoading;
+        private string selectClasses;
+        private double left;
+        private string leftStyle;
 
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -68,6 +71,9 @@ namespace Blazor.Excelerate.Pages
             
             // Start off with the disabled button
             ButtonUrl = "../Images/ButtonDisabled.png";
+
+            // Set the Left for the ComboBox container
+            Left = -150;
         }
         #endregion
 
@@ -188,30 +194,8 @@ namespace Blazor.Excelerate.Pages
             /// <returns></returns>
             protected async override Task OnAfterRenderAsync(bool firstRender)
             {
-                // UI Update is need
-                bool updateUI = false;
-
-                if ((!FinishedLoading) && (HasSheetNamesComboBox))
-                {
-                    // Refresh the UI
-                    updateUI = true;
-
-                    // Set Left
-                    SheetNamesComboBox.SetLeft(20);
-
-                    // Make sure this only fires once
-                    FinishedLoading = true;
-                }
-
                 // call the base
                 await base.OnAfterRenderAsync(firstRender);
-
-                // if the value for updateUI is true
-                if (updateUI)
-                {
-                    // Refresh the UI
-                    Refresh();
-                }
             }
             #endregion
             
@@ -237,16 +221,13 @@ namespace Blazor.Excelerate.Pages
                         SheetNamesComboBox.SetVisible(true);
 
                         // Reset
-                        SheetNamesComboBox.SetLeft(0);
+                        Left = 18.8;
 
                         // Start off not expanded
                         SheetNamesComboBox.Expanded = false;
 
-                        // testing
-                        string leftStyle = SheetNamesComboBox.LeftStyle;
-                        string topStyle = SheetNamesComboBox.TopStyle;
-                        string widthStyle = SheetNamesComboBox.WidthStyle;
-                        string HeightStyle = SheetNamesComboBox.HeightStyle;
+                        // Switch to an enabled OrangeButton
+                        ButtonUrl = "../images/OrangeButton.png";
 
                         // Set the Items
                         SheetNamesComboBox.Items = SheetItems;
@@ -618,6 +599,45 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return largeTextSizeStyle; }
                 set { largeTextSizeStyle = value; }
+            }
+            #endregion
+            
+            #region Left
+            /// <summary>
+            /// This property gets or sets the value for 'Left'.
+            /// </summary>
+            public double Left
+            {
+                get { return left; }
+                set 
+                { 
+                    left = value;
+
+                    // set the value for LeftStyle
+                    LeftStyle = left + "%";
+                }
+            }
+            #endregion
+            
+            #region LeftStyle
+            /// <summary>
+            /// This property gets or sets the value for 'LeftStyle'.
+            /// </summary>
+            public string LeftStyle
+            {
+                get { return leftStyle; }
+                set { leftStyle = value; }
+            }
+            #endregion
+            
+            #region SelectClasses
+            /// <summary>
+            /// This property gets or sets the value for 'SelectClasses'.
+            /// </summary>
+            public string SelectClasses
+            {
+                get { return selectClasses; }
+                set { selectClasses = value; }
             }
             #endregion
             
