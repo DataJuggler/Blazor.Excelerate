@@ -5,28 +5,8 @@
 @using DataJuggler.Blazor.FileUpload
 @using DataJuggler.Blazor.Components.Enumerations
 
-<Styled @bind-Classname="Slogan">
-    font-family: Verdana;
-    font-size: @LargeTextSizeStyle;
-    position: absolute;
-    top: 8.4vh;
-    left: .4%;
-    white-space: nowrap;    
-</Styled>
-<Styled @bind-Classname="SideBarElementText">
-    text-align: center;
-    font-family: Verdana;
-    font-size: @TextSizeStyle;
-    font-weight: bold;
-</Styled>
-<Styled @bind-Classname="SideBarSmallText">
-    text-align: left;
-    font-family: Verdana;
-    font-size: @TextSizeStyle;
-    font-weight: normal;
-</Styled>
 <Styled @bind-Classname="DownloadLink">    
-    color: rgb(48, 88, 184);  
+    color: white;
     background: none!important;
     border: none;
     padding: 0!important;
@@ -35,7 +15,7 @@
     cursor: pointer;    
     height: 2.04vh;
     line-height: 2.04vh;
-    font-size: @TextSizeStyle;
+    font-size: @SmallTextSizeStyle;
     font-weight: normal;
     position: fixed;    
     display: inline;
@@ -60,12 +40,57 @@
     top: -4;
     margin-top: .4vh;
 </Styled>
+<Styled @bind-Classname="Instructions">
+    font-size: @SmallTextSizeStyle;    
+    line-height: @InstructionsLineHeight;
+    color: white;
+    position: fixed;
+    top: 40vh;
+    left: 26%;
+    display: @InstructionsDisplay;        
+</Styled>
 <Styled @bind-Classname="SelectClasses">
     width: 20%;
     height: 6vh;
     position: fixed;
     top: 14.8vh;
     left: @LeftStyle;
+</Styled>
+<Styled @bind-Classname="SideBarElementText">
+    text-align: center;
+    font-family: Verdana;
+    font-size: @TextSizeStyle;
+    font-weight: bold;
+</Styled>
+<Styled @bind-Classname="SideBarSmallText">
+    text-align: left;
+    font-family: Verdana;
+    font-size: @SmallTextSizeStyle;
+    font-weight: normal;
+</Styled>
+<Styled @bind-Classname="SideBarLargeText">
+    text-align: left;
+    font-family: Verdana;
+    font-size: @TextSizeStyle;
+    font-weight: normal;
+</Styled>
+<Styled @bind-Classname="SideBarLargeTextBold">
+    text-align: left;
+    font-family: Verdana;
+    font-size: @TextSizeStyle;
+    font-weight: bold;
+</Styled>
+<Styled @bind-Classname="Slogan">
+    font-family: Verdana;
+    font-size: @LargeTextSizeStyle;
+    position: absolute;
+    top: 8.4vh;
+    left: .4%;
+    white-space: nowrap;    
+</Styled>
+<Styled @bind-Classname="Smallheader">
+    font-weight: bold;
+    font-size: @TextSizeStyle;    
 </Styled>
 <Styled @bind-Classname="StatusStyle">  
     text-align: center;
@@ -78,19 +103,16 @@
     font-size: @LargeTextSizeStyle;
     color: @LabelColor;
 </Styled>
-<Styled @bind-Classname="Instructions">
-    font-size: @SmallTextSizeStyle;    
-    line-height: @LargeTextSizeStyle;
-    color: white;
-    position: fixed;
-    top: 48vh;
-    left: 26%;
-    display: @InstructionsDisplay;
-</Styled>
-<Styled @bind-Classname="Smallheader">
-    font-weight: bold;
+<Styled @bind-Classname="Grid">
+    display: grid;    
+    grid-template-columns: @Column1Width 1fr;
+    grid-column-gap: 2px;
+    height: auto;
+    width: 80%;
     font-size: @TextSizeStyle;
-    margin-bottom: -.02vh;
+    position: relative;
+    left: -12%;
+    top: 8vh;    
 </Styled>
 
 <div class="sidebar">
@@ -102,16 +124,37 @@
             <div class="smallicon">
                 <a class="@DownloadLink" download="MemberData.xlsx" href="@SampleMemberDataPath" target="_blank">MemberData.xlsx</a>
             </div>
-            <div class="@SideBarSmallText">
+            <div class="@SideBarLargeText">
                 This workbook contains 20,000 sample records on both sheets:<br />
                 Member<br />
                 Address
             </div>
+            <br />
+            <div class="blankline"></div>
+            <div class="blankline"></div>
+            <div class="@SideBarSmallText text-nowrap">
+                <div class="@SideBarLargeTextBold">
+                    Want the source code?<br />
+                </div>
+                <div class="blankline"></div>
+                <span class="text-nowrap">
+                    <a class="whitetext" href="https://github.com/DataJuggler/Blazor.Excelerate" target="_blank">Blazor.Excelerate Git Hub</a><br />
+                </span>
+                <div class="blankline"></div>
+                <span class="text-nowrap">
+                    <a class="whitetext" href="https://github.com/DataJuggler/DataJuggler.Excelerate" target="_blank">DataJuggler.Excelerate Git Hub</a><br />
+                </span>
+                <div class="blankline"></div>
+                <span class="text-nowrap">
+                    <a class="whitetext" href="https://github.com/DataJuggler/DataJuggler.Blazor.Components" target="_blank">DataJuggler.Blazor.Components</a><br />
+                </span>
+                <div class="blankline"></div>
+                <span class="text-nowrap">
+                    <a class="whitetext" href="https://github.com/DataJuggler/DataJuggler.Blazor.FileUpload" target="_blank">DataJuggler.Blazor.FileUpload</a><br />
+                </span>
+            </div>
         </div>        
     </div>    
-    <div class="bottomsidebar">
-        
-    </div>
 </div>
 <div class="logo"></div>
 <div class="topbar">
@@ -125,6 +168,7 @@
     <ComboBox OnChange="SelectionChanged" Parent="this" Name="TextSizeComboBox"
           Height="6" Width="100" LabelSize="30" LabelText="Text Size:" TextSize="TextSizeEnum.Large">
     </ComboBox>
+    <div class="businesscard"></div>
 </div>
 <div class="contentmain">
     <div class="row displayinline contentmaintoprow">
@@ -169,30 +213,41 @@
         </div>
     }
     <div class="@Instructions">
-        <ImageButton ButtonNumber="3" ButtonText="Hide Instructions" Name="HideInstructionsButton"
-                TextSize="TextSizeEnum.Large" Left="-30" Top="4.4" Height="4"
-                Width="120" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
-        <div class="marginsmall @Smallheader">Instructions</div>
-        1. Prepare your spreadsheet and ensure your worksheet has a header row, 
-        and the column names make good property names. <br />
-        Download the Members.xlsx sample to see a good example.<br />
-        2. Upload your spreadsheet and select the sheet to code generate a class for.<br />
-        3. Type in a namespace for your project and click the 'Generate Class' button.<br />
-        4. Download the zip file and extract the contents to get your .cs file.<br />
-        <div class="marginsmall @Smallheader">Tips / Troubleshooting</div>
-        It helps to have some rows of data to attempt to determine the data type. Getting the data type is kind of a hack,<br />
-        as I could not find away with EPP Plus to get the actual column data types<br />
-
-        If you have a problem generating classes, create an issue here or if you want the source code or to star<br />
-        https://github.com/DataJuggler/Excelerate <br />
+        <div class="@Grid">
+            <div class="column instructionscolumn1">
+                <ImageButton ButtonNumber="3" ButtonText="Hide Instructions" Name="HideInstructionsButton"
+                    TextSize="TextSizeEnum.Large" Left="4" Top="0" Height="4"
+                    Width="120" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
+            </div>
+            <div class="column instructionscolumn2">
+                <div class="marginsmall @Smallheader">Instructions</div>
+                <div class="blankline"></div>
+                1. Prepare your spreadsheet and ensure your worksheet has a header row, 
+                and the column names make good property names. Download Members.xlsx to see a good example.<br />
+                2. Upload your spreadsheet and select the sheet to code generate a class for.<br />
+                3. Type in a namespace for your project and click the 'Generate Class' button.<br />
+                4. Download the zip file and extract the contents to get your .cs file.<br />
+                <div class="blankline"></div>
+                <div class="marginsmall @Smallheader">Tips / Troubleshooting</div>
+                <div class="blankline"></div>
+                It helps to have some rows of data to attempt to determine the data type. Getting the data type is kind of a hack,
+                as I could not find away with EPP Plus to get the column data types.<br />
+                <div class="blankline"></div>
+                <div class="blankline"></div>
+                If you have a problem generating classes, create an issue here or to clone or star:<br />
+                <a class="orangetext" href="https://github.com/DataJuggler/Excelerate">DataJuggler.Excelerate Git Hub</a><br />
+                <div class="blankline"></div>
         
-        If you have a problem with this site, create an issue here or if want the source code or to star<br />
-        https://github.com/DataJuggler/Blazor.Excelerate <br />
-
-        <div class="marginsmall @Smallheader">Data Privacy</div>
-        No one has access to my server except me and my dog.<br />
-        I am building a Windows Service that deletes files older than one hour.<br />
-        This will be deployed in the next few days (estimate 10/18/2021).
+                If you have a problem with this site, create an issue here or to clone or star:<br />
+                <a class="orangetext" href="https://github.com/DataJuggler/Blazor.Excelerate">Blazor.Excelerate Git Hub</a><br />
+                <div class="blankline"></div>
+                <div class="marginsmall @Smallheader">Data Privacy</div>
+                <div class="blankline"></div>
+                No one has access to my server except me and my dog.<br />
+                I am building a Windows Service that deletes files older than one hour.<br />
+                This will be deployed in the next few days (estimate 10/18/2021).
+            </div>
+        </div>
     </div>
 </div>
 

@@ -32,6 +32,8 @@ namespace Blazor.Excelerate.Pages
         #region Private Variables
         private string sideBarElementText;
         private string sideBarSmallText;
+        private string sideBarLargeText;
+        private string sideBarLargeTextBold;
         private double textSize;
         private string textSizeStyle;
         private string largeTextSizeStyle;
@@ -66,6 +68,9 @@ namespace Blazor.Excelerate.Pages
         private string instructions;
         private string instructionsDisplay;
         private string smallheader;
+        private string instructionsLineHeight;
+        private string grid;
+        private const string Column1Width = "22%";
 
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -92,7 +97,7 @@ namespace Blazor.Excelerate.Pages
             Left = -150;
 
             // set to block
-            InstructionsDisplay = "block";
+            InstructionsDisplay = "grid";
         }
         #endregion
 
@@ -360,7 +365,7 @@ namespace Blazor.Excelerate.Pages
                     ChangeEventArgs changeEventArgs = new ChangeEventArgs();
 
                     // Set to Medium
-                    changeEventArgs.Value = TextSizeEnum.Medium;
+                    changeEventArgs.Value = TextSizeEnum.Large;
 
                     // Select Medium
                     TextSizeComboBox.SelectionChanged(changeEventArgs);
@@ -615,7 +620,7 @@ namespace Blazor.Excelerate.Pages
                         case "Extra Small":
 
                             // Set the value
-                            textSize = 1.2;
+                            textSize = 1.4;
 
                             // required
                             break;
@@ -623,7 +628,7 @@ namespace Blazor.Excelerate.Pages
                          case "Small":
 
                             // Set the value
-                            textSize = 1.5;
+                            textSize = 1.6;
 
                             // required
                             break;
@@ -631,7 +636,7 @@ namespace Blazor.Excelerate.Pages
                          case "Large":
 
                             // Set the value
-                            textSize = 2.1;
+                            textSize = 2;
 
                             // required
                             break;
@@ -639,7 +644,7 @@ namespace Blazor.Excelerate.Pages
                         case "Extra Large":
 
                             // Set the value
-                            textSize = 2.4;
+                            textSize = 2.2;
 
                             // required
                             break;
@@ -762,6 +767,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return generateClassesButton; }
                 set { generateClassesButton = value; }
+            }
+            #endregion
+            
+            #region Grid
+            /// <summary>
+            /// This property gets or sets the value for 'Grid'.
+            /// </summary>
+            public string Grid
+            {
+                get { return grid; }
+                set { grid = value; }
             }
             #endregion
             
@@ -934,6 +950,17 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region InstructionsLineHeight
+            /// <summary>
+            /// This property gets or sets the value for 'InstructionsLineHeight'.
+            /// </summary>
+            public string InstructionsLineHeight
+            {
+                get { return instructionsLineHeight; }
+                set { instructionsLineHeight = value; }
+            }
+            #endregion
+            
             #region LabelColor
             /// <summary>
             /// This property gets or sets the value for 'LabelColor'.
@@ -1083,6 +1110,28 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region SideBarLargeText
+            /// <summary>
+            /// This property gets or sets the value for 'SideBarLargeText'.
+            /// </summary>
+            public string SideBarLargeText
+            {
+                get { return sideBarLargeText; }
+                set { sideBarLargeText = value; }
+            }
+            #endregion
+            
+            #region SideBarLargeTextBold
+            /// <summary>
+            /// This property gets or sets the value for 'SideBarLargeTextBold'.
+            /// </summary>
+            public string SideBarLargeTextBold
+            {
+                get { return sideBarLargeTextBold; }
+                set { sideBarLargeTextBold = value; }
+            }
+            #endregion
+            
             #region SideBarSmallText
             /// <summary>
             /// This property gets or sets the value for 'SideBarSmallText'.
@@ -1169,11 +1218,17 @@ namespace Blazor.Excelerate.Pages
                     // Small is half of large
                     double smallTextSize = largeTextSize * .5;
 
+                    // get a medium
+                    double mediumTextSize = textSize * 1.16;
+
                     // Set the value for LargeTextSizeStyle
                     LargeTextSizeStyle = largeTextSize + "vh";
 
                     // Set the value for SmallTextSizeStyle
                     SmallTextSizeStyle = smallTextSize + "vh";
+
+                    // Set the 
+                    InstructionsLineHeight = mediumTextSize + "vh";
                 }
             }
             #endregion

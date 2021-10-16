@@ -1,5 +1,11 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+.blankline
+{
+    height: .72vh;
+    min-height: .72vh;
+    max-height: .72vh;
+}
 .bottomsidebar
 {
     position: fixed;    
@@ -8,7 +14,28 @@
     width: 13.2%;    
     height: auto;
     min-height: 12vh;
-    background-color: pink;    
+    background-color: pink;     
+}
+.businesscard
+{
+    float: right;
+    position: fixed;    
+    top: 16vh;  
+    right: 4%;    
+    width: 22%;    
+    height: auto;
+    min-height: 22vh;
+    background-image: url('../images/BusinessCard.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;    
+}
+.instructionscolumn1
+{
+    
+}
+.instructionscolumn2
+{
+    
 }
 .contentmain
 {
@@ -102,6 +129,14 @@
     cursor: pointer;
     text-align: center;
 }
+.orangetext
+{
+    color: orange !important;
+}
+.orangetext:visited
+{
+    color: orange !important;
+}
 .sidebar 
 {
     width: clamp(280px, 14%, 14%);
@@ -114,7 +149,7 @@
     flex-direction: column;
     background-image: url('../images/TwoToneOrange.png');
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: 100% 100%;    
 }
 .sidebarelement
 {  
@@ -179,9 +214,30 @@
   top: 50%;  
   transform: translateY(-50%);
 }
+.whitetext
+{
+    color: white !important;
+}
+.whitetext:visited
+{
+    color: white !important;
+}
 .zindex5
 {
     z-index: 5;
+}
+
+a:link {
+  text-decoration: none;  
+}
+
+a:visited {
+  text-decoration: none;  
+}
+
+a:hover {
+  text-decoration: none;
+  color: midnightblue;
 }
 
 body 
