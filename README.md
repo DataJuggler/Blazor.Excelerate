@@ -7,14 +7,14 @@ This Blazor project uses the following DataJuggler Nuget packages:
 
 DataJuggler.Blazor.FileUpload - used to upload Excel worksheets
 
-DataJuggler.Blazor.Components - ImageButton and ComboBox components used
+DataJuggler.Blazor.Components - ImageButton, ComboBox and ValidationComponent used
 
 DataJuggler.Excelerate to read Excel and code generate C# classes from Excel worksheets
 
 DataJuggler.UltimateHelper - I use this for everything
 
-This project comes with a sample spreadsheet with 20,000 Members and 20,000 Addresses *
-* This is randomly created sample data, so zip codes may not match streets, cities, etc.
+Blazor.Excelerate comes with a sample spreadsheet with 20,000 Members and 20,000 Addresses *
+* This is randomly created sample data, so zip codes, streets, cities, etc. do not match real places.
 
 # Excel Uploads
 
