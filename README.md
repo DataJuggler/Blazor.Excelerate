@@ -1,5 +1,5 @@
 # Blazor.Excelerate
-<img height=64 width=64 src=https://github.com/DataJuggler/Blazor.Excelerate/blob/main/wwwroot/Images/ExcelerateLogo.png>
+<img height=256 width=256 src=https://github.com/DataJuggler/Blazor.Excelerate/blob/main/wwwroot/Images/ExcelerateLogo.png>
 
 This Blazor project uses DataJuggler.Blazor.Components and DataJuggler.Excelerate to code generate
 C# classes from Excel worksheets.
