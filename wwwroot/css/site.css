@@ -28,7 +28,7 @@
     height: 10vh;    
     position: fixed;
     left: 14%;
-    top: 20vh;
+    top: 0vh;
 }
 .customfileupload
 {  
@@ -81,6 +81,11 @@
     width: 42.65%;
     height: 7.8vh;
 }
+.marginsmall
+{
+    margin-top: .02vh;
+    margin-bottom: 0;
+}
 .orangeButton
 {
     position: fixed;
@@ -89,7 +94,7 @@
     outline: none;
     background-image: url('../images/OrangeButton.png');
     background-repeat: no-repeat;
-    top: 22.8vh;
+    top: 18.8vh;
     left: 26%;
     width: 11.92%;
     height: 4%;
@@ -138,8 +143,8 @@
     background-size: 100% 100%;
     display: inline-block;
     position: relative;
-    left: 12%;
-    top: 20vh;
+    left: 6.4%;
+    top: 18vh;
     color: white !important;
 }
 .smallicon2 :hover

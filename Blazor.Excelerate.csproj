@@ -16,11 +16,11 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorStyled" Version="3.1.0" />
-    <PackageReference Include="DataJuggler.Blazor.Components" Version="1.6.3" />
     <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="1.6.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DataJuggler.Blazor.Components\DataJuggler.Blazor.Components.csproj" />
     <ProjectReference Include="..\Excelerate\DataJuggler.Excelerate.csproj" />
   </ItemGroup>
 

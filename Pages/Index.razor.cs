@@ -35,6 +35,7 @@ namespace Blazor.Excelerate.Pages
         private double textSize;
         private string textSizeStyle;
         private string largeTextSizeStyle;
+        private string smallTextSizeStyle;
         private string downloadLink;
         private string downloadLink2;
         private string downloadLink2Hover;
@@ -44,6 +45,7 @@ namespace Blazor.Excelerate.Pages
         private ComboBox sheetNamesComboBox;
         private ImageButton uploadExcelButton;
         private ImageButton generateClassesButton;
+        private ImageButton hideInstructionsButton;
         private Item selectedTextSizeItem;
         private Item selectedSheetItem;
         private string buttonUrl;
@@ -61,6 +63,9 @@ namespace Blazor.Excelerate.Pages
         private string labelColor;
         private CodeGenerationResponse response;
         private string downloadPath;
+        private string instructions;
+        private string instructionsDisplay;
+        private string smallheader;
 
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -85,6 +90,9 @@ namespace Blazor.Excelerate.Pages
 
             // Set the Left for the ComboBox container
             Left = -150;
+
+            // set to block
+            InstructionsDisplay = "block";
         }
         #endregion
 
@@ -103,6 +111,17 @@ namespace Blazor.Excelerate.Pages
                     // Handle creating the class
                     HandleGenerateClass();
                 }
+                else if ((buttonNumber == 3) && (HasHideInstructionsButton))
+                {
+                    // Hide
+                    InstructionsDisplay = "none";
+
+                    // Hide the button
+                    HideInstructionsButton.SetVisible(false);
+                }
+
+                // Update UI
+                Refresh();
             }
             #endregion
 
@@ -300,7 +319,7 @@ namespace Blazor.Excelerate.Pages
                             response.FullPath = DownloadPath;
 
                             // use white
-                            LabelColor = "white";
+                            LabelColor = "white";                            
                         }
                         else
                         {
@@ -318,10 +337,7 @@ namespace Blazor.Excelerate.Pages
 
                         // Set Status
                         Status = "Namespace is required.";
-                    }
-
-                    // Update UI
-                    Refresh();
+                    }                   
                 }
             }
             #endregion
@@ -503,9 +519,9 @@ namespace Blazor.Excelerate.Pages
                 {
                     StateHasChanged();
                 });
-            }
-            #endregion
-                
+        }
+        #endregion
+
             #region Register(IBlazorComponent component)
             /// <summary>
             /// method returns the
@@ -522,7 +538,7 @@ namespace Blazor.Excelerate.Pages
                     this.TextSizeComboBox = component as ComboBox;
 
                     // Create the items for TextSizes                    
-                    TextSizeComboBox.LoadItems(typeof(TextSizeEnum));                    
+                    TextSizeComboBox.LoadItems(typeof(TextSizeEnum));
                 }
                 else if (TextHelper.IsEqual(component.Name, "UploadExcelButton"))
                 {
@@ -533,7 +549,7 @@ namespace Blazor.Excelerate.Pages
                     this.UploadExcelButton.ClickHandler = ButtonClicked;
                 }
                 else if (TextHelper.IsEqual(component.Name, "GenerateClassesButton"))
-                {   
+                {
                     // Store this object
                     this.GenerateClassesButton = component as ImageButton;
 
@@ -541,7 +557,7 @@ namespace Blazor.Excelerate.Pages
                     this.GenerateClassesButton.ClickHandler = ButtonClicked;
                 }
                 else if (TextHelper.IsEqual(component.Name, "SheetNamesComboBox"))
-                {   
+                {
                     // Register the SheetNamesComboBox
                     this.SheetNamesComboBox = component as ComboBox;
                 }
@@ -549,6 +565,14 @@ namespace Blazor.Excelerate.Pages
                 {
                     // Store the NamespaceComponent
                     NamespaceComponent = component as ValidationComponent;
+                }
+                else if (TextHelper.IsEqual(component.Name, "HideInstructionsButton"))
+                {
+                    // Hide the instructions button
+                    HideInstructionsButton = component as ImageButton;
+
+                    // Setup the ClickHandler
+                    HideInstructionsButton.ClickHandler = ButtonClicked;
                 }
             }
             #endregion
@@ -758,6 +782,23 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region HasHideInstructionsButton
+            /// <summary>
+            /// This property returns true if this object has a 'HideInstructionsButton'.
+            /// </summary>
+            public bool HasHideInstructionsButton
+            {
+                get
+                {
+                    // initial value
+                    bool hasHideInstructionsButton = (this.HideInstructionsButton != null);
+                    
+                    // return value
+                    return hasHideInstructionsButton;
+                }
+            }
+            #endregion
+            
             #region HasNamespaceComponent
             /// <summary>
             /// This property returns true if this object has a 'NamespaceComponent'.
@@ -857,6 +898,39 @@ namespace Blazor.Excelerate.Pages
                     // return value
                     return hasWorkbook;
                 }
+            }
+            #endregion
+            
+            #region HideInstructionsButton
+            /// <summary>
+            /// This property gets or sets the value for 'HideInstructionsButton'.
+            /// </summary>
+            public ImageButton HideInstructionsButton
+            {
+                get { return hideInstructionsButton; }
+                set { hideInstructionsButton = value; }
+            }
+            #endregion
+            
+            #region Instructions
+            /// <summary>
+            /// This property gets or sets the value for 'Instructions'.
+            /// </summary>
+            public string Instructions
+            {
+                get { return instructions; }
+                set { instructions = value; }
+            }
+            #endregion
+            
+            #region InstructionsDisplay
+            /// <summary>
+            /// This property gets or sets the value for 'InstructionsDisplay'.
+            /// </summary>
+            public string InstructionsDisplay
+            {
+                get { return instructionsDisplay; }
+                set { instructionsDisplay = value; }
             }
             #endregion
             
@@ -1031,6 +1105,28 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region Smallheader
+            /// <summary>
+            /// This property gets or sets the value for 'Smallheader'.
+            /// </summary>
+            public string Smallheader
+            {
+                get { return smallheader; }
+                set { smallheader = value; }
+            }
+            #endregion
+            
+            #region SmallTextSizeStyle
+            /// <summary>
+            /// This property gets or sets the value for 'SmallTextSizeStyle'.
+            /// </summary>
+            public string SmallTextSizeStyle
+            {
+                get { return smallTextSizeStyle; }
+                set { smallTextSizeStyle = value; }
+            }
+            #endregion
+            
             #region Status
             /// <summary>
             /// This property gets or sets the value for 'Status'.
@@ -1070,8 +1166,14 @@ namespace Blazor.Excelerate.Pages
                     // get the larger text size
                     double largeTextSize = textSize * 1.5;
 
-                    // Set the value for largeTextSize
-                    largeTextSizeStyle = largeTextSize + "vh";
+                    // Small is half of large
+                    double smallTextSize = largeTextSize * .5;
+
+                    // Set the value for LargeTextSizeStyle
+                    LargeTextSizeStyle = largeTextSize + "vh";
+
+                    // Set the value for SmallTextSizeStyle
+                    SmallTextSizeStyle = smallTextSize + "vh";
                 }
             }
             #endregion

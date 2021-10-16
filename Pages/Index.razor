@@ -56,8 +56,8 @@
     font-weight: normal;
     position: relative;    
     display: inline-block;
-    left: 120%;
-    top: 0;
+    left: 114%;
+    top: -4;
     margin-top: .4vh;
 </Styled>
 <Styled @bind-Classname="SelectClasses">
@@ -70,13 +70,27 @@
 <Styled @bind-Classname="StatusStyle">  
     text-align: center;
     position: absolute;
-    top: 22vh;
+    top: 18vh;
     left: -4%;
     width: 60%;
     height: 2.8vh;
     line-height: 2.8vh;
     font-size: @LargeTextSizeStyle;
     color: @LabelColor;
+</Styled>
+<Styled @bind-Classname="Instructions">
+    font-size: @SmallTextSizeStyle;    
+    line-height: @LargeTextSizeStyle;
+    color: white;
+    position: fixed;
+    top: 48vh;
+    left: 26%;
+    display: @InstructionsDisplay;
+</Styled>
+<Styled @bind-Classname="Smallheader">
+    font-weight: bold;
+    font-size: @TextSizeStyle;
+    margin-bottom: -.02vh;
 </Styled>
 
 <div class="sidebar">
@@ -128,18 +142,18 @@
     <div class="@SelectClasses">
         <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox"
                 LabelColor="White" Position="relative" Visible="true" 
-                Left="0" Top="8" Width="120"  LabelSize="30"
+                Left="0" Top="4" Width="120"  LabelSize="30"
                 LabelText="Sheets:" TextSize="TextSizeEnum.Large">
         </ComboBox>
     </div>
     <div>
         <div class="row .zindex5">
             <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"
-                TextSize="TextSizeEnum.Large" Left="28" Top="8.8" Height="4" 
+                TextSize="TextSizeEnum.Large" Left="28" Top="4.8" Height="4" 
                 Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>
             <ValidationComponent Name="NamespaceComponent" Parent="this" Caption="Namespace"
                 LabelColor="White" IsRequired="true" ValidationMessage="You must enter a namespace"
-                Top="14"></ValidationComponent>
+                Top="10"></ValidationComponent>
         </div>
     </div>
     <div class="@StatusStyle">
@@ -148,9 +162,38 @@
     @if ((HasResponse) && (Response.Success) && (Response.HasFileName) && (Response.HasFullPath))
      {
          <div class="smallicon2 text-white text-nowrap">
-            <a class="@DownloadLink2" download="@Response.FileName" href="@DownloadPath" target="_blank">@Response.FileName</a>
+            <a class="@DownloadLink2" download="@Response.FileName" href="@DownloadPath" target="_blank">@Response.FileName</a><br />
+             <span class="small text-white">
+                 * Browsers do not allow downloading files with .cs extensions, so download this zip file and extract to a folder.
+             </span>
         </div>
     }
+    <div class="@Instructions">
+        <ImageButton ButtonNumber="3" ButtonText="Hide Instructions" Name="HideInstructionsButton"
+                TextSize="TextSizeEnum.Large" Left="-30" Top="4.4" Height="4"
+                Width="120" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
+        <div class="marginsmall @Smallheader">Instructions</div>
+        1. Prepare your spreadsheet and ensure your worksheet has a header row, 
+        and the column names make good property names. <br />
+        Download the Members.xlsx sample to see a good example.<br />
+        2. Upload your spreadsheet and select the sheet to code generate a class for.<br />
+        3. Type in a namespace for your project and click the 'Generate Class' button.<br />
+        4. Download the zip file and extract the contents to get your .cs file.<br />
+        <div class="marginsmall @Smallheader">Tips / Troubleshooting</div>
+        It helps to have some rows of data to attempt to determine the data type. Getting the data type is kind of a hack,<br />
+        as I could not find away with EPP Plus to get the actual column data types<br />
+
+        If you have a problem generating classes, create an issue here or if you want the source code or to star<br />
+        https://github.com/DataJuggler/Excelerate <br />
+        
+        If you have a problem with this site, create an issue here or if want the source code or to star<br />
+        https://github.com/DataJuggler/Blazor.Excelerate <br />
+
+        <div class="marginsmall @Smallheader">Data Privacy</div>
+        No one has access to my server except me and my dog.<br />
+        I am building a Windows Service that deletes files older than one hour.<br />
+        This will be deployed in the next few days (estimate 10/18/2021).
+    </div>
 </div>
 
     

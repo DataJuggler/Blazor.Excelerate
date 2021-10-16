@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Excelerate", "Blazor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataJuggler.Excelerate", "..\Excelerate\DataJuggler.Excelerate.csproj", "{3852C4F6-4086-4A1E-960C-F74D63433511}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataJuggler.Blazor.Components", "..\DataJuggler.Blazor.Components\DataJuggler.Blazor.Components.csproj", "{80C6812A-7C66-4DB4-B630-139354AA3842}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3852C4F6-4086-4A1E-960C-F74D63433511}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3852C4F6-4086-4A1E-960C-F74D63433511}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3852C4F6-4086-4A1E-960C-F74D63433511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C6812A-7C66-4DB4-B630-139354AA3842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C6812A-7C66-4DB4-B630-139354AA3842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C6812A-7C66-4DB4-B630-139354AA3842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C6812A-7C66-4DB4-B630-139354AA3842}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
