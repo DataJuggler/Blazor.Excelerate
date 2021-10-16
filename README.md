@@ -1,5 +1,5 @@
 # Blazor.Excelerate
-<img height=256 width=256 src=https://github.com/DataJuggler/Blazor.Excelerate/blob/main/wwwroot/Images/ExcelerateLogo.png>
+<img height=192 width=192 src=https://github.com/DataJuggler/Blazor.Excelerate/blob/main/wwwroot/Images/ExcelerateLogoSmallWhite.png>
 
 Blazor.Excelerate is built with DataJuggler.Excelerate, which is built using EPP Plus version 4.5.3.3 (last free version).
 
@@ -7,14 +7,14 @@ This Blazor project uses the following DataJuggler Nuget packages:
 
 DataJuggler.Blazor.FileUpload - used to upload Excel worksheets
 
-DataJuggler.Blazor.Components - ImageButton and ComboBox components used
+DataJuggler.Blazor.Components - ImageButton, ComboBox and ValidationComponent used
 
 DataJuggler.Excelerate to read Excel and code generate C# classes from Excel worksheets
 
 DataJuggler.UltimateHelper - I use this for everything
 
-This project comes with a sample spreadsheet with 20,000 Members and 20,000 Addresses *
-* This is randomly created sample data, so zip codes may not match streets, cities, etc.
+Blazor.Excelerate comes with a sample spreadsheet with 20,000 Members and 20,000 Addresses *
+* This is randomly created sample data, so zip codes, streets, cities, etc. do not match real places.
 
 # Excel Uploads
 
