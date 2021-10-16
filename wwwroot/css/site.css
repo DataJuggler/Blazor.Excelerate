@@ -130,6 +130,22 @@
     position: relative;
     left: 0%;
 }
+.smallicon2
+{  
+    background-image: url('../images/Zip.png');
+    height: 4.2vh;
+    width: 4.2%;
+    background-size: 100% 100%;
+    display: inline-block;
+    position: relative;
+    left: 12%;
+    top: 20vh;
+    color: white !important;
+}
+.smallicon2 :hover
+{
+    color: white !important;
+}
 .topbar 
 {
     width: 86%;

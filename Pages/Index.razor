@@ -42,6 +42,24 @@
     left: 2.8%;
     margin-top: .4vh;
 </Styled>
+<Styled @bind-Classname="DownloadLink2">    
+    color: white;  
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    font-family: Verdana;
+    text-decoration: none;
+    cursor: pointer;    
+    height: 2.04vh;
+    line-height: 2.04vh;
+    font-size: @LargeTextSizeStyle;
+    font-weight: normal;
+    position: relative;    
+    display: inline-block;
+    left: 120%;
+    top: 0;
+    margin-top: .4vh;
+</Styled>
 <Styled @bind-Classname="SelectClasses">
     width: 20%;
     height: 6vh;
@@ -58,7 +76,7 @@
     height: 2.8vh;
     line-height: 2.8vh;
     font-size: @LargeTextSizeStyle;
-    color: tomato;
+    color: @LabelColor;
 </Styled>
 
 <div class="sidebar">
@@ -127,6 +145,12 @@
     <div class="@StatusStyle">
         <label class="text-center">@Status</label>
     </div>
+    @if ((HasResponse) && (Response.Success) && (Response.HasFileName) && (Response.HasFullPath))
+     {
+         <div class="smallicon2 text-white text-nowrap">
+            <a class="@DownloadLink2" download="@Response.FileName" href="@DownloadPath" target="_blank">@Response.FileName</a>
+        </div>
+    }
 </div>
 
     

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Excelerate", "Blazor.Excelerate.csproj", "{7D9E36FB-4B1D-46CF-863A-644CD1F932D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataJuggler.Blazor.Components", "..\DataJuggler.Blazor.Components\DataJuggler.Blazor.Components.csproj", "{B104B345-903F-4DA9-A302-A58F0D690297}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataJuggler.Excelerate", "..\Excelerate\DataJuggler.Excelerate.csproj", "{3852C4F6-4086-4A1E-960C-F74D63433511}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{7D9E36FB-4B1D-46CF-863A-644CD1F932D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D9E36FB-4B1D-46CF-863A-644CD1F932D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D9E36FB-4B1D-46CF-863A-644CD1F932D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B104B345-903F-4DA9-A302-A58F0D690297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B104B345-903F-4DA9-A302-A58F0D690297}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B104B345-903F-4DA9-A302-A58F0D690297}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B104B345-903F-4DA9-A302-A58F0D690297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3852C4F6-4086-4A1E-960C-F74D63433511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3852C4F6-4086-4A1E-960C-F74D63433511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3852C4F6-4086-4A1E-960C-F74D63433511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3852C4F6-4086-4A1E-960C-F74D63433511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

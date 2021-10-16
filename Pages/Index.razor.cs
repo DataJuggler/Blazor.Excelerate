@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Components;
 using DataJuggler.Excelerate;
 using DataJuggler.Blazor.FileUpload;
 using System.IO;
+using System.IO.Compression;
+using System.Drawing;
 
 #endregion
 
@@ -34,6 +36,8 @@ namespace Blazor.Excelerate.Pages
         private string textSizeStyle;
         private string largeTextSizeStyle;
         private string downloadLink;
+        private string downloadLink2;
+        private string downloadLink2Hover;
         private string slogan;
         private List<IBlazorComponent> children;
         private ComboBox textSizeComboBox;
@@ -54,6 +58,9 @@ namespace Blazor.Excelerate.Pages
         private ValidationComponent namespaceComponent;
         private string status;
         private string statusStyle;
+        private string labelColor;
+        private CodeGenerationResponse response;
+        private string downloadPath;
 
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -193,6 +200,9 @@ namespace Blazor.Excelerate.Pages
             /// </summary>
             public void HandleGenerateClass()
             {
+                // local
+                string namespaceName = "";
+
                 // if the NamespaceComponent exists
                 if (HasNamespaceComponent)
                 {
@@ -205,6 +215,9 @@ namespace Blazor.Excelerate.Pages
                     // if valid
                     if (isValid)
                     {
+                        // Get the text value
+                        namespaceName = NamespaceComponent.Text;
+
                         // erase any validation messages
                         Status = "";
 
@@ -224,15 +237,85 @@ namespace Blazor.Excelerate.Pages
                         Worksheet worksheet = ExcelDataLoader.LoadWorksheet(ExcelPath, loadWorksheetInfo);
 
                         // Set the outputFolder
-                        string outputFolder = Path.GetFullPath(@"~\Downloads\Classes");
+                        string outputFolder = Path.GetFullPath("Data");
+
+                        // Create a new string
+                        string newFolder = FileHelper.CreateFileNameWithPartialGuid(Path.Combine(outputFolder, "Temp"), 12, false);
+
+                        // Create the directory
+                        Directory.CreateDirectory(newFolder);
 
                         // Create a new codeGenerator
-                        CodeGenerator codeGenerator = new CodeGenerator(worksheet, outputFolder, sheetName);
+                        CodeGenerator codeGenerator = new CodeGenerator(worksheet, newFolder, sheetName);
 
-                        
+                        // Generate a class and set the Namespace
+                        Response = codeGenerator.GenerateClassFromWorksheet(namespaceName, false);
+
+                        // Set the newFileName
+                        string newFileName = Path.Combine(newFolder, "Excelerate." + sheetName + ".zip");
+
+                        // if a class was created
+                        if (Response.Success)
+                        {
+                            // Set the Status
+                            Status = "This class will only be available for download for the next hour.";
+
+                            // reference System.IO.Compression
+                            using (var zip = ZipFile.Open(newFileName, ZipArchiveMode.Create))
+                            {
+                                zip.CreateEntryFromFile(response.FullPath, response.FileName);
+                            }
+
+                            // Delete the .cs file
+                            File.Delete(response.FullPath);
+
+                            // Create a fileInfo
+                            FileInfo fileInfo = new FileInfo(newFileName);
+
+                            // Get the directory info
+                            DirectoryInfo directory = new DirectoryInfo(newFileName).Parent;
+
+                            // Now copy the entire folder
+                            string destinationFolder = Path.GetFullPath("wwwroot/Downloads/Classes/") + directory.Name;
+
+                            // Create the directory
+                            Directory.CreateDirectory(destinationFolder);
+
+                            // Copy the zip file
+                            string destinationFileName = Path.Combine(destinationFolder, fileInfo.Name);
+
+                            // Copy
+                            File.Copy(newFileName, destinationFileName);
+
+                            // Delete source directory
+                            Directory.Delete(newFolder, true);
+
+                            // Set the DownloadPath
+                            DownloadPath = "../Downloads/Classes/" + directory.Name + "/" + fileInfo.Name;
+
+                            // Change the fileName
+                            response.FileName = fileInfo.Name;
+
+                            // Set the FullPath
+                            response.FullPath = DownloadPath;
+
+                            // use white
+                            LabelColor = "white";
+                        }
+                        else
+                        {
+                            // Set the Status
+                            Status = "Oops! Something went wrong.";
+
+                            // use a red color
+                            LabelColor = "tomato";
+                        }
                     }
                     else
                     {
+                        // use a red color
+                        LabelColor = "tomato";
+
                         // Set Status
                         Status = "Namespace is required.";
                     }
@@ -592,6 +675,39 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region DownloadLink2
+            /// <summary>
+            /// This property gets or sets the value for 'DownloadLink2'.
+            /// </summary>
+            public string DownloadLink2
+            {
+                get { return downloadLink2; }
+                set { downloadLink2 = value; }
+            }
+            #endregion
+            
+            #region DownloadLink2Hover
+            /// <summary>
+            /// This property gets or sets the value for 'DownloadLink2Hover'.
+            /// </summary>
+            public string DownloadLink2Hover
+            {
+                get { return downloadLink2Hover; }
+                set { downloadLink2Hover = value; }
+            }
+            #endregion
+            
+            #region DownloadPath
+            /// <summary>
+            /// This property gets or sets the value for 'DownloadPath'.
+            /// </summary>
+            public string DownloadPath
+            {
+                get { return downloadPath; }
+                set { downloadPath = value; }
+            }
+            #endregion
+            
             #region ExcelPath
             /// <summary>
             /// This property gets or sets the value for 'ExcelPath'.
@@ -655,6 +771,23 @@ namespace Blazor.Excelerate.Pages
                     
                     // return value
                     return hasNamespaceComponent;
+                }
+            }
+            #endregion
+            
+            #region HasResponse
+            /// <summary>
+            /// This property returns true if this object has a 'Response'.
+            /// </summary>
+            public bool HasResponse
+            {
+                get
+                {
+                    // initial value
+                    bool hasResponse = (this.Response != null);
+                    
+                    // return value
+                    return hasResponse;
                 }
             }
             #endregion
@@ -727,6 +860,17 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region LabelColor
+            /// <summary>
+            /// This property gets or sets the value for 'LabelColor'.
+            /// </summary>
+            public string LabelColor
+            {
+                get { return labelColor; }
+                set { labelColor = value; }
+            }
+            #endregion
+            
             #region LargeTextSizeStyle
             /// <summary>
             /// This property gets or sets the value for 'LargeTextSizeStyle'.
@@ -774,6 +918,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return namespaceComponent; }
                 set { namespaceComponent = value; }
+            }
+            #endregion
+            
+            #region Response
+            /// <summary>
+            /// This property gets or sets the value for 'Response'.
+            /// </summary>
+            public CodeGenerationResponse Response
+            {
+                get { return response; }
+                set { response = value; }
             }
             #endregion
             
