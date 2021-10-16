@@ -14,7 +14,21 @@
     width: 13.2%;    
     height: auto;
     min-height: 12vh;
-    background-color: pink;     
+    background-image: url('../Images/YouTubeBlue.png');
+    background-size: 100% 100%;
+    border: none;
+    outline: none;
+}
+.bottomsidebar:focus
+{
+    border: none;
+    outline: none;
+}
+.bottomsidebar:hover
+{
+    border: none;
+    outline: none;
+    cursor: pointer;
 }
 .businesscard
 {
