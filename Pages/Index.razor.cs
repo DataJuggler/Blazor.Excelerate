@@ -26,7 +26,7 @@ namespace Blazor.Excelerate.Pages
     /// <summary>
     /// This is the code for the Index page
     /// </summary>
-    public partial class Index : IBlazorComponentParent
+    public partial class Index : IBlazorComponentParent, ISpriteSubscriber
     {
         
         #region Private Variables
@@ -70,6 +70,7 @@ namespace Blazor.Excelerate.Pages
         private string smallheader;
         private string instructionsLineHeight;
         private string grid;
+        private Sprite logo;        
         private const string Column1Width = "22%";
 
         // 20 megs hard coded for now
@@ -527,6 +528,17 @@ namespace Blazor.Excelerate.Pages
         }
         #endregion
 
+            #region Register(Sprite sprite)
+            /// <summary>
+            /// method returns the
+            /// </summary>
+            public void Register(Sprite sprite)
+            {
+                // Set the Logo
+                Logo = sprite;
+            }
+            #endregion
+            
             #region Register(IBlazorComponent component)
             /// <summary>
             /// method returns the
@@ -578,7 +590,7 @@ namespace Blazor.Excelerate.Pages
 
                     // Setup the ClickHandler
                     HideInstructionsButton.ClickHandler = ButtonClicked;
-                }
+                }               
             }
             #endregion
 
@@ -668,9 +680,9 @@ namespace Blazor.Excelerate.Pages
             #endregion
             
         #endregion
-        
+
         #region Properties
-            
+
             #region ButtonUrl
             /// <summary>
             /// This property gets or sets the value for 'ButtonUrl'.
@@ -811,6 +823,23 @@ namespace Blazor.Excelerate.Pages
                     
                     // return value
                     return hasHideInstructionsButton;
+                }
+            }
+            #endregion
+            
+            #region HasLogo
+            /// <summary>
+            /// This property returns true if this object has a 'Logo'.
+            /// </summary>
+            public bool HasLogo
+            {
+                get
+                {
+                    // initial value
+                    bool hasLogo = (this.Logo != null);
+                    
+                    // return value
+                    return hasLogo;
                 }
             }
             #endregion
@@ -1008,6 +1037,65 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return leftStyle; }
                 set { leftStyle = value; }
+            }
+            #endregion
+            
+            #region Logo
+            /// <summary>
+            /// This property gets or sets the value for 'Logo'.
+            /// </summary>
+            public Sprite Logo
+            {
+                get { return logo; }
+                set { logo = value; }
+            }
+            #endregion
+            
+            #region LogoXPosition
+            /// <summary>
+            /// This property gets or sets the value for 'LogoXPosition'.
+            /// </summary>
+            public double LogoXPosition
+            {
+                get 
+                {
+                    // initial value
+                    double logoXPosition = 2.68;
+
+                    // if the Logo exists
+                    if (HasLogo)
+                    {
+                        // set the return value
+                        logoXPosition = Logo.XPosition;
+                    }
+
+                    // return value
+                    return logoXPosition;
+                }
+            }
+            #endregion
+            
+            #region LogoYPosition
+            /// <summary>
+            /// This property gets or sets the value for 'LogoYPosition'.
+            /// </summary>
+            public double LogoYPosition
+            {
+                get 
+                {
+                    // initial value
+                    double logoYPosition = 2;
+
+                    // if the Logo exists
+                    if (HasLogo)
+                    {
+                        // set the return value
+                        logoYPosition = Logo.YPosition;
+                    }
+
+                    // return value
+                    return logoYPosition;
+                }
             }
             #endregion
             

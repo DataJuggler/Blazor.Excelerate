@@ -10,6 +10,9 @@
 *.userosscache
 *.sln.docstates
 
+# Ignore excel files that are uploaded
+*.xlsx
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

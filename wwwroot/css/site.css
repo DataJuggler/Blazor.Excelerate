@@ -6,6 +6,12 @@
     min-height: .72vh;
     max-height: .72vh;
 }
+.blanklinesmall
+{
+    height: .48vh;
+    min-height: .48vh;
+    max-height: .48vh;    
+}
 .bottomsidebar
 {
     position: fixed;    
