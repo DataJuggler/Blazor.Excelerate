@@ -26,7 +26,7 @@ namespace Blazor.Excelerate.Pages
     /// <summary>
     /// This is the code for the Index page
     /// </summary>
-    public partial class Index : IBlazorComponentParent, ISpriteSubscriber
+    public partial class Index : IBlazorComponentParent, ISpriteSubscriber, IProgressSubscriber
     {
         
         #region Private Variables
@@ -48,6 +48,7 @@ namespace Blazor.Excelerate.Pages
         private ImageButton uploadExcelButton;
         private ImageButton generateClassesButton;
         private ImageButton hideInstructionsButton;
+        private ProgressBar progressBar;
         private Item selectedTextSizeItem;
         private Item selectedSheetItem;
         private string buttonUrl;
@@ -72,6 +73,7 @@ namespace Blazor.Excelerate.Pages
         private string grid;
         private Sprite logo;        
         private const string Column1Width = "22%";
+        private bool showProgress;
 
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -383,52 +385,82 @@ namespace Blazor.Excelerate.Pages
             /// </summary>
             public async void OnFileUploaded(UploadedFileInfo file)
             {
-                // if the file was uploaded
-                if (!file.Aborted)
+                try
                 {
-                    // Store this for later
-                    ExcelPath = file.FullPath;
-
-                    // Get the SheetNames
-                    this.SheetNames = await GetSheetNames(file.FullPath);
-
-                    // Convert the SheetNames to SheetItems
-                    SheetItems = ConvertSheetNames();
-
-                    // if there are one or more SheetItems and the ComboBox exists
-                    if ((ListHelper.HasOneOrMoreItems(SheetItems)) && (NullHelper.Exists(SheetNamesComboBox)))
+                    // if the file was uploaded
+                    if (!file.Aborted)
                     {
-                        // Now show the control
-                        SheetNamesComboBox.SetVisible(true);
+                        // if the value for HasProgressBar is true
+                        if (HasProgressBar)
+                        {
+                            // Start the ProgressBar
+                            ShowProgress = true;
 
-                        // Reset
-                        Left = 18.8;
+                            // Start
+                            ProgressBar.Start();
+                        }
 
-                        // Start off not expanded
-                        SheetNamesComboBox.Expanded = false;
+                        // Store this for later
+                        ExcelPath = file.FullPath;
 
-                        // Switch to an enabled OrangeButton
-                        ButtonUrl = "../images/OrangeButton.png";
+                        // Get the SheetNames
+                        this.SheetNames = await GetSheetNames(file.FullPath);
 
-                        // Set the Items
-                        SheetNamesComboBox.Items = SheetItems;
+                        // Convert the SheetNames to SheetItems
+                        SheetItems = ConvertSheetNames();
 
-                        // Select the first sheet
-                        ChangeEventArgs changeEventArgs = new ChangeEventArgs();
-                        changeEventArgs.Value = SheetItems[0].Text;
-                        SheetNamesComboBox.SelectionChanged(changeEventArgs);                        
+                        // if there are one or more SheetItems and the ComboBox exists
+                        if ((ListHelper.HasOneOrMoreItems(SheetItems)) && (NullHelper.Exists(SheetNamesComboBox)))
+                        {
+                            // Now show the control
+                            SheetNamesComboBox.SetVisible(true);
+
+                            // Reset
+                            Left = 18.8;
+
+                            // Start off not expanded
+                            SheetNamesComboBox.Expanded = false;
+
+                            // Switch to an enabled OrangeButton
+                            ButtonUrl = "../images/OrangeButton.png";
+
+                            // Set the Items
+                            SheetNamesComboBox.Items = SheetItems;
+
+                            // Select the first sheet
+                            ChangeEventArgs changeEventArgs = new ChangeEventArgs();
+                            changeEventArgs.Value = SheetItems[0].Text;
+                            SheetNamesComboBox.SelectionChanged(changeEventArgs);                        
+                        }
+
+                        // Update the UI
+                        Refresh();
                     }
-
-                    // Update the UI
-                    Refresh();
-                }
-                else
-                {
-                    // for debugging only
-                    if (file.HasException)
+                    else
                     {
                         // for debugging only
-                        string message = file.Exception.Message;
+                        if (file.HasException)
+                        {
+                            // for debugging only
+                            string message = file.Exception.Message;
+                        }
+                    }
+                }
+                catch (Exception error)
+                {
+                    // for debugging only for now
+                    DebugHelper.WriteDebugError("OnFileUploaded", "Index.razor.cs", error);
+                }
+                finally
+                {
+                    // if hte ProgressBar exists
+                    if (HasProgressBar)
+                    {
+                        // Stop the timer
+                        ProgressBar.Stop();
+
+                        // Hide the progress bar
+                        ShowProgress = false;
                     }
                 }
             }
@@ -527,6 +559,17 @@ namespace Blazor.Excelerate.Pages
                 });
         }
         #endregion
+
+            #region Register(ProgressBar progressBar)
+            /// <summary>
+            /// method returns the
+            /// </summary>
+            public void Register(ProgressBar progressBar)
+            {
+                // store it
+                this.ProgressBar = progressBar;
+            }
+            #endregion
 
             #region Register(Sprite sprite)
             /// <summary>
@@ -861,6 +904,23 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region HasProgressBar
+            /// <summary>
+            /// This property returns true if this object has a 'ProgressBar'.
+            /// </summary>
+            public bool HasProgressBar
+            {
+                get
+                {
+                    // initial value
+                    bool hasProgressBar = (this.ProgressBar != null);
+                    
+                    // return value
+                    return hasProgressBar;
+                }
+            }
+            #endregion
+            
             #region HasResponse
             /// <summary>
             /// This property returns true if this object has a 'Response'.
@@ -1110,6 +1170,17 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region ProgressBar
+            /// <summary>
+            /// This property gets or sets the value for 'ProgressBar'.
+            /// </summary>
+            public ProgressBar ProgressBar
+            {
+                get { return progressBar; }
+                set { progressBar = value; }
+            }
+            #endregion
+            
             #region Response
             /// <summary>
             /// This property gets or sets the value for 'Response'.
@@ -1184,6 +1255,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return sheetNamesComboBox; }
                 set { sheetNamesComboBox = value; }
+            }
+            #endregion
+            
+            #region ShowProgress
+            /// <summary>
+            /// This property gets or sets the value for 'ShowProgress'.
+            /// </summary>
+            public bool ShowProgress
+            {
+                get { return showProgress; }
+                set { showProgress = value; }
             }
             #endregion
             

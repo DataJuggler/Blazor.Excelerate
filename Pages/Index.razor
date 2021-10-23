@@ -195,6 +195,16 @@
     <div class="businesscard"></div>
 </div>
 <div class="contentmain">
+    <div>
+        <div class="row .zindex5">
+            <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"
+                TextSize="TextSizeEnum.Large" Left="28" Top="4.8" Height="4" 
+                Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>
+            <ValidationComponent Name="NamespaceComponent" Parent="this" Caption="Namespace"
+                LabelColor="White" IsRequired="true" ValidationMessage="You must enter a namespace"
+                Top="10"></ValidationComponent>
+        </div>
+    </div>
     <div class="row displayinline contentmaintoprow">
         <FileUpload CustomSuccessMessage="Your file uploaded successfully." 
             OnReset="OnReset" ResetButtonClassName="localbutton" ShowStatus="false"
@@ -213,17 +223,7 @@
                 Left="0" Top="4" Width="120"  LabelSize="30"
                 LabelText="Sheets:" TextSize="TextSizeEnum.Large">
         </ComboBox>
-    </div>
-    <div>
-        <div class="row .zindex5">
-            <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"
-                TextSize="TextSizeEnum.Large" Left="28" Top="4.8" Height="4" 
-                Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>
-            <ValidationComponent Name="NamespaceComponent" Parent="this" Caption="Namespace"
-                LabelColor="White" IsRequired="true" ValidationMessage="You must enter a namespace"
-                Top="10"></ValidationComponent>
-        </div>
-    </div>
+    </div>    
     <div class="@StatusStyle">
         <label class="text-center">@Status</label>
     </div>
@@ -231,7 +231,7 @@
      {
          <div class="smallicon2 text-white text-nowrap">
             <a class="@DownloadLink2" download="@Response.FileName" href="@DownloadPath" target="_blank">@Response.FileName</a><br />
-             <span class="small text-white">
+             <span class="small text-white margintopsmall">
                  * Browsers do not allow downloading files with .cs extensions, so download this zip file and extract to a folder.
              </span>
         </div>
@@ -244,7 +244,7 @@
                     Width="120" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
             </div>
             <div class="column instructionscolumn2">
-                <div class="marginsmall @Smallheader">Instructions</div>
+                <div class="margintopsmall @Smallheader">Instructions</div>
                 <div class="blankline"></div>
                 1. Prepare your spreadsheet (save as .xlsx extension) and ensure you have a header row, and the 
                 column names make good property names. Download MemberData.xlsx to see an example.<br />
@@ -252,7 +252,7 @@
                 3. Type in a namespace for your project and click the 'Generate Class' button.<br />
                 4. Download the zip file and extract the contents to get your .cs file.<br />
                 <div class="blankline"></div>
-                <div class="marginsmall @Smallheader">Tips / Troubleshooting</div>
+                <div class="margintopsmall @Smallheader">Tips / Troubleshooting</div>
                 <div class="blankline"></div>
                 It helps to have some rows of data to attempt to determine the data type. Getting the data type is kind of a hack,
                 as I could not find away with EPP Plus to get the column data types.<br />
@@ -264,7 +264,7 @@
                 If you have a problem with this site, create an issue here or to clone or star:<br />
                 <a class="orangetext" href="https://github.com/DataJuggler/Blazor.Excelerate">Blazor.Excelerate Git Hub</a><br />
                 <div class="blankline"></div>
-                <div class="marginsmall @Smallheader">Data Privacy</div>
+                <div class="margintopsmall @Smallheader">Data Privacy</div>
                 <div class="blankline"></div>
                 No one has access to my server except me and my dog.<br />
                 I am building a Windows Service that deletes files older than one hour.<br />
@@ -274,6 +274,11 @@
     </div>
 </div>
 
-    
+<div class="progresscontainer">
+    <ProgressBar Subscriber=this Increment="0" Interval="50" ClientHandledIncrement="false" 
+         CloseAtExtraPercent="0" Visible="@ShowProgress" Theme=ThemeEnum.Dark Color=ColorEnum.Orange
+         Size=SizeEnum.Small OverrideThemeColorForText="true" TextColor="White">
+    </ProgressBar>
+</div>
 
 
