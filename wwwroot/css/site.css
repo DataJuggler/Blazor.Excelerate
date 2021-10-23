@@ -128,7 +128,7 @@
     width: 42.65%;
     height: 7.8vh;
 }
-.margintopsmall
+.marginsmall
 {
     margin-top: .02vh;
     margin-bottom: 0;
@@ -156,15 +156,6 @@
 .orangetext:visited
 {
     color: orange !important;
-}
-.progresscontainer
-{
-    position: fixed;
-    left: 18%;
-    top: 16vh;
-    transform: scale(.8);
-    transform-origin: left;
-    z-index: 500;
 }
 .sidebar 
 {
