@@ -37,8 +37,19 @@
     position: relative;    
     display: inline-block;
     left: 114%;
-    top: -4;
+    top: .4vh;
     margin-top: .4vh;
+</Styled>
+<Styled @bind-Classname="Grid">
+    display: grid;    
+    grid-template-columns: @Column1Width 1fr;
+    grid-column-gap: 2px;
+    height: auto;
+    width: 80%;
+    font-size: @TextSizeStyle;
+    position: relative;
+    left: -12%;
+    top: 8vh;    
 </Styled>
 <Styled @bind-Classname="Instructions">
     font-size: @SmallTextSizeStyle;    
@@ -49,11 +60,27 @@
     left: 26%;
     display: @InstructionsDisplay;        
 </Styled>
+<Styled @bind-Classname="OrangeButton">
+    position: fixed;
+    background-color: transparent;
+    border: 0px;
+    outline: none;
+    background-image: url('../images/OrangeButton.png');
+    background-repeat: no-repeat;
+    top: 23vh;
+    left: 26.4%;
+    width: 11.92%;
+    height: 3.6%;
+    background-size: 100% 100%;    
+    cursor: pointer;
+    text-align: center;
+    font-size: @TextSizeStyle;
+</Styled>
 <Styled @bind-Classname="SelectClasses">
     width: 20%;
     height: 6vh;
     position: fixed;
-    top: 14.8vh;
+    top: 8.8vh;
     left: @LeftStyle;
 </Styled>
 <Styled @bind-Classname="SideBarElementText">
@@ -95,24 +122,13 @@
 <Styled @bind-Classname="StatusStyle">  
     text-align: center;
     position: absolute;
-    top: 18vh;
+    top: 16vh;
     left: -4%;
     width: 60%;
     height: 2.8vh;
     line-height: 2.8vh;
     font-size: @LargeTextSizeStyle;
     color: @LabelColor;
-</Styled>
-<Styled @bind-Classname="Grid">
-    display: grid;    
-    grid-template-columns: @Column1Width 1fr;
-    grid-column-gap: 2px;
-    height: auto;
-    width: 80%;
-    font-size: @TextSizeStyle;
-    position: relative;
-    left: -12%;
-    top: 8vh;    
 </Styled>
 
 <div class="sidebar">
@@ -195,45 +211,47 @@
     <div class="businesscard"></div>
 </div>
 <div class="contentmain">
-    <div class="row displayinline contentmaintoprow">
-        <FileUpload CustomSuccessMessage="Your file uploaded successfully." 
-            OnReset="OnReset" ResetButtonClassName="localbutton" ShowStatus="false"
-            PartialGuidLength="12" MaxFileSize=@UploadLimit FilterByExtension="true" 
-            ShowCustomButton="true"  ButtonText="Upload Excel" OnChange="OnFileUploaded"
-            CustomButtonClassName="orangeButton" AllowedExtensions=".xlsx"
-            ShowResetButton="false" AppendPartialGuid="true"
-            CustomExtensionMessage="Only .xlsx extensions are allowed." 
-            InputFileClassName="customfileupload" Visible=false Status="Refresh"
-            FileTooLargeMessage=@FileTooLargeMessage>
-        </FileUpload>       
+    <div class="row displayinline contentmaintoprow">        
+        <ValidationComponent Name="NamespaceComponent" Parent="this" Caption="Namespace" ZIndex="15"
+            LabelColor="White" IsRequired="true" ValidationMessage="You must enter a namespace"
+            Top="14.8"></ValidationComponent>   
     </div>
-    <div class="@SelectClasses">
-        <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox"
-                LabelColor="White" Position="relative" Visible="true" 
-                Left="0" Top="4" Width="120"  LabelSize="30"
-                LabelText="Sheets:" TextSize="TextSizeEnum.Large">
-        </ComboBox>
-    </div>
-    <div>
-        <div class="row .zindex5">
+     <div>
+        <div class="row">
             <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"
-                TextSize="TextSizeEnum.Large" Left="28" Top="4.8" Height="4" 
-                Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>
-            <ValidationComponent Name="NamespaceComponent" Parent="this" Caption="Namespace"
-                LabelColor="White" IsRequired="true" ValidationMessage="You must enter a namespace"
-                Top="10"></ValidationComponent>
+                TextSize="TextSizeEnum.Large" Left="40" Top="22.8" Height="4" Position="fixed"
+                Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
         </div>
     </div>
+    <div class="@SelectClasses">
+        <div class="row">
+            <FileUpload CustomSuccessMessage="Your file uploaded successfully." 
+                OnReset="OnReset" ResetButtonClassName="localbutton" ShowStatus="false"
+                PartialGuidLength="12" MaxFileSize=@UploadLimit FilterByExtension="true" 
+                ShowCustomButton="true"  ButtonText="Upload Excel" OnChange="OnFileUploaded"
+                CustomButtonClassName="@OrangeButton" AllowedExtensions=".xlsx"
+                ShowResetButton="false" AppendPartialGuid="true"
+                CustomExtensionMessage="Only .xlsx extensions are allowed." 
+                InputFileClassName="customfileupload" Visible=false Status="Refresh"
+                FileTooLargeMessage=@FileTooLargeMessage>
+            </FileUpload>         
+            <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox"
+                LabelColor="White" Position="relative" Visible="true" 
+                Left="0" Top="14" Width="120"  LabelSize="30" ZIndex="10" ListItemZIndex="20"
+                LabelText="Sheets:" TextSize="TextSizeEnum.Large">
+            </ComboBox>            
+        </div>
+    </div>    
     <div class="@StatusStyle">
         <label class="text-center">@Status</label>
     </div>
     @if ((HasResponse) && (Response.Success) && (Response.HasFileName) && (Response.HasFullPath))
-     {
+     { 
          <div class="smallicon2 text-white text-nowrap">
             <a class="@DownloadLink2" download="@Response.FileName" href="@DownloadPath" target="_blank">@Response.FileName</a><br />
-             <span class="small text-white">
-                 * Browsers do not allow downloading files with .cs extensions, so download this zip file and extract to a folder.
-             </span>
+            <span class="small text-white movedownsmall">
+                 Browsers do not allow downloading files with .cs extensions, so download this zip file and extract to a folder.
+            </span>
         </div>
     }
     <div class="@Instructions">

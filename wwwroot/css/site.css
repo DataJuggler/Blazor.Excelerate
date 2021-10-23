@@ -128,26 +128,15 @@
     width: 42.65%;
     height: 7.8vh;
 }
-.marginsmall
+margintopsmall
 {
     margin-top: .02vh;
     margin-bottom: 0;
 }
-.orangeButton
+.movedownsmall
 {
-    position: fixed;
-    background-color: transparent;
-    border: 0px;
-    outline: none;
-    background-image: url('../images/OrangeButton.png');
-    background-repeat: no-repeat;
-    top: 18.8vh;
-    left: 26%;
-    width: 11.92%;
-    height: 4%;
-    background-size: 100% 100%;    
-    cursor: pointer;
-    text-align: center;
+    position: relative;
+    top: 1.6vh;
 }
 .orangetext
 {
@@ -199,7 +188,7 @@
     display: inline-block;
     position: relative;
     left: 6.4%;
-    top: 18vh;
+    top: 22vh;
     color: white !important;
 }
 .smallicon2 :hover

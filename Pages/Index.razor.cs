@@ -70,7 +70,8 @@ namespace Blazor.Excelerate.Pages
         private string smallheader;
         private string instructionsLineHeight;
         private string grid;
-        private Sprite logo;        
+        private Sprite logo;
+        private string orangeButton;
         private const string Column1Width = "22%";
 
         // 20 megs hard coded for now
@@ -402,7 +403,7 @@ namespace Blazor.Excelerate.Pages
                         SheetNamesComboBox.SetVisible(true);
 
                         // Reset
-                        Left = 18.8;
+                        Left = 20.5;
 
                         // Start off not expanded
                         SheetNamesComboBox.Expanded = false;
@@ -1107,6 +1108,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return namespaceComponent; }
                 set { namespaceComponent = value; }
+            }
+            #endregion
+            
+            #region OrangeButton
+            /// <summary>
+            /// This property gets or sets the value for 'OrangeButton'.
+            /// </summary>
+            public string OrangeButton
+            {
+                get { return orangeButton; }
+                set { orangeButton = value; }
             }
             #endregion
             

@@ -13,6 +13,9 @@
 # Ignore excel files that are uploaded
 *.xlsx
 
+# Ignore zip files
+*.zip;
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
