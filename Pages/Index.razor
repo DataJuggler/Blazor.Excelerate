@@ -68,8 +68,8 @@
     background-image: url('../images/OrangeButton.png');
     background-repeat: no-repeat;
     top: 23vh;
-    left: 26.4%;
-    width: 11.92%;
+    left: 26.8%;
+    width: 10%;
     height: 3.6%;
     background-size: 100% 100%;    
     cursor: pointer;
@@ -82,6 +82,7 @@
     position: fixed;
     top: 8.8vh;
     left: @LeftStyle;
+    z-index: 40;
 </Styled>
 <Styled @bind-Classname="SideBarElementText">
     text-align: center;
@@ -193,7 +194,6 @@
         </div>        
     </div>    
 </div>
-@*<div class="logo"></div>*@
 <Sprite Name="Logo" Parent="this" Height="10.8" Width="8.4"
         XPosition="2.68" YPosition="2" Visible="true" Position="fixed" 
         Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png"></Sprite>
@@ -206,25 +206,32 @@
 </div>
 <div class="topright">
     <ComboBox OnChange="SelectionChanged" Parent="this" Name="TextSizeComboBox"
-          Height="6" Width="100" LabelSize="30" LabelText="Text Size:" TextSize="TextSizeEnum.Large">
-    </ComboBox>
+          Height="6" Width="100" LabelSize="30" LabelText="Text Size:" ZIndex="1"
+          TextSize="TextSizeEnum.Large"></ComboBox>
     <div class="businesscard"></div>
 </div>
 <div class="contentmain">
-    <div class="row displayinline contentmaintoprow">        
+    <div class="@SelectClasses">
+         <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox"
+                LabelColor="White" Position="relative" Visible="true" Left="-6.4" Top="14" ZIndex="40"
+                LabelMarginRight="1.6" Width="120"  LabelSize="30" LabelMarginRightList="2.4"
+                LabelText="Sheets:" TextSize="TextSizeEnum.Large">
+            </ComboBox>   
+     </div>
+    <div class="row displayinline contentmaintoprow">
         <ValidationComponent Name="NamespaceComponent" Parent="this" Caption="Namespace" ZIndex="15"
             LabelColor="White" IsRequired="true" ValidationMessage="You must enter a namespace"
-            Top="14.8"></ValidationComponent>   
-    </div>
+            FontSize="@TextSize" Top="14.8" Left="-4" Width="70"></ValidationComponent>   
+    </div>     
      <div>
-        <div class="row">
+        <div class="row">                
             <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"
-                TextSize="TextSizeEnum.Large" Left="40" Top="22.8" Height="4" Position="fixed"
+                TextSize="TextSizeEnum.Large" Left="38.6" Top="22.8" Height="4" Position="fixed" ZIndex="20"
                 Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
         </div>
     </div>
-    <div class="@SelectClasses">
-        <div class="row">
+    <div>
+        <div class="row">                 
             <FileUpload CustomSuccessMessage="Your file uploaded successfully." 
                 OnReset="OnReset" ResetButtonClassName="localbutton" ShowStatus="false"
                 PartialGuidLength="12" MaxFileSize=@UploadLimit FilterByExtension="true" 
@@ -234,12 +241,7 @@
                 CustomExtensionMessage="Only .xlsx extensions are allowed." 
                 InputFileClassName="customfileupload" Visible=false Status="Refresh"
                 FileTooLargeMessage=@FileTooLargeMessage>
-            </FileUpload>         
-            <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox"
-                LabelColor="White" Position="relative" Visible="true" 
-                Left="0" Top="14" Width="120"  LabelSize="30" ZIndex="10" ListItemZIndex="20"
-                LabelText="Sheets:" TextSize="TextSizeEnum.Large">
-            </ComboBox>            
+            </FileUpload>
         </div>
     </div>    
     <div class="@StatusStyle">

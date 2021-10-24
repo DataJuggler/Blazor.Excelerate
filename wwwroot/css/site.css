@@ -47,11 +47,12 @@
     min-height: 22vh;
     background-image: url('../images/BusinessCard.png');
     background-repeat: no-repeat;
-    background-size: 100% 100%;    
+    background-size: 100% 100%;
+    z-index: -1;
 }
 .instructionscolumn1
 {
-    
+    min-width: 400px;
 }
 .instructionscolumn2
 {
