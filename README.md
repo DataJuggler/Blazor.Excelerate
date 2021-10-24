@@ -24,8 +24,22 @@ so try and name your fields something descriptive if possible. Some testing has 
 but since this is new code and not many spreadhsheets have been tested, it will take some time to 
 perfect this.
 
+# Code Generating Classes
+
+Read the instructions here: https://excelerate.datajuggler.com
+
+# Using the code generated classes
+See documentation here: https://github.com/DataJuggler/Excelerate
+
+More code examples coming soon.
+
 # Current Development
 I am building an old files deleter, not sure of the name yet, because I need one for PixelDatabase.Net and this site, and my work needs this also for file clean up.
+
+# Future Development:
+I started prototyping a Windows Forms .Net 5 project to build a UI designer out of the class generated. I would also like to build a UI editor for Blazor from the class generated. With a little bit of time, I would like to have a SQL Server - Excel data entry system created from a class. SQL is great for anyone that knows it, but a lot of Excel users do not have the experience . Being able to switch the backend from both makes a portable editor and parent child editor. 
+
+Here in the present only one class at a time can be created.
 
 # Known Issues:
 The only known issue now is the Generate Class button seems to need to be clicked on the right side of the button.
