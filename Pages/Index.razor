@@ -39,6 +39,7 @@
     left: 114%;
     top: .4vh;
     margin-top: .4vh;
+    z-index: 41;
 </Styled>
 <Styled @bind-Classname="Grid">
     display: grid;    
@@ -131,6 +132,13 @@
     font-size: @LargeTextSizeStyle;
     color: @LabelColor;
 </Styled>
+<Styled @bind-Classname="VersionStyle">
+    position: fixed;
+    right: 4%;
+    top: 2vh;
+    color: white;
+    font-size: @TextSizeStyle;
+</Styled>
 
 <div class="sidebar">
     <div class="sidebarelement">
@@ -208,7 +216,10 @@
     <ComboBox OnChange="SelectionChanged" Parent="this" Name="TextSizeComboBox"
           Height="6" Width="100" LabelSize="30" LabelText="Text Size:" ZIndex="1"
           TextSize="TextSizeEnum.Large"></ComboBox>
-    <div class="businesscard"></div>
+    <div class="@VersionStyle">
+        Version 1.0.0
+    </div>
+    <a class="noborder" href="https://datajuggler.com"><div class="businesscard"></div></a>
 </div>
 <div class="contentmain">
     <div class="@SelectClasses">
@@ -226,7 +237,7 @@
      <div>
         <div class="row">                
             <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"
-                TextSize="TextSizeEnum.Large" Left="38.6" Top="22.8" Height="4" Position="fixed" ZIndex="20"
+                TextSize="TextSizeEnum.Large" Left="38.6" Top="22.8" Height="4" Position="fixed" ZIndex="41"
                 Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
         </div>
     </div>
@@ -292,6 +303,12 @@
             </div>
         </div>
     </div>
+</div>
+<div class="progresscontainer">
+    <ProgressBar Subscriber=this Increment="1" Interval="25" ClientHandledIncrement="false" 
+         CloseAtExtraPercent="20" Visible="@ShowProgress" Theme=ThemeEnum.Dark Color=ColorEnum.Orange
+         Size=SizeEnum.Small OverrideThemeColorForText="true" TextColor="White">
+    </ProgressBar>
 </div>
 
     

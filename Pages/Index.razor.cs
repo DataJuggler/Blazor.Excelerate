@@ -15,7 +15,8 @@ using DataJuggler.Excelerate;
 using DataJuggler.Blazor.FileUpload;
 using System.IO;
 using System.IO.Compression;
-using System.Drawing;
+using System.ComponentModel;
+using Blazor.Excelerate.Models;
 
 #endregion
 
@@ -26,7 +27,7 @@ namespace Blazor.Excelerate.Pages
     /// <summary>
     /// This is the code for the Index page
     /// </summary>
-    public partial class Index : IBlazorComponentParent, ISpriteSubscriber
+    public partial class Index : IBlazorComponentParent, ISpriteSubscriber, IProgressSubscriber
     {
         
         #region Private Variables
@@ -59,6 +60,7 @@ namespace Blazor.Excelerate.Pages
         private double left;
         private string leftStyle;
         private string excelPath;
+        private ProgressBar progressBar;
         private ValidationComponent namespaceComponent;
         private string status;
         private string statusStyle;
@@ -73,6 +75,10 @@ namespace Blazor.Excelerate.Pages
         private Sprite logo;
         private string orangeButton;
         private const string Column1Width = "22%";
+        private bool showProgress;
+        private double proressPercent;
+        private string versionStyle;
+        private BackgroundWorker worker;
 
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -115,7 +121,7 @@ namespace Blazor.Excelerate.Pages
             {
                 if ((buttonNumber == 2) && (HasSheetNamesComboBox))
                 {
-                    // Handle creating the class
+                    // Handle Generate Classes - until moved to background
                     HandleGenerateClass();
                 }
                 else if ((buttonNumber == 3) && (HasHideInstructionsButton))
@@ -220,6 +226,26 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region HandleDiscoverSheets(GetSheetNamesModel model)
+            /// <summary>
+            /// returns the Discover Sheets
+            /// </summary>
+            public void HandleDiscoverSheets(GetSheetNamesModel model)
+            {
+                // Create the Worker
+                Worker = new BackgroundWorker();
+
+                // Setup the DoWork
+                Worker.DoWork += Worker_DoWork;
+
+                // Setup the Completed method
+                Worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+
+                // Start
+                Worker.RunWorkerAsync(model);
+            }
+            #endregion
+            
             #region HandleGenerateClass()
             /// <summary>
             /// Handle Generate Class
@@ -232,118 +258,78 @@ namespace Blazor.Excelerate.Pages
                 // if the NamespaceComponent exists
                 if (HasNamespaceComponent)
                 {
+                    // Get the sheetName
+                    string sheetName = SheetNamesComboBox.ButtonText;
+
+                    // Get the text value
+                    namespaceName = NamespaceComponent.Text;
+
                     // Make sure we have a Namespace
                     bool isValid = NamespaceComponent.Validate();
 
                     // Set the value
                     NamespaceComponent.IsValid = isValid;
 
+                    // if already valid and sheetName and ExcelPath exist
+                    isValid = isValid && TextHelper.Exists(sheetName, ExcelPath);
+
                     // if valid
                     if (isValid)
                     {
-                        // Get the text value
-                        namespaceName = NamespaceComponent.Text;
+                        // Show the Progressbar
+                        ShowProgress = true;
+
+                       // if the ProgressBar
+                       if (HasProgressBar)
+                       {
+                            // Start the Timer
+                            ProgressBar.Start();
+                        }
+
+                        // Create a new instance of a 'GenerateClassModel' object.
+                        GenerateClassModel model = new GenerateClassModel(sheetName, namespaceName, excelPath);
+
+                        // Launch Background Worker here
+
+                        // Create the Worker
+                        Worker = new BackgroundWorker();
+
+                        // Setup the DoWork
+                        Worker.DoWork += Worker_DoWork;
+
+                        // Setup the Completed method
+                        Worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+
+                        // Start
+                        Worker.RunWorkerAsync(model);
 
                         // erase any validation messages
-                        Status = "";
-
-                        // Get the sheetName
-                        string sheetName = SheetNamesComboBox.ButtonText;
-
-                        // Create a new instance of a 'LoadWorksheetInfo' object.
-                        LoadWorksheetInfo loadWorksheetInfo = new LoadWorksheetInfo();
-
-                        // Set the SheetName
-                        loadWorksheetInfo.SheetName = sheetName;
-
-                        // Load all columns
-                        loadWorksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;
-
-                        // Load the worksheet
-                        Worksheet worksheet = ExcelDataLoader.LoadWorksheet(ExcelPath, loadWorksheetInfo);
-
-                        // Set the outputFolder
-                        string outputFolder = Path.GetFullPath("Data");
-
-                        // Create a new string
-                        string newFolder = FileHelper.CreateFileNameWithPartialGuid(Path.Combine(outputFolder, "Temp"), 12, false);
-
-                        // Create the directory
-                        Directory.CreateDirectory(newFolder);
-
-                        // Create a new codeGenerator
-                        CodeGenerator codeGenerator = new CodeGenerator(worksheet, newFolder, sheetName);
-
-                        // Generate a class and set the Namespace
-                        Response = codeGenerator.GenerateClassFromWorksheet(namespaceName, false);
-
-                        // Set the newFileName
-                        string newFileName = Path.Combine(newFolder, "Excelerate." + sheetName + ".zip");
-
-                        // if a class was created
-                        if (Response.Success)
-                        {
-                            // Set the Status
-                            Status = "This class will only be available for download for the next hour.";
-
-                            // reference System.IO.Compression
-                            using (var zip = ZipFile.Open(newFileName, ZipArchiveMode.Create))
-                            {
-                                zip.CreateEntryFromFile(response.FullPath, response.FileName);
-                            }
-
-                            // Delete the .cs file
-                            File.Delete(response.FullPath);
-
-                            // Create a fileInfo
-                            FileInfo fileInfo = new FileInfo(newFileName);
-
-                            // Get the directory info
-                            DirectoryInfo directory = new DirectoryInfo(newFileName).Parent;
-
-                            // Now copy the entire folder
-                            string destinationFolder = Path.GetFullPath("wwwroot/Downloads/Classes/") + directory.Name;
-
-                            // Create the directory
-                            Directory.CreateDirectory(destinationFolder);
-
-                            // Copy the zip file
-                            string destinationFileName = Path.Combine(destinationFolder, fileInfo.Name);
-
-                            // Copy
-                            File.Copy(newFileName, destinationFileName);
-
-                            // Delete source directory
-                            Directory.Delete(newFolder, true);
-
-                            // Set the DownloadPath
-                            DownloadPath = "../Downloads/Classes/" + directory.Name + "/" + fileInfo.Name;
-
-                            // Change the fileName
-                            response.FileName = fileInfo.Name;
-
-                            // Set the FullPath
-                            response.FullPath = DownloadPath;
-
-                            // use white
-                            LabelColor = "white";                            
-                        }
-                        else
-                        {
-                            // Set the Status
-                            Status = "Oops! Something went wrong.";
-
-                            // use a red color
-                            LabelColor = "tomato";
-                        }
+                        Status = "";                        
                     }
                     else
                     {
-                        // use a red color
-                        LabelColor = "tomato";
+                        // erase
+                        Status = "";
 
-                        // Set Status
-                        Status = "Namespace is required.";
+                        // this is first
+                        if (!FileHelper.Exists(ExcelPath))
+                        {
+                            // Set Status
+                            Status = "Upload an Excel file with a .xlsx extension.";
+                        }
+                        else if (!NamespaceComponent.IsValid)
+                        {
+                            // use a red color
+                            LabelColor = "tomato";
+
+                            // Set Status
+                            Status = "Namespace is required.";
+                        }
+                        else if (!TextHelper.Exists(sheetName))
+                        {
+                            // Set Status (should always
+                            Status = "Sheet not selected or invalid.";
+                        }
                     }                   
                 }
             }
@@ -382,46 +368,32 @@ namespace Blazor.Excelerate.Pages
             /// <summary>
             /// This method On File Uploaded
             /// </summary>
-            public async void OnFileUploaded(UploadedFileInfo file)
+            public void OnFileUploaded(UploadedFileInfo file)
             {
                 // if the file was uploaded
                 if (!file.Aborted)
                 {
+                   // Show the Progressbar
+                   ShowProgress = true;
+
+                   // if the ProgressBar
+                   if (HasProgressBar)
+                   {
+                        // Start the Timer
+                        ProgressBar.Start();
+                    }
+
+                   // Create a model
+                   GetSheetNamesModel model = new GetSheetNamesModel();
+
+                   // Set the model
+                   model.FullPath = file.FullPath;
+
                     // Store this for later
                     ExcelPath = file.FullPath;
 
-                    // Get the SheetNames
-                    this.SheetNames = await GetSheetNames(file.FullPath);
-
-                    // Convert the SheetNames to SheetItems
-                    SheetItems = ConvertSheetNames();
-
-                    // if there are one or more SheetItems and the ComboBox exists
-                    if ((ListHelper.HasOneOrMoreItems(SheetItems)) && (NullHelper.Exists(SheetNamesComboBox)))
-                    {
-                        // Now show the control
-                        SheetNamesComboBox.SetVisible(true);
-
-                        // Reset
-                        Left = 20.5;
-
-                        // Start off not expanded
-                        SheetNamesComboBox.Expanded = false;
-
-                        // Switch to an enabled OrangeButton
-                        ButtonUrl = "../images/OrangeButton.png";
-
-                        // Set the Items
-                        SheetNamesComboBox.Items = SheetItems;
-
-                        // Select the first sheet
-                        ChangeEventArgs changeEventArgs = new ChangeEventArgs();
-                        changeEventArgs.Value = SheetItems[0].Text;
-                        SheetNamesComboBox.SelectionChanged(changeEventArgs);                        
-                    }
-
-                    // Update the UI
-                    Refresh();
+                    // reload the model
+                    HandleDiscoverSheets(model);
                 }
                 else
                 {
@@ -521,13 +493,44 @@ namespace Blazor.Excelerate.Pages
             /// </summary>
             public void Refresh(string message)
             {
+                // if message exists
+                if (TextHelper.Exists(message))
+                {
+                    // get the index of the colon
+                    int index = message.IndexOf(":");
+
+                    if (index >= 0)
+                    {
+                        // Get the value
+                        string temp = message.Substring(index + 1).Trim();
+
+                        // get the percent
+                        int percent = NumericHelper.ParseInteger(temp, 0, -1);
+
+                        // set the value
+                        ProgressBar.Percent = percent;
+                    }
+                }
+
                 // Update the UI
                 InvokeAsync(() =>
                 {
                     StateHasChanged();
                 });
-        }
-        #endregion
+            }
+            #endregion
+
+            #region Register(ProgressBar progressBar)
+            /// <summary>
+            /// This method is called by the ProgressBar to a subscriber so it can register with the subscriber, and 
+            /// receiver events after that.
+            /// </summary>
+            public void Register(ProgressBar progressBar)
+            {
+                // store
+                ProgressBar = progressBar;    
+            }
+            #endregion
 
             #region Register(Sprite sprite)
             /// <summary>
@@ -679,11 +682,230 @@ namespace Blazor.Excelerate.Pages
                 SelectedSheetItem = selectedItem.Value as Item;
             }
             #endregion
+
+            #region Worker_DoWork(object sender, DoWorkEventArgs e)
+            /// <summary>
+            /// event is fired when Worker _ Do Work
+            /// </summary>
+            private async void Worker_DoWork(object sender, DoWorkEventArgs e)
+            {
+                try
+                {
+                    // Get the model
+                    GetSheetNamesModel getSheetNamesModel = e.Argument as GetSheetNamesModel;
+
+                    // if the model exists
+                    if (NullHelper.Exists(getSheetNamesModel))
+                    {
+                        // Store this for later
+                        ExcelPath = getSheetNamesModel.FullPath;
+
+                        // Get the SheetNames
+                        getSheetNamesModel.SheetNames = await GetSheetNames(getSheetNamesModel.FullPath);
+
+                        // Set Loaded to true
+                        getSheetNamesModel.Loaded = ListHelper.HasOneOrMoreItems(getSheetNamesModel.SheetNames);
+                    
+                        // Set the result
+                        e.Result = getSheetNamesModel;
+                    }
+                    else
+                    {
+                        // cast as a GenerateClassModel
+                        GenerateClassModel generateClassModel = e.Argument as GenerateClassModel;
+
+                        // Create a new instance of a 'LoadWorksheetInfo' object.
+                        LoadWorksheetInfo loadWorksheetInfo = new LoadWorksheetInfo();
+
+                        // Set the SheetName
+                        loadWorksheetInfo.SheetName = generateClassModel.SheetName;
+
+                        // Load all columns
+                        loadWorksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;
+
+                        // Load the worksheet
+                        Worksheet worksheet = ExcelDataLoader.LoadWorksheet(generateClassModel.ExcelPath, loadWorksheetInfo);
+
+                        // Set the outputFolder
+                        string outputFolder = Path.GetFullPath("Data");
+
+                        // Create a new string
+                        string newFolder = FileHelper.CreateFileNameWithPartialGuid(Path.Combine(outputFolder, "Temp"), 12, false);
+
+                        // Create the directory
+                        Directory.CreateDirectory(newFolder);
+
+                        // Set the newFolder
+                        generateClassModel.NewFolderPath = newFolder;
+
+                        // Create a new codeGenerator
+                        CodeGenerator codeGenerator = new CodeGenerator(worksheet, newFolder, generateClassModel.SheetName);
+
+                        // Generate a class and set the Namespace
+                        generateClassModel.Response = codeGenerator.GenerateClassFromWorksheet(generateClassModel.NamespaceName, false);
+
+                        // Set the result
+                        e.Result = generateClassModel;                        
+                    }
+                }
+                catch (Exception error)
+                {
+                    // for debugging only
+                    DebugHelper.WriteDebugError("Worker_DoWork", "Index.razor.cs", error);
+                }
+            }
+            #endregion
+            
+            #region Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+            /// <summary>
+            /// event is fired when Worker _ Run Worker Completed
+            /// </summary>
+            private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+            {
+                try
+                {
+                    // hide this 
+                    ShowProgress = false;
+
+                    // if the ProgressBar exists
+                    if (HasProgressBar)
+                    {
+                        // Stop the Timer
+                        ProgressBar.Stop();
+                    }
+                
+                    // Get the PixelQuery
+                    GetSheetNamesModel model = e.Result as GetSheetNamesModel;
+                    GenerateClassModel generateClassModel = e.Result as GenerateClassModel;
+
+                    // if the PixelQuery exists and one or more pixels were updated
+                    if ((NullHelper.Exists(model)) && (model.Loaded))
+                    {
+                        // Set the SheetNames
+                        SheetNames = model.SheetNames;
+
+                        // Convert the SheetNames to SheetItems
+                        SheetItems = ConvertSheetNames();
+
+                        // if there are one or more SheetItems and the ComboBox exists
+                        if ((ListHelper.HasOneOrMoreItems(SheetItems)) && (NullHelper.Exists(SheetNamesComboBox)))
+                        {
+                            // Now show the control
+                            SheetNamesComboBox.SetVisible(true);
+
+                            // Reset
+                            Left = 20.5;
+
+                            // Start off not expanded
+                            SheetNamesComboBox.Expanded = false;
+
+                            // Switch to an enabled OrangeButton
+                            ButtonUrl = "../images/OrangeButton.png";
+
+                            // Set the Items
+                            SheetNamesComboBox.Items = SheetItems;
+
+                            // Select the first sheet
+                            ChangeEventArgs changeEventArgs = new ChangeEventArgs();
+                            changeEventArgs.Value = SheetItems[0].Text;
+                            SheetNamesComboBox.SelectionChanged(changeEventArgs);                        
+                        }                       
+                    }
+                    else if (NullHelper.Exists(generateClassModel))
+                    {
+                        // Get the response
+                        Response = generateClassModel.Response;
+
+                        // Set the newFileName
+                        string newFileName = Path.Combine(generateClassModel.NewFolderPath, "Excelerate." + generateClassModel.SheetName + ".zip");
+
+                        // if a class was created
+                        if (Response.Success)
+                        {
+                            // Set the Status
+                            Status = "This class will only be available for download for the next hour.";
+
+                            // reference System.IO.Compression
+                            using (var zip = ZipFile.Open(newFileName, ZipArchiveMode.Create))
+                            {
+                                zip.CreateEntryFromFile(response.FullPath, response.FileName);
+                            }
+
+                            // Delete the .cs file
+                            File.Delete(response.FullPath);
+
+                            // Create a fileInfo
+                            FileInfo fileInfo = new FileInfo(newFileName);
+
+                            // Get the directory info
+                            DirectoryInfo directory = new DirectoryInfo(newFileName).Parent;
+
+                            // Now copy the entire folder
+                            string destinationFolder = Path.GetFullPath("wwwroot/Downloads/Classes/") + directory.Name;
+
+                            // Create the directory
+                            Directory.CreateDirectory(destinationFolder);
+
+                            // Copy the zip file
+                            string destinationFileName = Path.Combine(destinationFolder, fileInfo.Name);
+
+                            // Copy
+                            File.Copy(newFileName, destinationFileName);
+
+                            // Delete source directory
+                            Directory.Delete(generateClassModel.NewFolderPath, true);
+
+                            // Set the DownloadPath
+                            DownloadPath = "../Downloads/Classes/" + directory.Name + "/" + fileInfo.Name;
+
+                            // Change the fileName
+                            Response.FileName = fileInfo.Name;
+
+                            // Set the FullPath
+                            Response.FullPath = DownloadPath;
+
+                            // use white
+                            LabelColor = "white";                            
+                        }
+                        else
+                        {
+                            // Set the Status
+                            Status = "Oops! Something went wrong.";
+
+                            // use a red color
+                            LabelColor = "tomato";
+                        }
+                    }
+
+                    // Update the UI
+                    Refresh();
+                }
+                catch (Exception error)
+                {
+                    // log the error
+                    DebugHelper.WriteDebugError("Worker_RunWorkerCompleted", "Index.razor.cs", error);
+                }
+                finally
+                {   
+                    // Setup the DoWork
+                    Worker.DoWork -= Worker_DoWork;
+
+                    // Setup the Completed method
+                    Worker.RunWorkerCompleted -= Worker_RunWorkerCompleted;
+
+                    // dispose of the worker
+                    Worker.Dispose();
+
+                    // destory the reference
+                    Worker = null;
+                }
+            }
+            #endregion
             
         #endregion
 
         #region Properties
-
+            
             #region ButtonUrl
             /// <summary>
             /// This property gets or sets the value for 'ButtonUrl'.
@@ -858,6 +1080,23 @@ namespace Blazor.Excelerate.Pages
                     
                     // return value
                     return hasNamespaceComponent;
+                }
+            }
+            #endregion
+            
+            #region HasProgressBar
+            /// <summary>
+            /// This property returns true if this object has a 'ProgressBar'.
+            /// </summary>
+            public bool HasProgressBar
+            {
+                get
+                {
+                    // initial value
+                    bool hasProgressBar = (this.ProgressBar != null);
+                    
+                    // return value
+                    return hasProgressBar;
                 }
             }
             #endregion
@@ -1122,6 +1361,28 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region ProgressBar
+            /// <summary>
+            /// This property gets or sets the value for 'ProgressBar'.
+            /// </summary>
+            public ProgressBar ProgressBar
+            {
+                get { return progressBar; }
+                set { progressBar = value; }
+            }
+            #endregion
+            
+            #region ProressPercent
+            /// <summary>
+            /// This property gets or sets the value for 'ProressPercent'.
+            /// </summary>
+            public double ProressPercent
+            {
+                get { return proressPercent; }
+                set { proressPercent = value; }
+            }
+            #endregion
+            
             #region Response
             /// <summary>
             /// This property gets or sets the value for 'Response'.
@@ -1196,6 +1457,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return sheetNamesComboBox; }
                 set { sheetNamesComboBox = value; }
+            }
+            #endregion
+            
+            #region ShowProgress
+            /// <summary>
+            /// This property gets or sets the value for 'ShowProgress'.
+            /// </summary>
+            public bool ShowProgress
+            {
+                get { return showProgress; }
+                set { showProgress = value; }
             }
             #endregion
             
@@ -1366,6 +1638,17 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region VersionStyle
+            /// <summary>
+            /// This property gets or sets the value for 'VersionStyle'.
+            /// </summary>
+            public string VersionStyle
+            {
+                get { return versionStyle; }
+                set { versionStyle = value; }
+            }
+            #endregion
+            
             #region Workbook
             /// <summary>
             /// This property gets or sets the value for 'Workbook'.
@@ -1388,6 +1671,17 @@ namespace Blazor.Excelerate.Pages
                         ButtonUrl = "../Images/ButtonDisabled.png";
                     }
                 }
+            }
+            #endregion
+            
+            #region Worker
+            /// <summary>
+            /// This property gets or sets the value for 'Worker'.
+            /// </summary>
+            public BackgroundWorker Worker
+            {
+                get { return worker; }
+                set { worker = value; }
             }
             #endregion
             

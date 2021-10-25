@@ -139,6 +139,23 @@ margintopsmall
     position: relative;
     top: 1.6vh;
 }
+.noborder
+{
+    display: block;
+    outline: none;
+    border: none;
+    z-index: 51;
+}
+.noborder:after
+{
+    outline: none;
+    border: none;
+}
+.noborder:focus
+{
+    outline: none;
+    border: none;
+}
 .orangetext
 {
     color: orange !important;
@@ -146,6 +163,14 @@ margintopsmall
 .orangetext:visited
 {
     color: orange !important;
+}
+.progresscontainer
+{
+    position: fixed;
+    left: 52%;
+    top: 19.2vh;
+    transform: scale(.9);
+    transform-origin: left;
 }
 .sidebar 
 {
