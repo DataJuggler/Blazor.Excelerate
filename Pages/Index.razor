@@ -23,7 +23,6 @@
     margin-top: .4vh;
 </Styled>
 <Styled @bind-Classname="DownloadLink2">    
-    color: white;  
     background: none!important;
     border: none;
     padding: 0!important;
@@ -50,7 +49,7 @@
     font-size: @TextSizeStyle;
     position: relative;
     left: -12%;
-    top: 8vh;    
+    top: 8vh;
 </Styled>
 <Styled @bind-Classname="Instructions">
     font-size: @SmallTextSizeStyle;    
@@ -59,7 +58,8 @@
     position: fixed;
     top: 40vh;
     left: 26%;
-    display: @InstructionsDisplay;        
+    display: @InstructionsDisplay;
+    z-index: 52;
 </Styled>
 <Styled @bind-Classname="OrangeButton">
     position: fixed;
@@ -217,7 +217,7 @@
           Height="6" Width="100" LabelSize="30" LabelText="Text Size:" ZIndex="1"
           TextSize="TextSizeEnum.Large"></ComboBox>
     <div class="@VersionStyle">
-        Version 1.0.0
+        Version 1.0.1
     </div>
     <a class="noborder" href="https://datajuggler.com"><div class="businesscard"></div></a>
 </div>
@@ -261,7 +261,7 @@
     @if ((HasResponse) && (Response.Success) && (Response.HasFileName) && (Response.HasFullPath))
      { 
          <div class="smallicon2 text-white text-nowrap">
-            <a class="@DownloadLink2" download="@Response.FileName" href="@DownloadPath" target="_blank">@Response.FileName</a><br />
+            <a class="@DownloadLink2 downloadlink2hover" download="@Response.FileName" href="@DownloadPath" target="_blank">@Response.FileName</a><br />
             <span class="small text-white movedownsmall">
                  Browsers do not allow downloading files with .cs extensions, so download this zip file and extract to a folder.
             </span>
@@ -271,7 +271,7 @@
         <div class="@Grid">
             <div class="column instructionscolumn1">
                 <ImageButton ButtonNumber="3" ButtonText="Hide Instructions" Name="HideInstructionsButton"
-                    TextSize="TextSizeEnum.Large" Left="4" Top="0" Height="4"
+                    TextSize="TextSizeEnum.Large" Left="4" Top="0" Height="4" ZIndex="52"
                     Width="120" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
             </div>
             <div class="column instructionscolumn2">

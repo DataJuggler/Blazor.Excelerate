@@ -9,9 +9,13 @@
 
   <ItemGroup>
     <Compile Remove="Data\**" />
+    <Compile Remove="wwwroot\Upload\**" />
     <Content Remove="Data\**" />
+    <Content Remove="wwwroot\Upload\**" />
     <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="wwwroot\Upload\**" />
     <None Remove="Data\**" />
+    <None Remove="wwwroot\Upload\**" />
   </ItemGroup>
 
   <ItemGroup>

@@ -40,8 +40,7 @@ namespace Blazor.Excelerate.Pages
         private string largeTextSizeStyle;
         private string smallTextSizeStyle;
         private string downloadLink;
-        private string downloadLink2;
-        private string downloadLink2Hover;
+        private string downloadLink2;        
         private string slogan;
         private List<IBlazorComponent> children;
         private ComboBox textSizeComboBox;
@@ -947,17 +946,6 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return downloadLink2; }
                 set { downloadLink2 = value; }
-            }
-            #endregion
-            
-            #region DownloadLink2Hover
-            /// <summary>
-            /// This property gets or sets the value for 'DownloadLink2Hover'.
-            /// </summary>
-            public string DownloadLink2Hover
-            {
-                get { return downloadLink2Hover; }
-                set { downloadLink2Hover = value; }
             }
             #endregion
             
