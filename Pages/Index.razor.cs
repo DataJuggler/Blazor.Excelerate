@@ -751,6 +751,9 @@ namespace Blazor.Excelerate.Pages
                 {
                     // for debugging only
                     DebugHelper.WriteDebugError("Worker_DoWork", "Index.razor.cs", error);
+
+                    // Set the error
+                    e.Result = error;
                 }
             }
             #endregion
