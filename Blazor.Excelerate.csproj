@@ -5,6 +5,7 @@
     <UserSecretsId>aspnet-Blazor.Excelerate-876FFF73-4C9C-474B-829F-829715B5A572</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
     <Version>1.0.0</Version>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,9 +25,9 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorStyled" Version="3.1.0" />
-    <PackageReference Include="DataJuggler.Blazor.Components" Version="1.7.2" />
-    <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="1.6.2" />
-    <PackageReference Include="DataJuggler.Excelerate" Version="1.4.2" />
+    <PackageReference Include="DataJuggler.Blazor.Components" Version="5.0.0" />
+    <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="5.0.0" />
+    <PackageReference Include="DataJuggler.Excelerate" Version="1.5.0" />
   </ItemGroup>
 
   <ItemGroup>
