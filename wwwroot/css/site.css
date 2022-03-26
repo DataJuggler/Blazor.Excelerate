@@ -250,25 +250,6 @@ margintopsmall
     width: 28%;    
     z-index: 200;
 }
-.twitterbutton
-{
-    background-image: url('../images/TwitterButton.png'); 
-    display: inline;
-    outline: none;
-    border: none;
-    background-size: 100%;
-    width: 4%;
-    height: 5vh;
-    background-size: 100% 100%;
-    margin-top: 1vh;
-    float: right;
-    margin-left: 2%;
-    background-repeat: no-repeat;
-    background-color: transparent;  
-    position: fixed;
-    right: 4%;
-    top: 6vh;
-}
 .vertical-center 
 {
   margin: 0;
