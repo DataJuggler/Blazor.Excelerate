@@ -4,9 +4,10 @@
     <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnet-Blazor.Excelerate-876FFF73-4C9C-474B-829F-829715B5A572</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
-    <Version>1.4.2</Version>
+    <Version>1.5.0</Version>
     <PlatformTarget>x64</PlatformTarget>
     <PackageIcon>ExcelerateLogoSmallWhite.png</PackageIcon>
+    <Title>Blazor.Excelerate</Title>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
