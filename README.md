@@ -1,7 +1,7 @@
 # Blazor.Excelerate
 <img height=192 width=192 src=https://github.com/DataJuggler/Blazor.Excelerate/blob/main/wwwroot/Images/ExcelerateLogoSmallWhite.png>
 
-10.24.2021: All knoown issues have been fixed. Working on showing a Progress Bar while the uploaded Excel file is being analyzed.
+10.24.2021: All known issues have been fixed. Working on showing a Progress Bar while the uploaded Excel file is being analyzed.
 
 Blazor.Excelerate is built with DataJuggler.Excelerate, which is built using EPP Plus version 4.5.3.3 (last free version).
 
