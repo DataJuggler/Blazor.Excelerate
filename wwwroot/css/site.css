@@ -10,7 +10,8 @@
 {
     height: .48vh;
     min-height: .48vh;
-    max-height: .48vh;    
+    max-height: .48vh;
+    
 }
 .bottomsidebar
 {
@@ -60,11 +61,15 @@
 }
 .instructionscolumn1
 {
-    min-width: 400px;
+    position: fixed;
+    left: 18%;
+    top: 48vh;
 }
 .instructionscolumn2
 {
-    
+    position: fixed;
+    left: 28%;
+    top: 48vh;
 }
 .contentmain
 {
@@ -260,10 +265,12 @@ margintopsmall
 .whitetext
 {
     color: white !important;
+    font-size: 11.4px;
 }
 .whitetext:visited
 {
     color: white !important;
+    font-size: 11.4px;
 }
 .zindex5
 {

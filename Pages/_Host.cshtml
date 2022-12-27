@@ -1,34 +1,26 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.Web
 @namespace Blazor.Excelerate.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-    Layout = null;
-}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZYPDWGS4D"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-BZYPDWGS4D');
-    </script>
-
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blazor.Excelerate</title>
     <base href="~/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
-    <link href="~/_content/DataJuggler.Blazor.Components/css/circle.css" rel="stylesheet" />    
+    <link href="~/css/circle.css" rel="stylesheet" />
+    <link href="~/_content/DataJuggler.Blazor.Components/css/circle.css" rel="stylesheet" />
+    <link href="~/_content/DataJuggler.Blazor.Components/css/DataJuggler.Blazor.Components.css" rel="stylesheet" />
     <link href="Blazor.Excelerate.styles.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="favicon.ico"/>
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 <body>
-    <component type="typeof(App)" render-mode="ServerPrerendered" />    
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
             An error has occurred. This application may no longer respond until reloaded.
@@ -39,7 +31,7 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
     <script src="_framework/blazor.server.js"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@
 @using DataJuggler.Blazor.Components
 @using DataJuggler.Blazor.FileUpload
 @using DataJuggler.Blazor.Components.Enumerations
+@using System.Drawing
 
 <Styled @bind-Classname="DownloadLink">    
     color: white;
@@ -13,9 +14,9 @@
     font-family: Verdana;
     text-decoration: none;
     cursor: pointer;    
-    height: 2.04vh;
-    line-height: 2.04vh;
-    font-size: @SmallTextSizeStyle;
+    height: 1.5vh;
+    line-height: 1.5vh;
+    font-size: 12px;
     font-weight: normal;
     position: fixed;    
     display: inline;
@@ -29,9 +30,9 @@
     font-family: Verdana;
     text-decoration: none;
     cursor: pointer;    
-    height: 2.04vh;
-    line-height: 2.04vh;
-    font-size: @LargeTextSizeStyle;
+    height: 1.5vh;
+    line-height: 1.5vh;
+    font-size: 12px;
     font-weight: normal;
     position: relative;    
     display: inline-block;
@@ -41,19 +42,17 @@
     z-index: 41;
 </Styled>
 <Styled @bind-Classname="Grid">
-    display: grid;    
-    grid-template-columns: @Column1Width 1fr;
-    grid-column-gap: 2px;
+    display: inline-block;
     height: auto;
     width: 80%;
-    font-size: @TextSizeStyle;
+    font-size: 12px;
     position: relative;
     left: -12%;
     top: 8vh;
 </Styled>
 <Styled @bind-Classname="Instructions">
-    font-size: @SmallTextSizeStyle;    
-    line-height: @InstructionsLineHeight;
+    font-size: 1em;
+    line-height: 1em;
     color: white;
     position: fixed;
     top: 40vh;
@@ -75,43 +74,43 @@
     background-size: 100% 100%;    
     cursor: pointer;
     text-align: center;
-    font-size: @TextSizeStyle;
+    font-size: 12px;
 </Styled>
 <Styled @bind-Classname="SelectClasses">
+    display: @DisplayStyle;
     width: 20%;
     height: 6vh;
     position: fixed;
-    top: 8.8vh;
-    left: @LeftStyle;
-    z-index: 40;
+    top: 8.8vh;    
+    z-index: 40;   
 </Styled>
 <Styled @bind-Classname="SideBarElementText">
     text-align: center;
     font-family: Verdana;
-    font-size: @TextSizeStyle;
+    font-size: 14px;
     font-weight: bold;
 </Styled>
 <Styled @bind-Classname="SideBarSmallText">
     text-align: left;
     font-family: Verdana;
-    font-size: @SmallTextSizeStyle;
+    font-size: 12px;
     font-weight: normal;
 </Styled>
 <Styled @bind-Classname="SideBarLargeText">
     text-align: left;
     font-family: Verdana;
-    font-size: @TextSizeStyle;
+    font-size: 13px;
     font-weight: normal;
 </Styled>
 <Styled @bind-Classname="SideBarLargeTextBold">
     text-align: left;
     font-family: Verdana;
-    font-size: @TextSizeStyle;
+    font-size: 13px;
     font-weight: bold;
 </Styled>
 <Styled @bind-Classname="Slogan">
     font-family: Verdana;
-    font-size: @LargeTextSizeStyle;
+    font-size: 2.8vh;
     position: absolute;
     top: 8.4vh;
     left: .4%;
@@ -119,7 +118,7 @@
 </Styled>
 <Styled @bind-Classname="Smallheader">
     font-weight: bold;
-    font-size: @TextSizeStyle;    
+    font-size: 13px;
 </Styled>
 <Styled @bind-Classname="StatusStyle">  
     text-align: center;
@@ -129,7 +128,7 @@
     width: 60%;
     height: 2.8vh;
     line-height: 2.8vh;
-    font-size: @LargeTextSizeStyle;
+    font-size: 16px;
     color: @LabelColor;
 </Styled>
 <Styled @bind-Classname="VersionStyle">
@@ -137,7 +136,7 @@
     right: 4%;
     top: 2vh;
     color: white;
-    font-size: @TextSizeStyle;
+    font-size: 14px;
 </Styled>
 
 <div class="sidebar">
@@ -149,7 +148,7 @@
             <div class="smallicon">
                 <a class="@DownloadLink" download="MemberData.xlsx" href="@SampleMemberDataPath" target="_blank">MemberData.xlsx</a>
             </div>
-            <div class="@SideBarLargeText">
+            <div class="@SideBarSmallText">
                 Sample workbook with random data for testing:<br />
                 Members (20,000)<br />
                 Address (20,000)<br />
@@ -158,17 +157,17 @@
             <br />
             <div class="blankline"></div>
             <div class="blanklinesmall"></div>
+            <div class="@SideBarLargeTextBold">
+                Want the source code?<br />
+            </div>
             <div class="@SideBarSmallText text-nowrap">
-                <div class="@SideBarLargeTextBold">
-                    Want the source code?<br />
-                </div>
                 <div class="blanklinesmall"></div>
                 <span class="text-nowrap">
-                    <a class="whitetext" href="https://github.com/DataJuggler/Blazor.Excelerate" target="_blank">Blazor.Excelerate Git Hub</a><br />
+                    <a class="whitetext" href="https://github.com/DataJuggler/Blazor.Excelerate" target="_blank">Blazor.Excelerate</a><br />
                 </span>
                 <div class="blanklinesmall"></div>
                 <span class="text-nowrap">
-                    <a class="whitetext" href="https://github.com/DataJuggler/Excelerate" target="_blank">DataJuggler.Excelerate Git Hub</a><br />
+                    <a class="whitetext" href="https://github.com/DataJuggler/Excelerate" target="_blank">DataJuggler.Excelerate</a><br />
                 </span>
                 <div class="blanklinesmall"></div>
                 <span class="text-nowrap">
@@ -222,31 +221,29 @@
     </div>
 </div>
 <div class="topright">
-    <ComboBox OnChange="SelectionChanged" Parent="this" Name="TextSizeComboBox"
-          Height="6" Width="100" LabelSize="30" LabelText="Text Size:" ZIndex="1"
-          TextSize="TextSizeEnum.Large"></ComboBox>
     <div class="@VersionStyle">
-        Version 1.5.0
+        Version 1.7.0
     </div>    
     <a class="noborder" href="https://datajuggler.com"><div class="businesscard"></div></a>
 </div>
 <div class="contentmain">
     <div class="@SelectClasses">
-         <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox"
-                LabelColor="White" Position="relative" Visible="true" Left="-6.4" Top="14" ZIndex="40"
-                LabelMarginRight="1.6" Width="120"  LabelSize="30" LabelMarginRightList="2.4"
-                LabelText="Sheets:" TextSize="TextSizeEnum.Large">
-            </ComboBox>   
+        <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox" Theme=ThemeEnum.Blue
+            LabelColor="Color.White" Position="relative" Visible="true" Left="52" Top="10.8" ZIndex="40" VisibleCount="6"            
+            Width="160" LabelMarginRightList="2.4" ButtonTextColor="Color.Black" HeightUnit="vh" Height="16"
+            LabelText="Sheets:">
+        </ComboBox>   
      </div>
     <div class="row displayinline contentmaintoprow">
-        <ValidationComponent Name="NamespaceComponent" Parent="this" Caption="Namespace" ZIndex="15"
-            LabelColor="White" IsRequired="true" ValidationMessage="You must enter a namespace"
-            FontSize="@TextSize" Top="14.8" Left="-4" Width="70"></ValidationComponent>   
+        <ValidationComponent Name="NamespaceComponent" Caption="Namespace:" LabelFontSizeUnit="vh" LabelFontSize="2"
+            Position="relative" Unit="%" HeightUnit="vh" Height="3" LabelColor="white" Top="14.8" Left="-14" 
+            IsRequired="true" Width="8" LabelWidth="30" TextBoxWidth="44" LabelClassName="down4" Parent="this">
+        </ValidationComponent>            
     </div>     
      <div>
         <div class="row">                
             <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"
-                TextSize="TextSizeEnum.Large" Left="42" Top="22.8" Height="4" Position="fixed" ZIndex="41"
+                Left="42" Top="22.8" Height="4" Position="fixed" ZIndex="41"
                 Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
         </div>
     </div>
@@ -279,8 +276,8 @@
     <div class="@Instructions">
         <div class="@Grid">
             <div class="column instructionscolumn1">
-                <ImageButton ButtonNumber="3" ButtonText="Hide Instructions" Name="HideInstructionsButton"
-                    TextSize="TextSizeEnum.Large" Left="4" Top="0" Height="4" ZIndex="52"
+                <ImageButton ButtonNumber="3" ButtonText="Hide" Name="HideInstructionsButton"
+                    TextSize="TextSizeEnum.Large" Height="4" ZIndex="52"
                     Width="120" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
             </div>
             <div class="column instructionscolumn2">
@@ -308,7 +305,7 @@
                 <div class="blankline"></div>
                 No one has access to my server except me and my dog.<br />
                 I am building a Windows Service that deletes files older than one hour.<br />
-                This will be deployed in the next couple of weeks (estimate 10.14.2022).
+                This will be deployed in the next couple of weeks (estimate 12.31.2022).
             </div>
         </div>
     </div>
@@ -321,5 +318,6 @@
 </div>
 
     
+
 
 
