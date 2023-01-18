@@ -27,9 +27,12 @@ bld/
 [Oo]bj/
 [Ll]og/
 
-# ignore upload folder
-Upload/
-Download/
+# ignore uploaded files and zip files
+.xlsx
+.zip
+
+# Do not ignore Members.xlsx
+!MemberData.xlsx
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -346,3 +349,5 @@ healthchecksdb
 /.vs/Blazor.Excelerate/DesignTimeBuild/.dtbcache.v2
 /.vs/ProjectEvaluation/blazor.excelerate.metadata.v5.2
 /.vs/ProjectEvaluation/blazor.excelerate.projects.v5.2
+*.xlsx
+*.zip
