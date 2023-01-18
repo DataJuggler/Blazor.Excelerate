@@ -29,6 +29,10 @@
       "PackagePath": "staticwebassets\\Downloads\\Classes\\Temp.77f9599e-2f2\\Excelerate.Data.zip"
     },
     {
+      "Id": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Downloads\\Classes\\Temp.f2cda0e8-e04\\Excelerate.Data.zip",
+      "PackagePath": "staticwebassets\\Downloads\\Classes\\Temp.f2cda0e8-e04\\Excelerate.Data.zip"
+    },
+    {
       "Id": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Downloads\\MemberData.xlsx",
       "PackagePath": "staticwebassets\\Downloads\\MemberData.xlsx"
     },
@@ -319,6 +323,10 @@
     {
       "Id": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Upload\\Popular.b0a15028-c46.xlsx",
       "PackagePath": "staticwebassets\\Upload\\Popular.b0a15028-c46.xlsx"
+    },
+    {
+      "Id": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Upload\\Popular.b30e3bd9-5d1.xlsx",
+      "PackagePath": "staticwebassets\\Upload\\Popular.b30e3bd9-5d1.xlsx"
     },
     {
       "Id": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Upload\\Popular.b50edf83-aa6.xlsx",
