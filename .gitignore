@@ -347,3 +347,4 @@ healthchecksdb
 
 # Do not ignore Members.xlsx
 !MemberData.xlsx
+/.vs/Blazor.Excelerate/v17/.suo
