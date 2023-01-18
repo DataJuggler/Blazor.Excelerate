@@ -28,8 +28,8 @@ bld/
 [Ll]og/
 
 # ignore upload folder
-wwwroot\Upload/
-wwwroot\Download/
+Upload/
+Download/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
