@@ -1,4 +1,8 @@
-# Blazor.Excelerate
-Blazor Excelerate uses DataJuggler.Excelerate to code generate C# classes from Excel worksheets.
 <img src =https://excelerate.datajuggler.com/Images/LogoTextSparkled.png><br>
-<img src =https://excelerate.datajuggler.com/Images/ExcelerateLogoSmallWhite.png width=256 height=256>
+Code Generate C# Classes From Excel Header Rows
+
+<img src =https://excelerate.datajuggler.com/Images/ExcelerateLogoSmallWhite.png width="300" height="300">
+
+Live Demo:
+<a href=https://excelerate.datajuggler.com>https://excelerate.datajuggler.com</a>
+
