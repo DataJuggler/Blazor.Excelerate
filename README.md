@@ -32,7 +32,12 @@ https://github.com/DataJuggler/Excelerate.WinForms.Demo
 
 <img src=https://github.com/DataJuggler/SharedRepo/blob/master/Shared/Images/Excelerate%20Win%20Forms%20Demo.png width=512 height=512>
 
+The following code is copied from the Excelerate WinForms Demo
 
+Load All Data method:
+This method is called only once when the EditMembersForm fires its Activated event for the first time:
+
+(to be continued).
 
 
 
