@@ -30,7 +30,7 @@ It helps to have some rows of data to attempt to determine the data type. Gettin
 Working Demo: Excelerate WinForms Demo
 https://github.com/DataJuggler/Excelerate.WinForms.Demo
 
-<img src=https://github.com/DataJuggler/SharedRepo/blob/master/Shared/Images/Excelerate%20Win%20Forms%20Demo.png width=512 height=512>
+<img src=https://github.com/DataJuggler/SharedRepo/blob/master/Shared/Images/Excelerate%20Win%20Forms%20Demo.png width=475 height=332>
 
 The following code is copied from the Excelerate WinForms Demo
 
