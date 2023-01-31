@@ -58,7 +58,7 @@
           "lib/net5.0/BlazorStyled.dll": {}
         }
       },
-      "DataJuggler.Blazor.Components/7.4.25": {
+      "DataJuggler.Blazor.Components/7.5.6": {
         "type": "package",
         "dependencies": {
           "BlazorStyled": "3.1.0",
@@ -2243,10 +2243,10 @@
         "lib/net5.0/BlazorStyled.dll"
       ]
     },
-    "DataJuggler.Blazor.Components/7.4.25": {
-      "sha512": "USYNSJDOnsb920HSS3XqBBh8Hz/pRe75f2k/ybYuEwmqOn3ttnHojPZmOxDxtsAsAw6sngUmjj5ITp8t9yjVXA==",
+    "DataJuggler.Blazor.Components/7.5.6": {
+      "sha512": "H9iyiodVoz6FPuos2hERGIMY9Bg1y7dXr7Y/lWKfSaMVTohLYUjAXiKxjXAbmbkHpCdy6o5anTDMwFGFfatxEw==",
       "type": "package",
-      "path": "datajuggler.blazor.components/7.4.25",
+      "path": "datajuggler.blazor.components/7.5.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2257,7 +2257,7 @@
         "build/Microsoft.AspNetCore.StaticWebAssets.props",
         "buildMultiTargeting/DataJuggler.Blazor.Components.props",
         "buildTransitive/DataJuggler.Blazor.Components.props",
-        "datajuggler.blazor.components.7.4.25.nupkg.sha512",
+        "datajuggler.blazor.components.7.5.6.nupkg.sha512",
         "datajuggler.blazor.components.nuspec",
         "lib/net7.0/DataJuggler.Blazor.Components.dll",
         "staticwebassets/Images/Buttons/BlackButton.jpg",
@@ -6759,14 +6759,13 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "BlazorStyled >= 3.1.0",
-      "DataJuggler.Blazor.Components >= 7.4.25",
+      "DataJuggler.Blazor.Components >= 7.5.6",
       "DataJuggler.Blazor.FileUpload >= 7.0.0"
     ]
   },
   "packageFolders": {
     "C:\\Users\\Corby\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages": {}
   },
   "project": {
     "version": "1.0.0",
@@ -6778,13 +6777,11 @@
       "outputPath": "C:\\Projects\\GitHub\\Blazor.Excelerate\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages",
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages"
       ],
       "configFilePaths": [
         "C:\\Users\\Corby\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.2.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6817,7 +6814,7 @@
           },
           "DataJuggler.Blazor.Components": {
             "target": "Package",
-            "version": "[7.4.25, )"
+            "version": "[7.5.6, )"
           },
           "DataJuggler.Blazor.FileUpload": {
             "target": "Package",

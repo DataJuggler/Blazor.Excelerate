@@ -9,7 +9,7 @@
       "Blazor.Excelerate/1.0.0": {
         "dependencies": {
           "BlazorStyled": "3.1.0",
-          "DataJuggler.Blazor.Components": "7.4.25",
+          "DataJuggler.Blazor.Components": "7.5.6",
           "DataJuggler.Blazor.FileUpload": "7.0.0"
         },
         "runtime": {
@@ -61,7 +61,7 @@
           }
         }
       },
-      "DataJuggler.Blazor.Components/7.4.25": {
+      "DataJuggler.Blazor.Components/7.5.6": {
         "dependencies": {
           "BlazorStyled": "3.1.0",
           "DataJuggler.Excelerate": "7.1.9",
@@ -69,8 +69,8 @@
         },
         "runtime": {
           "lib/net7.0/DataJuggler.Blazor.Components.dll": {
-            "assemblyVersion": "7.1.14.0",
-            "fileVersion": "7.1.14.0"
+            "assemblyVersion": "7.5.5.0",
+            "fileVersion": "7.5.5.0"
           }
         }
       },
@@ -1135,12 +1135,12 @@
       "path": "blazorstyled/3.1.0",
       "hashPath": "blazorstyled.3.1.0.nupkg.sha512"
     },
-    "DataJuggler.Blazor.Components/7.4.25": {
+    "DataJuggler.Blazor.Components/7.5.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-USYNSJDOnsb920HSS3XqBBh8Hz/pRe75f2k/ybYuEwmqOn3ttnHojPZmOxDxtsAsAw6sngUmjj5ITp8t9yjVXA==",
-      "path": "datajuggler.blazor.components/7.4.25",
-      "hashPath": "datajuggler.blazor.components.7.4.25.nupkg.sha512"
+      "sha512": "sha512-H9iyiodVoz6FPuos2hERGIMY9Bg1y7dXr7Y/lWKfSaMVTohLYUjAXiKxjXAbmbkHpCdy6o5anTDMwFGFfatxEw==",
+      "path": "datajuggler.blazor.components/7.5.6",
+      "hashPath": "datajuggler.blazor.components.7.5.6.nupkg.sha512"
     },
     "DataJuggler.Blazor.FileUpload/7.0.0": {
       "type": "package",

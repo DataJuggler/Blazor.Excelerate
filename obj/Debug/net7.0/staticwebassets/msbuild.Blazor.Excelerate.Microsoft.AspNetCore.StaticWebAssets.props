@@ -336,6 +336,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Downloads\Classes\Temp.77f9599e-2f2\Excelerate.Data.zip))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Downloads\Classes\Temp.ba940a61-b22\Excelerate.Data.zip))">
+      <SourceType>Package</SourceType>
+      <SourceId>Blazor.Excelerate</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Blazor.Excelerate</BasePath>
+      <RelativePath>Downloads/Classes/Temp.ba940a61-b22/Excelerate.Data.zip</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Downloads\Classes\Temp.ba940a61-b22\Excelerate.Data.zip))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Downloads\Classes\Temp.f2cda0e8-e04\Excelerate.Data.zip))">
       <SourceType>Package</SourceType>
       <SourceId>Blazor.Excelerate</SourceId>

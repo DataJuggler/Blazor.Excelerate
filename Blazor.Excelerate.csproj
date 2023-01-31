@@ -16,11 +16,12 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BlazorStyled" Version="3.1.0" />
-    <PackageReference Include="DataJuggler.Blazor.Components" Version="7.4.25" />
+    <PackageReference Include="DataJuggler.Blazor.Components" Version="7.5.6" />
     <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="7.0.0" />
   </ItemGroup>
 
