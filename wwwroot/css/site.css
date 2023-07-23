@@ -180,7 +180,7 @@ margintopsmall
 .progresscontainer
 {
     position: fixed;
-    left: 52%;
+    left: 56%;
     top: 19.2vh;
     transform: scale(.9);
     transform-origin: left;

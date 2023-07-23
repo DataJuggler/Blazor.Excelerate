@@ -222,7 +222,7 @@
 </div>
 <div class="topright">
     <div class="@VersionStyle">
-        Version 1.7.0
+        Version 1.8.0
     </div>    
     <a class="noborder" href="https://datajuggler.com"><div class="businesscard"></div></a>
 </div>
@@ -303,19 +303,26 @@
                 <div class="blankline"></div>
                 <div class="marginsmall @Smallheader">Data Privacy</div>
                 <div class="blankline"></div>
-                No one has access to my server except me and my dog.<br />
-                I am building a Windows Service that deletes files older than one hour.<br />
-                This will be deployed in the next couple of weeks (estimate 2.15.2023).
+                No one has access to my server except me and my dog.<br />                
             </div>
         </div>
     </div>
 </div>
-<div class="progresscontainer">
-    <ProgressBar Subscriber=this Increment="1" Interval="25" ClientHandledIncrement="false" 
-         CloseAtExtraPercent="20" Visible="@ShowProgress" Theme=ThemeEnum.Dark Color=ColorEnum.Orange
-         Size=SizeEnum.Small OverrideThemeColorForText="true" TextColor="White">
-    </ProgressBar>
-</div>
+@if (ShowProgress)
+{
+    <div class="progresscontainer">
+        <div class=@ProgressStyle>
+            <span class="text-white">@PercentString</span>
+            <div class="slice">
+                <div class="bar"></div>
+                <div class="fill"></div>
+            </div>
+        </div>
+    </div>
+}
+<Sprite Subscriber=this Visible="true" Interval="60" Position="fixed" Name="InvisibleSprite"
+        XPosition="-500" YPosition="100" Width="120" Height="120" ZIndex="-1">
+</Sprite>
 
     
 

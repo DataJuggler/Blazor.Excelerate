@@ -11,7 +11,6 @@ using DataJuggler.Net7.Enumerations;
 using Microsoft.AspNetCore.Components;
 using System.IO.Compression;
 
-
 #endregion
     
 namespace Blazor.Excelerate.Pages
@@ -21,7 +20,7 @@ namespace Blazor.Excelerate.Pages
     /// <summary>
     /// This class is the main page for this app
     /// </summary>
-    public partial class Index : IBlazorComponentParent, ISpriteSubscriber, IProgressSubscriber
+    public partial class Index : IBlazorComponentParent, ISpriteSubscriber
     {
         
         #region Private Variables
@@ -45,8 +44,7 @@ namespace Blazor.Excelerate.Pages
         private List<Item> sheetItems;
         private bool finishedLoading;
         private string selectClasses;                
-        private string excelPath;
-        private ProgressBar progressBar;
+        private string excelPath;        
         private ValidationComponent namespaceComponent;
         private string status;
         private string statusStyle;
@@ -66,6 +64,10 @@ namespace Blazor.Excelerate.Pages
         private string versionStyle;
         private BackgroundWorker worker;  
         private string displayStyle;
+        private string progressStyle;        
+        private string percentString;
+        private int percent;
+        private Sprite invisibleSprite;
         
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -243,10 +245,10 @@ namespace Blazor.Excelerate.Pages
                         ShowProgress = true;
 
                        // if the ProgressBar
-                       if (HasProgressBar)
+                       if (HasInvisibleSprite)
                        {
                             // Start the Timer
-                            ProgressBar.Start();
+                            InvisibleSprite.Start();
                         }
 
                         // Create a new instance of a 'GenerateClassModel' object.
@@ -310,11 +312,11 @@ namespace Blazor.Excelerate.Pages
                    // Show the Progressbar
                    ShowProgress = true;
 
-                   // if the ProgressBar
-                   if (HasProgressBar)
+                   // if the value for HasInvisibleSprite is true
+                   if (HasInvisibleSprite)
                    {
                         // Start the Timer
-                        ProgressBar.Start();
+                        InvisibleSprite.Start();
                     }
 
                    // Create a model
@@ -362,42 +364,23 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
-            #region Refresh(string message)
-            /// <summary>
-            /// method returns the
-            /// </summary>
-            public void Refresh(string message)
-            {
-                // if message exists
-                if (TextHelper.Exists(message))
-                {
-                    // get the index of the colon
-                    int index = message.IndexOf(":");
-
-                    if (index >= 0)
-                    {
-                        // Get the value
-                        string temp = message.Substring(index + 1).Trim();
-
-                        // get the percent
-                        int percent = NumericHelper.ParseInteger(temp, 0, -1);
-
-                        // set the value
-                        ProgressBar.Percent = percent;
-                    }
-                }
-
-                // Update the UI
-                Refresh();
-            }
-            #endregion
-            
             #region Refresh()
             /// <summary>
             /// method Refresh
             /// </summary>
             public void Refresh()
-            {
+            {  
+                // increment by 4
+                Percent += 4;
+
+                // go a little past 100 for effect
+                if (Percent >= 100)
+                {
+                    // Stop the timer
+                    InvisibleSprite.Stop();
+                    ShowProgress = false;
+                }
+
                 // Update the UI
                 InvokeAsync(() =>
                 {
@@ -406,26 +389,22 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
-            #region Register(ProgressBar progressBar)
-            /// <summary>
-            /// This method is called by the ProgressBar to a subscriber so it can register with the subscriber, and 
-            /// receiver events after that.
-            /// </summary>
-            public void Register(ProgressBar progressBar)
-            {
-                // store
-                ProgressBar = progressBar;    
-            }
-            #endregion
-
             #region Register(Sprite sprite)
             /// <summary>
             /// method returns the
             /// </summary>
             public void Register(Sprite sprite)
             {
-                // Set the Logo
-                Logo = sprite;
+                if (sprite.Name == "Logo")
+                {
+                    // Set the Logo
+                    Logo = sprite;
+                }
+                else
+                {
+                    // store the InvisibleSprite, used for the progerss bar
+                    InvisibleSprite = sprite;
+                }
             }
             #endregion
             
@@ -545,7 +524,7 @@ namespace Blazor.Excelerate.Pages
                         CodeGenerator codeGenerator = new CodeGenerator(worksheet, newFolder, generateClassModel.SheetName);
 
                         // Generate a class and set the Namespace
-                        generateClassModel.Response = codeGenerator.GenerateClassFromWorksheet(generateClassModel.NamespaceName, TargetFrameworkEnum.Net7);
+                        generateClassModel.Response = codeGenerator.GenerateClassFromWorksheet(generateClassModel.NamespaceName, TargetFrameworkEnum.Net7, false);
 
                         // Set the result
                         e.Result = generateClassModel;                        
@@ -573,11 +552,11 @@ namespace Blazor.Excelerate.Pages
                     // hide this 
                     ShowProgress = false;
 
-                    // if the ProgressBar exists
-                    if (HasProgressBar)
+                    // if the value for HasInvisibleSprite is true
+                    if (HasInvisibleSprite)
                     {
                         // Stop the Timer
-                        ProgressBar.Stop();
+                        InvisibleSprite.Stop();
                     }
                 
                     // Get the PixelQuery
@@ -836,6 +815,23 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region HasInvisibleSprite
+            /// <summary>
+            /// This property returns true if this object has an 'InvisibleSprite'.
+            /// </summary>
+            public bool HasInvisibleSprite
+            {
+                get
+                {
+                    // initial value
+                    bool hasInvisibleSprite = (this.InvisibleSprite != null);
+                    
+                    // return value
+                    return hasInvisibleSprite;
+                }
+            }
+            #endregion
+            
             #region HasNamespaceComponent
             /// <summary>
             /// This property returns true if this object has a 'NamespaceComponent'.
@@ -849,23 +845,6 @@ namespace Blazor.Excelerate.Pages
                     
                     // return value
                     return hasNamespaceComponent;
-                }
-            }
-            #endregion
-            
-            #region HasProgressBar
-            /// <summary>
-            /// This property returns true if this object has a 'ProgressBar'.
-            /// </summary>
-            public bool HasProgressBar
-            {
-                get
-                {
-                    // initial value
-                    bool hasProgressBar = (this.ProgressBar != null);
-                    
-                    // return value
-                    return hasProgressBar;
                 }
             }
             #endregion
@@ -948,6 +927,17 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region InvisibleSprite
+            /// <summary>
+            /// This property gets or sets the value for 'InvisibleSprite'.
+            /// </summary>
+            public Sprite InvisibleSprite
+            {
+                get { return invisibleSprite; }
+                set { invisibleSprite = value; }
+            }
+            #endregion
+            
             #region LabelColor
             /// <summary>
             /// This property gets or sets the value for 'LabelColor'.
@@ -991,15 +981,61 @@ namespace Blazor.Excelerate.Pages
                 set { orangeButton = value; }
             }
             #endregion
-            
-            #region ProgressBar
+
+            #region Percent
             /// <summary>
-            /// This property gets or sets the value for 'ProgressBar'.
+            /// This property gets or sets the value for 'Percent'.
             /// </summary>
-            public ProgressBar ProgressBar
+            public int Percent
             {
-                get { return progressBar; }
-                set { progressBar = value; }
+                get { return percent; }
+                set 
+                {
+                    // if less than zero
+                    if (value < 0)
+                    {
+                        // set to 0
+                        value = 0;
+                    }
+
+                    // if greater than 100
+                    if (value > 100)
+                    {
+                        // set to 100
+                        value = 100;
+                    }
+
+                    // set the value
+                    percent = value;
+
+                    // Now set ProgressStyle
+                    ProgressStyle = "c100 p[Percent] dark small orange".Replace("[Percent]", percent.ToString());
+
+                    // Set the percentString value
+                    PercentString = percent.ToString() + "%";
+                }
+            }
+            #endregion
+            
+            #region PercentString
+            /// <summary>
+            /// This property gets or sets the value for 'PercentString'.
+            /// </summary>
+            public string PercentString
+            {
+                get { return percentString; }
+                set { percentString = value; }
+            }
+            #endregion
+            
+            #region ProgressStyle
+            /// <summary>
+            /// This property gets or sets the value for 'ProgressStyle'.
+            /// </summary>
+            public string ProgressStyle
+            {
+                get { return progressStyle; }
+                set { progressStyle = value; }
             }
             #endregion
             

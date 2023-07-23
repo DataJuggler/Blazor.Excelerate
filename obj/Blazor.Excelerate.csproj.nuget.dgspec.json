@@ -13,20 +13,17 @@
         "packagesPath": "C:\\Users\\Corby\\.nuget\\packages\\",
         "outputPath": "C:\\Projects\\GitHub\\Blazor.Excelerate\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages"
-        ],
         "configFilePaths": [
           "C:\\Users\\Corby\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\System\\Components\\Packages": {},
+          "C:\\LocalNuGet": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -51,11 +48,15 @@
             },
             "DataJuggler.Blazor.Components": {
               "target": "Package",
-              "version": "[7.5.6, )"
+              "version": "[7.9.22, )"
             },
             "DataJuggler.Blazor.FileUpload": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[7.1.2, )"
+            },
+            "DataJuggler.Net7": {
+              "target": "Package",
+              "version": "[7.2.8, )"
             }
           },
           "imports": [
@@ -77,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     }
