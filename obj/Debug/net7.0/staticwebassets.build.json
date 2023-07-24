@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "NOQrAxlzEQCgal0M4aR11JGBfG1KhJQGC3wAFEwug1w=",
+  "Hash": "vwKeSL0eJZ65oFDdmtceWJQQN9cbvu0nf6Kn6M15dA0=",
   "Source": "Blazor.Excelerate",
   "BasePath": "_content/Blazor.Excelerate",
   "Mode": "Default",
@@ -1326,6 +1326,23 @@
       "OriginalItemSpec": "wwwroot\\Upload\\MemberData.04eff6b9-6a0.xlsx"
     },
     {
+      "Identity": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Upload\\MemberData.072f6983-785.xlsx",
+      "SourceId": "Blazor.Excelerate",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\",
+      "BasePath": "_content/Blazor.Excelerate",
+      "RelativePath": "Upload/MemberData.072f6983-785.xlsx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Upload\\MemberData.072f6983-785.xlsx"
+    },
+    {
       "Identity": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Upload\\MemberData.0ab09423-16e.xlsx",
       "SourceId": "Blazor.Excelerate",
       "SourceType": "Discovered",
@@ -1649,6 +1666,23 @@
       "OriginalItemSpec": "wwwroot\\Upload\\MemberData.93a6326e-7f8.xlsx"
     },
     {
+      "Identity": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Upload\\MemberData.971f90be-8d9.xlsx",
+      "SourceId": "Blazor.Excelerate",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\",
+      "BasePath": "_content/Blazor.Excelerate",
+      "RelativePath": "Upload/MemberData.971f90be-8d9.xlsx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Upload\\MemberData.971f90be-8d9.xlsx"
+    },
+    {
       "Identity": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Upload\\MemberData.9d602d13-713.xlsx",
       "SourceId": "Blazor.Excelerate",
       "SourceType": "Discovered",
@@ -1734,6 +1768,23 @@
       "OriginalItemSpec": "wwwroot\\Upload\\MemberData.ce7a1a42-8b6.xlsx"
     },
     {
+      "Identity": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Upload\\MemberData.e4dad5b7-5b2.xlsx",
+      "SourceId": "Blazor.Excelerate",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\",
+      "BasePath": "_content/Blazor.Excelerate",
+      "RelativePath": "Upload/MemberData.e4dad5b7-5b2.xlsx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Upload\\MemberData.e4dad5b7-5b2.xlsx"
+    },
+    {
       "Identity": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Upload\\MemberData.ee5913bd-472.xlsx",
       "SourceId": "Blazor.Excelerate",
       "SourceType": "Discovered",
@@ -1766,6 +1817,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Upload\\MemberData.ef564495-e1a.xlsx"
+    },
+    {
+      "Identity": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\Upload\\MemberData.f9a9d416-7ab.xlsx",
+      "SourceId": "Blazor.Excelerate",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Projects\\GitHub\\Blazor.Excelerate\\wwwroot\\",
+      "BasePath": "_content/Blazor.Excelerate",
+      "RelativePath": "Upload/MemberData.f9a9d416-7ab.xlsx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Upload\\MemberData.f9a9d416-7ab.xlsx"
     },
     {
       "Identity": "C:\\Users\\Corby\\.nuget\\packages\\datajuggler.blazor.components\\7.9.22\\staticwebassets\\background.png",
