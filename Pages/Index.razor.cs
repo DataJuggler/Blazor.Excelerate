@@ -10,9 +10,10 @@ using Blazor.Excelerate.Models;
 using DataJuggler.Net7.Enumerations;
 using Microsoft.AspNetCore.Components;
 using System.IO.Compression;
+using System.Runtime.Versioning;
 
 #endregion
-    
+
 namespace Blazor.Excelerate.Pages
 {
 
@@ -20,6 +21,7 @@ namespace Blazor.Excelerate.Pages
     /// <summary>
     /// This class is the main page for this app
     /// </summary>
+    [SupportedOSPlatform("Windows")]
     public partial class Index : IBlazorComponentParent, ISpriteSubscriber
     {
         
@@ -67,7 +69,9 @@ namespace Blazor.Excelerate.Pages
         private string progressStyle;        
         private string percentString;
         private int percent;
-        private Sprite invisibleSprite;
+        private FileUpload fileUpload;
+        private ImageButton resetFileUploadButton;
+        private Sprite invisibleSprite;        
         
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -107,7 +111,7 @@ namespace Blazor.Excelerate.Pages
             {
                 if ((buttonNumber == 2) && (HasSheetNamesComboBox))
                 {
-                    // Handle Generate Classes - until moved to background
+                    // Handle Generate Classes - starts the background process
                     HandleGenerateClass();
                 }
                 else if ((buttonNumber == 3) && (HasHideInstructionsButton))
@@ -117,6 +121,23 @@ namespace Blazor.Excelerate.Pages
 
                     // Hide the button
                     HideInstructionsButton.SetVisible(false);
+                }
+                else if ((buttonNumber == 4) && (HasFileUpload))
+                {
+                    // Hide the SheetNamesComboBox
+                    DisplayStyle = "none";
+
+                    // In case a zip file is showing, get rid of it
+                    Response = null;
+
+                    // Hide the "This class will only be available for the next hour"
+                    Status = "";
+
+                    // reset back to gray                     
+                    ButtonUrl = "../Images/ButtonDisabled.png";
+
+                    // Reset
+                    FileUpload.Reset();
                 }
 
                 // Update UI
@@ -330,6 +351,9 @@ namespace Blazor.Excelerate.Pages
 
                     // reload the model
                     HandleDiscoverSheets(model);
+
+                    // Update the UI
+                    Refresh();
                 }
                 else
                 {
@@ -417,40 +441,61 @@ namespace Blazor.Excelerate.Pages
                 // Add this item
                 this.Children.Add(component);
 
-                if (TextHelper.IsEqual(component.Name, "UploadExcelButton"))
+                // if this is the FileUpload
+                if (component is FileUpload)
                 {
-                    // Store this object
-                    this.UploadExcelButton = component as ImageButton;
+                    // store the FileUpload
+                    FileUpload = component as FileUpload;
+                }
+                else
+                {
+                    if (TextHelper.IsEqual(component.Name, "UploadExcelButton"))
+                    {
+                        // Store this object
+                        this.UploadExcelButton = component as ImageButton;
 
-                    // Setup the ClickHandler
-                    this.UploadExcelButton.ClickHandler = ButtonClicked;
-                }
-                else if (TextHelper.IsEqual(component.Name, "GenerateClassesButton"))
-                {
-                    // Store this object
-                    this.GenerateClassesButton = component as ImageButton;
+                        // Setup the ClickHandler
+                        this.UploadExcelButton.ClickHandler = ButtonClicked;
+                    }
+                    else if (TextHelper.IsEqual(component.Name, "GenerateClassesButton"))
+                    {
+                        // Store this object
+                        this.GenerateClassesButton = component as ImageButton;
 
-                    // Setup the ClickHandler
-                    this.GenerateClassesButton.ClickHandler = ButtonClicked;
-                }
-                else if (TextHelper.IsEqual(component.Name, "SheetNamesComboBox"))
-                {
-                    // Register the SheetNamesComboBox
-                    this.SheetNamesComboBox = component as ComboBox;
-                }
-                else if (TextHelper.IsEqual(component.Name, "NamespaceComponent"))
-                {
-                    // Store the NamespaceComponent
-                    NamespaceComponent = component as ValidationComponent;                    
-                }
-                else if (TextHelper.IsEqual(component.Name, "HideInstructionsButton"))
-                {
-                    // Hide the instructions button
-                    HideInstructionsButton = component as ImageButton;
+                        // Setup the ClickHandler
+                        this.GenerateClassesButton.ClickHandler = ButtonClicked;
+                    }
+                    else if (TextHelper.IsEqual(component.Name, "SheetNamesComboBox"))
+                    {
+                        // Register the SheetNamesComboBox
+                        this.SheetNamesComboBox = component as ComboBox;
+                    }
+                    else if (TextHelper.IsEqual(component.Name, "NamespaceComponent"))
+                    {
+                        // Store the NamespaceComponent
+                        NamespaceComponent = component as ValidationComponent;                    
+                    }
+                    else if (TextHelper.IsEqual(component.Name, "HideInstructionsButton"))
+                    {
+                        // Register the HideInstructionsButton
+                        HideInstructionsButton = component as ImageButton;
 
-                    // Setup the ClickHandler
-                    HideInstructionsButton.ClickHandler = ButtonClicked;
-                }               
+                        // Setup the ClickHandler
+                        HideInstructionsButton.ClickHandler = ButtonClicked;
+                    }        
+                     else if (TextHelper.IsEqual(component.Name, "ResetFileUploadButton"))
+                    {
+                        // Hide the instructions button
+                        ResetFileUploadButton = component as ImageButton;
+
+                        // if the value for HasResetFileUploadButton is true
+                        if (HasResetFileUploadButton)
+                        {
+                            // Setup the ClickHandler
+                            ResetFileUploadButton.ClickHandler = ButtonClicked;
+                        }
+                    }        
+                }
             }
             #endregion
 
@@ -765,6 +810,17 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region FileUpload
+            /// <summary>
+            /// This property gets or sets the value for 'FileUpload'.
+            /// </summary>
+            public FileUpload FileUpload
+            {
+                get { return fileUpload; }
+                set { fileUpload = value; }
+            }
+            #endregion
+            
             #region FinishedLoading
             /// <summary>
             /// This property gets or sets the value for 'FinishedLoading'.
@@ -795,6 +851,23 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return grid; }
                 set { grid = value; }
+            }
+            #endregion
+            
+            #region HasFileUpload
+            /// <summary>
+            /// This property returns true if this object has a 'FileUpload'.
+            /// </summary>
+            public bool HasFileUpload
+            {
+                get
+                {
+                    // initial value
+                    bool hasFileUpload = (this.FileUpload != null);
+                    
+                    // return value
+                    return hasFileUpload;
+                }
             }
             #endregion
             
@@ -845,6 +918,23 @@ namespace Blazor.Excelerate.Pages
                     
                     // return value
                     return hasNamespaceComponent;
+                }
+            }
+            #endregion
+            
+            #region HasResetFileUploadButton
+            /// <summary>
+            /// This property returns true if this object has a 'ResetFileUploadButton'.
+            /// </summary>
+            public bool HasResetFileUploadButton
+            {
+                get
+                {
+                    // initial value
+                    bool hasResetFileUploadButton = (this.ResetFileUploadButton != null);
+                    
+                    // return value
+                    return hasResetFileUploadButton;
                 }
             }
             #endregion
@@ -1047,6 +1137,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return proressPercent; }
                 set { proressPercent = value; }
+            }
+            #endregion
+            
+            #region ResetFileUploadButton
+            /// <summary>
+            /// This property gets or sets the value for 'ResetFileUploadButton'.
+            /// </summary>
+            public ImageButton ResetFileUploadButton
+            {
+                get { return resetFileUploadButton; }
+                set { resetFileUploadButton = value; }
             }
             #endregion
             

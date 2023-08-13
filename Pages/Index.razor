@@ -187,7 +187,7 @@
                 </span>
                  <div class="blanklinesmall"></div>
                 <span class="text-nowrap">
-                    <a class="whitetext" href="https://github.com/chanan/BlazorStyled/" target="_blank">Chanan/BlazorStyled</a><br />
+                    <a class="whitetext" href="https://github.com/DataJuggler/ExcelerateWinApp/" target="_blank">ExcelerateWinApp</a><br />
                 </span>
                 <div class="blankline"></div>
                 <div class="blankline"></div>
@@ -223,14 +223,14 @@
 </div>
 <div class="topright">
     <div class="@VersionStyle">
-        Version 1.8.0
+        Version 1.9.0
     </div>    
     <a class="noborder" href="https://datajuggler.com"><div class="businesscard"></div></a>
 </div>
 <div class="contentmain">
     <div class="@SelectClasses">
         <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox" Theme=ThemeEnum.Blue
-            LabelColor="Color.White" Position="relative" Visible="true" Left="52" Top="10.8" ZIndex="40" VisibleCount="6"            
+            LabelColor="Color.White" Position="relative" Visible="true" Left="120" Top="10.8" ZIndex="40" VisibleCount="6"            
             Width="160" LabelMarginRightList="2.4" ButtonTextColor="Color.Black" HeightUnit="vh" Height="16"
             LabelText="Sheets:">
         </ComboBox>   
@@ -244,8 +244,11 @@
      <div>
         <div class="row">                
             <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"
-                Left="42" Top="22.8" Height="4" Position="fixed" ZIndex="41"
+                Left="38" Top="22.8" Height="4" Position="fixed" ZIndex="41"
                 Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
+             <ImageButton ButtonNumber="4" ButtonText="Reset" Name="ResetFileUploadButton"
+                Left="50" Top="22.8" Height="4" Position="fixed" ZIndex="44"
+                Width="96" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
         </div>
     </div>
     <div>
@@ -255,7 +258,7 @@
                 PartialGuidLength="12" MaxFileSize=@UploadLimit FilterByExtension="true" 
                 ShowCustomButton="true"  ButtonText="Upload Excel" OnChange="OnFileUploaded"
                 CustomButtonClassName="@OrangeButton" AllowedExtensions=".xlsx"
-                ShowResetButton="false" AppendPartialGuid="true"
+                ShowResetButton="false" AppendPartialGuid="true" Parent="this"
                 CustomExtensionMessage="Only .xlsx extensions are allowed." 
                 InputFileClassName="customfileupload" Visible=false Status="Refresh"
                 FileTooLargeMessage=@FileTooLargeMessage>
