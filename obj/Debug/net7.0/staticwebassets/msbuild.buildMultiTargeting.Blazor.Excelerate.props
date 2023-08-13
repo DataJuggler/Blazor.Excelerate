@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\Blazor.Excelerate.props" />
-</Project>
