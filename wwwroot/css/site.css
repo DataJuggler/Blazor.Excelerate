@@ -220,14 +220,17 @@ margintopsmall
 }
 .savingexamplesgrid
 {
+    background-color: white;
     font-size: 1em;
     line-height: 1em;
     color: white;
     position: fixed;
-    top: 40vh;
-    left: 26%;
-    display: grid;
-    z-index: 52;
+    top: 47.2vh;
+    left: 28.8vw;
+    width: 60vw;
+    height: 24vh;
+    display: block;
+    z-index: 60;
 }
 .sidebar 
 {

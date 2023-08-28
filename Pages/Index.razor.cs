@@ -16,6 +16,9 @@ using System.Drawing;
 using Microsoft.JSInterop;
 using System.Text;
 using Timer = System.Timers.Timer;
+using DataJuggler.Excelerate.Interfaces;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+using System.Collections.Generic;
 
 #endregion
 
@@ -88,12 +91,15 @@ namespace Blazor.Excelerate.Pages
         private string checkVisibility;
         private Timer timer;
         private string checkMarkClassName;
+        private string checkMarkClassName2;
         
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
         private const string SampleMemberDataPath = "../Downloads/MemberData.xlsx";
         private const string FileTooLargeMessage = "Your file must be 20 megs or less for this demo.";
         private const string LoadExample = "List<NASDAQ> nasdaqEntries = NASDAQ.Load(worksheet);";
+        private const string CastComment = "// you must convert the list objects to List<IExcelerateObject> before it can be saved";        
+        private const string CastCode = "List<IExcelerateObject> excelerateObjectList = addresses.Cast<IExcelerateObject>().ToList();";        
         #endregion
 
         #region Constructor
@@ -215,6 +221,11 @@ namespace Blazor.Excelerate.Pages
                     // Copy the code to the clipboard
                     Copy();
                 }
+                else if (buttonNumber == 8)
+                {
+                    // Copy the code to the clipboard
+                    Copy2();
+                }
 
                 // Update UI
                 Refresh();
@@ -230,6 +241,33 @@ namespace Blazor.Excelerate.Pages
                 // This is the code sample
                 StringBuilder sb = new StringBuilder();
                 sb.Append("// Create a new instance of a 'WorksheetInfo' object.\r\n            WorksheetInfo worksheetInfo = new WorksheetInfo();\r\n    \r\n            // set the properties\r\n            worksheetInfo.SheetName = \"NASDAQ\";\r\n            worksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;\r\n            worksheetInfo.Path = \"C:\\\\Projects\\\\GitHub\\\\StockData\\\\Documents\\\\Stocks\\\\NASDAQ.xlsx\";\r\n    \r\n            // load the worksheet\r\n            Worksheet worksheet = ExcelDataLoader.LoadWorksheet(worksheetInfo.Path, worksheetInfo);\r\n    \r\n            // Load the NASDAQ entries\r\n            List<NASDAQ> nasdaqEntries = NASDAQ.Load(worksheet);");
+                string code = sb.ToString();
+
+                // Copy
+                await BlazorJSBridge.CopyToClipboard(JSRuntime, code);
+
+                 // Show the check mark
+                CheckVisibility = "visible";
+
+                // Force UI to update
+                Refresh();
+
+                // Start the timer
+                Timer = new Timer(3000);
+                Timer.Elapsed += TimerElapsed;
+                Timer.Start();
+            }
+            #endregion
+
+            #region Copy2()
+            /// <summary>
+            /// Copies the results to the Clipboard
+            /// </summary>
+            public async void Copy2()
+            {
+                // This is the code sample
+                StringBuilder sb = new StringBuilder();
+                sb.Append("// you must convert the list of objects to List<IExcelerateObject> before it can be saved\r\n                List<IExcelerateObject> excelerateObjectList = addresses.Cast<IExcelerateObject>().ToList();\r\n    \r\n                // Now save the worksheet\r\n                SaveWorksheetResponse response = ExcelHelper.SaveWorksheet(excelerateObjectList, addressWorksheet, info, SaveWorksheetCallback, 500);");
                 string code = sb.ToString();
 
                 // Copy
@@ -901,6 +939,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return checkMarkClassName; }
                 set { checkMarkClassName = value; }
+            }
+            #endregion
+            
+            #region CheckMarkClassName2
+            /// <summary>
+            /// This property gets or sets the value for 'CheckMarkClassName2'.
+            /// </summary>
+            public string CheckMarkClassName2
+            {
+                get { return checkMarkClassName2; }
+                set { checkMarkClassName2 = value; }
             }
             #endregion
             

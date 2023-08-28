@@ -19,6 +19,16 @@
     z-index: 100;
     visibility: @CheckVisibility;
 </Styled>
+<Styled @bind-Classname="@CheckMarkClassName2">
+    width: 32px;
+    height: 32px;
+    position: fixed;
+    top: 74vh;
+    left: 60%;
+    background-image: url('../Images/Check.png');
+    z-index: 100;
+    visibility: @CheckVisibility;
+</Styled>
 <Styled @bind-Classname="DownloadLink">    
     color: white;
     background: none!important;
@@ -394,7 +404,34 @@
             }
             else if (MainContentDisplay == MainContentDisplayEnum.SavingExamples)
             {
-                  
+                <div class="savingexamplesgrid">
+                    <div class="smalltext up32">
+                        This example is from ExcelerateWinApp and shows how to save your changes back to Excel.
+                        https://github.com/DataJuggler/ExcelerateWinApp
+                    </div>
+                    <div class="height24"></div>
+                    <div>
+                        <div class="commenttext">
+                            @CastComment
+                        </div>
+                        <div class="codetext">
+                            @CastCode
+                        </div>
+                        <div class="height10"></div>
+                        <div class="commenttext">
+                            // Save Worksheet Example
+                        </div>
+                        <div class="codetext">
+                            SaveWorksheetResponse response = <br>
+                            <span class="displayinline right32">ExcelHelper.SaveWorksheet(excelerateObjectList, addressWorksheet, info, SaveWorksheetCallback, 500);
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <ImageButton ButtonNumber="8" ButtonText="Copy" Name="CopyButton" Position="fixed"
+                        Left="52" Top="74" HeightUnit="vh" Height="4" ZIndex="120" ClickHandler="@ButtonClicked"
+                             Width="96" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
+                <div class="@CheckMarkClassName2"></div>
             }
         </div>
     </div>
