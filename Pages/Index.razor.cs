@@ -240,7 +240,7 @@ namespace Blazor.Excelerate.Pages
             {
                 // This is the code sample
                 StringBuilder sb = new StringBuilder();
-                sb.Append("// Create a new instance of a 'WorksheetInfo' object.\r\n            WorksheetInfo worksheetInfo = new WorksheetInfo();\r\n    \r\n            // set the properties\r\n            worksheetInfo.SheetName = \"NASDAQ\";\r\n            worksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;\r\n            worksheetInfo.Path = \"C:\\\\Projects\\\\GitHub\\\\StockData\\\\Documents\\\\Stocks\\\\NASDAQ.xlsx\";\r\n    \r\n            // load the worksheet\r\n            Worksheet worksheet = ExcelDataLoader.LoadWorksheet(worksheetInfo.Path, worksheetInfo);\r\n    \r\n            // Load the NASDAQ entries\r\n            List<NASDAQ> nasdaqEntries = NASDAQ.Load(worksheet);");
+                sb.Append("// Create a new instance of a 'WorksheetInfo' object.\r\n            WorksheetInfo worksheetInfo = new WorksheetInfo();\r\n    \r\n            // set the properties\r\n            worksheetInfo.SheetName = \"NASDAQ\";\r\n            worksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;\r\n            worksheetInfo.Path = \"C:\\\\Projects\\\\GitHub\\\\StockData\\\\Documents\\\\Stocks\\\\NASDAQ.xlsx\";\r\n    \r\n            // load the worksheet\r\n            Worksheet worksheet = ExcelDataLoader.LoadWorksheet(worksheetInfo);\r\n    \r\n            // Load the NASDAQ entries\r\n            List<NASDAQ> nasdaqEntries = NASDAQ.Load(worksheet);");
                 string code = sb.ToString();
 
                 // Copy
