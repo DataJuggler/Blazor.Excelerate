@@ -11,6 +11,11 @@ using DataJuggler.Net7.Enumerations;
 using Microsoft.AspNetCore.Components;
 using System.IO.Compression;
 using System.Runtime.Versioning;
+using Blazor.Excelerate.Enumerations;
+using System.Drawing;
+using Microsoft.JSInterop;
+using System.Text;
+using Timer = System.Timers.Timer;
 
 #endregion
 
@@ -37,9 +42,9 @@ namespace Blazor.Excelerate.Pages
         private ComboBox sheetNamesComboBox;
         private ImageButton uploadExcelButton;
         private ImageButton generateClassesButton;
-        private ImageButton hideInstructionsButton;
+        private ImageButton hideButton;
         private Item selectedTextSizeItem;
-        private Item selectedSheetItem;
+        private List<Item> selectedSheets;
         private string buttonUrl;
         private List<string> sheetNames;
         private Workbook workbook;
@@ -51,16 +56,14 @@ namespace Blazor.Excelerate.Pages
         private string status;
         private string statusStyle;
         private string labelColor;
-        private CodeGenerationResponse response;
+        private List<CodeGenerationResponse> responses;
         private string downloadPath;
-        private string instructions;
-        private string instructionsDisplay;
+        private string mainContent;
         private string smallheader;
         private string instructionsLineHeight;
         private string grid;
         private Sprite logo;
-        private string orangeButton;
-        private const string Column1Width = "22%";
+        private string orangeButton;        
         private bool showProgress;
         private double proressPercent;
         private string versionStyle;
@@ -71,12 +74,26 @@ namespace Blazor.Excelerate.Pages
         private int percent;
         private FileUpload fileUpload;
         private ImageButton resetFileUploadButton;
-        private Sprite invisibleSprite;        
+        private Sprite invisibleSprite;
+        private CreateZipFileResponse response;
+        private string loadingExamples;        
+        private string savingExamples;        
+        private MainContentDisplayEnum mainContentDisplay;
+        private string instructionButtonUrl;
+        private string loadingButtonUrl;
+        private string savingButtonUrl;
+        private Color instructionButtonTextColor;
+        private Color loadingButtonTextColor;
+        private Color savingButtonTextColor;
+        private string checkVisibility;
+        private Timer timer;
+        private string checkMarkClassName;
         
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
         private const string SampleMemberDataPath = "../Downloads/MemberData.xlsx";
         private const string FileTooLargeMessage = "Your file must be 20 megs or less for this demo.";
+        private const string LoadExample = "List<NASDAQ> nasdaqEntries = NASDAQ.Load(worksheet);";
         #endregion
 
         #region Constructor
@@ -85,18 +102,30 @@ namespace Blazor.Excelerate.Pages
         /// </summary>
         public Index()
         {
-            // Create a new collection of 'IBlazorComponent' objects.
-            Children = new List<IBlazorComponent>();
-            
-            // Start off with the disabled button
-            ButtonUrl = "../Images/ButtonDisabled.png";
-
-            // set to block
-            InstructionsDisplay = "grid";  
-            
-            // Default to hidden for the ComboBox
-            DisplayStyle = "none";
+            // Perform initializations for this object
+            Init();
         }
+        #endregion
+
+        #region Events
+
+            #region TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+            /// <summary>
+            /// event is fired when Timer Elapsed
+            /// </summary>
+            private void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+            {
+                // Hide the checkmark
+                CheckVisibility = "hidden";
+
+                // destroy the timer
+                Timer.Dispose();
+
+                // Update the UI
+                Refresh();
+            }
+            #endregion
+
         #endregion
 
         #region Methods
@@ -109,21 +138,17 @@ namespace Blazor.Excelerate.Pages
             /// <param name="buttonText"></param>
             public void ButtonClicked(int buttonNumber, string buttonText)
             {
-                if ((buttonNumber == 2) && (HasSheetNamesComboBox))
+                if ((buttonNumber == 1) && (HasSheetNamesComboBox))
                 {
-                    // Handle Generate Classes - starts the background process
-                    HandleGenerateClass();
-                }
-                else if ((buttonNumber == 3) && (HasHideInstructionsButton))
-                {
-                    // Hide
-                    InstructionsDisplay = "none";
+                    // Generate Classes
 
-                    // Hide the button
-                    HideInstructionsButton.SetVisible(false);
+                    // Handle Generate Classes - starts the background process
+                    HandleGenerateClasses();
                 }
-                else if ((buttonNumber == 4) && (HasFileUpload))
+                else if ((buttonNumber == 2) && (HasFileUpload))
                 {
+                    // Reset Button
+
                     // Hide the SheetNamesComboBox
                     DisplayStyle = "none";
 
@@ -139,9 +164,87 @@ namespace Blazor.Excelerate.Pages
                     // Reset
                     FileUpload.Reset();
                 }
+                else if ((buttonNumber == 3) && (HasHideButton))
+                {
+                    // Hide Instructions
+
+                    // Set this to None until a button is clicked
+                    MainContentDisplay = MainContentDisplayEnum.None;
+
+                    // Hide the button
+                    HideButton.SetVisible(false);
+                }
+                else if (buttonNumber == 4)
+                {
+                    // Show Instructions
+                    MainContentDisplay = MainContentDisplayEnum.Instructions;
+
+                    // if the value for HasHideInstructionsButton is true
+                    if (HasHideButton)
+                    {
+                        // Show the button
+                        HideButton.SetVisible(true);
+                    }
+                }
+                else if (buttonNumber == 5)
+                {
+                    // Show Loading Code Examples
+                    MainContentDisplay = MainContentDisplayEnum.LoadingExamples;
+
+                    // if the value for HasHideInstructionsButton is true
+                    if (HasHideButton)
+                    {
+                        // Show the button
+                        HideButton.SetVisible(true);
+                    }
+                }
+                else if (buttonNumber == 6)
+                {
+                    // Show Instructions
+                    MainContentDisplay = MainContentDisplayEnum.SavingExamples;
+
+                    // if the value for HasHideInstructionsButton is true
+                    if (HasHideButton)
+                    {
+                        // Show the button
+                        HideButton.SetVisible(true);
+                    }
+                }
+                else if (buttonNumber == 7)
+                {
+                    // Copy the code to the clipboard
+                    Copy();
+                }
 
                 // Update UI
                 Refresh();
+            }
+            #endregion
+
+            #region Copy()
+            /// <summary>
+            /// Copies the results to the Clipboard
+            /// </summary>
+            public async void Copy()
+            {
+                // This is the code sample
+                StringBuilder sb = new StringBuilder();
+                sb.Append("// Create a new instance of a 'WorksheetInfo' object.\r\n            WorksheetInfo worksheetInfo = new WorksheetInfo();\r\n    \r\n            // set the properties\r\n            worksheetInfo.SheetName = \"NASDAQ\";\r\n            worksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;\r\n            worksheetInfo.Path = \"C:\\\\Projects\\\\GitHub\\\\StockData\\\\Documents\\\\Stocks\\\\NASDAQ.xlsx\";\r\n    \r\n            // load the worksheet\r\n            Worksheet worksheet = ExcelDataLoader.LoadWorksheet(worksheetInfo.Path, worksheetInfo);\r\n    \r\n            // Load the NASDAQ entries\r\n            List<NASDAQ> nasdaqEntries = NASDAQ.Load(worksheet);");
+                string code = sb.ToString();
+
+                // Copy
+                await BlazorJSBridge.CopyToClipboard(JSRuntime, code);
+
+                 // Show the check mark
+                CheckVisibility = "visible";
+
+                // Force UI to update
+                Refresh();
+
+                // Start the timer
+                Timer = new Timer(3000);
+                Timer.Elapsed += TimerElapsed;
+                Timer.Start();
             }
             #endregion
 
@@ -232,32 +335,39 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
 
-            #region HandleGenerateClass()
+            #region HandleGenerateClasses()
             /// <summary>
-            /// Handle Generate Class
+            /// Handle Generating One Or More Classes
             /// </summary>
-            public void HandleGenerateClass()
+            public void HandleGenerateClasses()
             {
                 // local
                 string namespaceName = "";
 
                 // if the NamespaceComponent exists
-                if (HasNamespaceComponent)
+                if ((HasNamespaceComponent) && (ListHelper.HasOneOrMoreItems(SheetNamesComboBox.SelectedItems)))
                 {
-                    // Get the sheetName
-                    string sheetName = SheetNamesComboBox.ButtonText;
-
-                    // Get the text value
-                    namespaceName = NamespaceComponent.Text;
-
                     // Make sure we have a Namespace
                     bool isValid = NamespaceComponent.Validate();
 
                     // Set the value
                     NamespaceComponent.IsValid = isValid;
 
+                    // Get a list of SheetNames
+                    List<string> sheetNames = new List<string>();
+
+                    // Get the text value
+                    namespaceName = NamespaceComponent.Text;
+
+                    // iterate the SelectedSheets
+                    foreach (Item item in SheetNamesComboBox.SelectedItems)
+                    {  
+                        // Get the sheetName
+                        sheetNames.Add(item.Text);
+                    }
+
                     // if already valid and sheetName and ExcelPath exist
-                    isValid = isValid && TextHelper.Exists(sheetName, ExcelPath);
+                    isValid = (isValid && ListHelper.HasOneOrMoreItems(sheetNames)) && (FileHelper.Exists(ExcelPath));
 
                     // if valid
                     if (isValid)
@@ -273,7 +383,7 @@ namespace Blazor.Excelerate.Pages
                         }
 
                         // Create a new instance of a 'GenerateClassModel' object.
-                        GenerateClassModel model = new GenerateClassModel(sheetName, namespaceName, excelPath);
+                        GenerateClassModel model = new GenerateClassModel(sheetNames, namespaceName, excelPath);
 
                         // Launch Background Worker here
 
@@ -311,16 +421,39 @@ namespace Blazor.Excelerate.Pages
                             // Set Status
                             Status = "Namespace is required.";
                         }
-                        else if (!TextHelper.Exists(sheetName))
+                        else if (!ListHelper.HasOneOrMoreItems(sheetNames))
                         {
-                            // Set Status (should always
-                            Status = "Sheet not selected or invalid.";
+                            // Set the Status if the SheetNames are not selected
+                            Status = "Select one or more sheets to continue.";
                         }
                     }                   
                 }
             }
             #endregion
 
+            #region Init()
+            /// <summary>
+            ///  This method performs initializations for this object.
+            /// </summary>
+            public void Init()
+            {
+                // Create a new collection of 'IBlazorComponent' objects.
+                Children = new List<IBlazorComponent>();
+            
+                // Start off with the disabled button
+                ButtonUrl = "../Images/ButtonDisabled.png";
+
+                // Default to hidden for the ComboBox
+                DisplayStyle = "none";
+
+                // Default to Instructions
+                MainContentDisplay = MainContentDisplayEnum.Instructions;
+
+                // Hide the checkmark
+                CheckVisibility = "hidden";
+            }
+            #endregion
+            
             #region OnFileUploaded(UploadedFileInfo file)
             /// <summary>
             /// This method On File Uploaded
@@ -455,7 +588,7 @@ namespace Blazor.Excelerate.Pages
                         this.UploadExcelButton = component as ImageButton;
 
                         // Setup the ClickHandler
-                        this.UploadExcelButton.ClickHandler = ButtonClicked;
+                        this.UploadExcelButton.SetClickHandler(ButtonClicked);
                     }
                     else if (TextHelper.IsEqual(component.Name, "GenerateClassesButton"))
                     {
@@ -463,7 +596,7 @@ namespace Blazor.Excelerate.Pages
                         this.GenerateClassesButton = component as ImageButton;
 
                         // Setup the ClickHandler
-                        this.GenerateClassesButton.ClickHandler = ButtonClicked;
+                        this.GenerateClassesButton.SetClickHandler(ButtonClicked);
                     }
                     else if (TextHelper.IsEqual(component.Name, "SheetNamesComboBox"))
                     {
@@ -475,13 +608,13 @@ namespace Blazor.Excelerate.Pages
                         // Store the NamespaceComponent
                         NamespaceComponent = component as ValidationComponent;                    
                     }
-                    else if (TextHelper.IsEqual(component.Name, "HideInstructionsButton"))
+                    else if (TextHelper.IsEqual(component.Name, "HideButton"))
                     {
                         // Register the HideInstructionsButton
-                        HideInstructionsButton = component as ImageButton;
+                        HideButton = component as ImageButton;
 
                         // Setup the ClickHandler
-                        HideInstructionsButton.ClickHandler = ButtonClicked;
+                        HideButton.SetClickHandler(ButtonClicked);
                     }        
                      else if (TextHelper.IsEqual(component.Name, "ResetFileUploadButton"))
                     {
@@ -492,21 +625,10 @@ namespace Blazor.Excelerate.Pages
                         if (HasResetFileUploadButton)
                         {
                             // Setup the ClickHandler
-                            ResetFileUploadButton.ClickHandler = ButtonClicked;
+                            ResetFileUploadButton.SetClickHandler(ButtonClicked);
                         }
                     }        
                 }
-            }
-            #endregion
-
-            #region SheetSelected(ChangeEventArgs selectedItem)
-            /// <summary>
-            /// event is fired when On Change
-            /// </summary>            
-            public void SheetSelected(ChangeEventArgs selectedItem)
-            {
-                // Set the selectedItem
-                SelectedSheetItem = selectedItem.Value as Item;
             }
             #endregion
 
@@ -541,19 +663,10 @@ namespace Blazor.Excelerate.Pages
                         // cast as a GenerateClassModel
                         GenerateClassModel generateClassModel = e.Argument as GenerateClassModel;
 
-                        // Create a new instance of a 'LoadWorksheetInfo' object.
-                        LoadWorksheetInfo loadWorksheetInfo = new LoadWorksheetInfo();
+                        // Get the selected items from the ComboBox
+                        SelectedSheets = SheetNamesComboBox.SelectedItems;
 
-                        // Set the SheetName
-                        loadWorksheetInfo.SheetName = generateClassModel.SheetName;
-
-                        // Load all columns
-                        loadWorksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;
-
-                        // Load the worksheet
-                        Worksheet worksheet = ExcelDataLoader.LoadWorksheet(generateClassModel.ExcelPath, loadWorksheetInfo);
-
-                        // Set the outputFolder
+                         // Set the outputFolder
                         string outputFolder = Path.GetFullPath("Data");
 
                         // Create a new string
@@ -565,14 +678,40 @@ namespace Blazor.Excelerate.Pages
                         // Set the newFolder
                         generateClassModel.NewFolderPath = newFolder;
 
-                        // Create a new codeGenerator
-                        CodeGenerator codeGenerator = new CodeGenerator(worksheet, newFolder, generateClassModel.SheetName);
+                        // if there are one or more sheets
+                        if (ListHelper.HasOneOrMoreItems(selectedSheets))
+                        {
+                            foreach (string sheetName in generateClassModel.SheetNames)
+                            {
+                                // Create a new instance of a 'LoadWorksheetInfo' object.
+                                WorksheetInfo worksheetInfo = new WorksheetInfo();
 
-                        // Generate a class and set the Namespace
-                        generateClassModel.Response = codeGenerator.GenerateClassFromWorksheet(generateClassModel.NamespaceName, TargetFrameworkEnum.Net7, false);
+                                // Set the SheetName
+                                worksheetInfo.SheetName = sheetName;
 
-                        // Set the result
-                        e.Result = generateClassModel;                        
+                                // Load all columns
+                                worksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;
+
+                                // Load the worksheet
+                                Worksheet worksheet = ExcelDataLoader.LoadWorksheet(generateClassModel.ExcelPath, worksheetInfo);
+
+                                // Create a new codeGenerator
+                                CodeGenerator codeGenerator = new CodeGenerator(worksheet, newFolder, sheetName);
+
+                                // Generate a class and set the Namespace
+                                CodeGenerationResponse response = codeGenerator.GenerateClassFromWorksheet(generateClassModel.NamespaceName, TargetFrameworkEnum.Net7, false);
+
+                                // if the response exists
+                                if (NullHelper.Exists(response))
+                                {
+                                    // Add this response to the Responses collection
+                                    generateClassModel.Responses.Add(response);
+                                }
+                            }
+
+                            // Set the result
+                            e.Result = generateClassModel;
+                        }
                     }
                 }
                 catch (Exception error)
@@ -641,25 +780,35 @@ namespace Blazor.Excelerate.Pages
                     else if (NullHelper.Exists(generateClassModel))
                     {
                         // Get the response
-                        Response = generateClassModel.Response;
+                        Responses = generateClassModel.Responses;
 
                         // Set the newFileName
-                        string newFileName = Path.Combine(generateClassModel.NewFolderPath, "Excelerate." + generateClassModel.SheetName + ".zip");
+                        string newFileName = Path.Combine(generateClassModel.NewFolderPath, NamespaceComponent.Text + ".zip");
 
                         // if a class was created
-                        if (Response.Success)
+                        if ((ListHelper.HasOneOrMoreItems(Responses)) && (Responses[0].Success))
                         {
+                            // Create the Response
+                            Response = new CreateZipFileResponse();
+
+                            // Everything appeared to work
+                            Response.Success = true;
+
                             // Set the Status
-                            Status = "This class will only be available for download for the next hour.";
+                            Status = "This zip file will only be available for download for the next hour.";
 
                             // reference System.IO.Compression
                             using (var zip = ZipFile.Open(newFileName, ZipArchiveMode.Create))
                             {
-                                zip.CreateEntryFromFile(response.FullPath, response.FileName);
-                            }
+                                // Add each file
+                                foreach (CodeGenerationResponse response in Responses)
+                                {
+                                    zip.CreateEntryFromFile(response.FullPath, response.FileName);
 
-                            // Delete the .cs file
-                            File.Delete(response.FullPath);
+                                    // Delete the .cs file
+                                    File.Delete(response.FullPath);
+                                }
+                            }
 
                             // Create a fileInfo
                             FileInfo fileInfo = new FileInfo(newFileName);
@@ -741,6 +890,28 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return buttonUrl; }
                 set { buttonUrl = value; }
+            }
+            #endregion
+            
+            #region CheckMarkClassName
+            /// <summary>
+            /// This property gets or sets the value for 'CheckMarkClassName'.
+            /// </summary>
+            public string CheckMarkClassName
+            {
+                get { return checkMarkClassName; }
+                set { checkMarkClassName = value; }
+            }
+            #endregion
+            
+            #region CheckVisibility
+            /// <summary>
+            /// This property gets or sets the value for 'CheckVisibility'.
+            /// </summary>
+            public string CheckVisibility
+            {
+                get { return checkVisibility; }
+                set { checkVisibility = value; }
             }
             #endregion
             
@@ -871,19 +1042,19 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
-            #region HasHideInstructionsButton
+            #region HasHideButton
             /// <summary>
-            /// This property returns true if this object has a 'HideInstructionsButton'.
+            /// This property returns true if this object has a 'HideButton'.
             /// </summary>
-            public bool HasHideInstructionsButton
+            public bool HasHideButton
             {
                 get
                 {
                     // initial value
-                    bool hasHideInstructionsButton = (this.HideInstructionsButton != null);
+                    bool hasHideButton = (this.HideButton != null);
                     
                     // return value
-                    return hasHideInstructionsButton;
+                    return hasHideButton;
                 }
             }
             #endregion
@@ -956,6 +1127,23 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region HasSelectedSheets
+            /// <summary>
+            /// This property returns true if this object has a 'SelectedSheets'.
+            /// </summary>
+            public bool HasSelectedSheets
+            {
+                get
+                {
+                    // initial value
+                    bool hasSelectedSheets = (this.SelectedSheets != null);
+                    
+                    // return value
+                    return hasSelectedSheets;
+                }
+            }
+            #endregion
+            
             #region HasSheetNamesComboBox
             /// <summary>
             /// This property returns true if this object has a 'SheetNamesComboBox'.
@@ -973,36 +1161,36 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
-            #region HideInstructionsButton
+            #region HideButton
             /// <summary>
-            /// This property gets or sets the value for 'HideInstructionsButton'.
+            /// This property gets or sets the value for 'HideButton'.
             /// </summary>
-            public ImageButton HideInstructionsButton
+            public ImageButton HideButton
             {
-                get { return hideInstructionsButton; }
-                set { hideInstructionsButton = value; }
+                get { return hideButton; }
+                set { hideButton = value; }
             }
             #endregion
             
-            #region Instructions
+            #region InstructionButtonTextColor
             /// <summary>
-            /// This property gets or sets the value for 'Instructions'.
+            /// This property gets or sets the value for 'InstructionButtonTextColor'.
             /// </summary>
-            public string Instructions
+            public Color InstructionButtonTextColor
             {
-                get { return instructions; }
-                set { instructions = value; }
+                get { return instructionButtonTextColor; }
+                set { instructionButtonTextColor = value; }
             }
             #endregion
             
-            #region InstructionsDisplay
+            #region InstructionButtonUrl
             /// <summary>
-            /// This property gets or sets the value for 'InstructionsDisplay'.
+            /// This property gets or sets the value for 'InstructionButtonUrl'.
             /// </summary>
-            public string InstructionsDisplay
+            public string InstructionButtonUrl
             {
-                get { return instructionsDisplay; }
-                set { instructionsDisplay = value; }
+                get { return instructionButtonUrl; }
+                set { instructionButtonUrl = value; }
             }
             #endregion
             
@@ -1039,6 +1227,39 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region LoadingButtonTextColor
+            /// <summary>
+            /// This property gets or sets the value for 'LoadingButtonTextColor'.
+            /// </summary>
+            public Color LoadingButtonTextColor
+            {
+                get { return loadingButtonTextColor; }
+                set { loadingButtonTextColor = value; }
+            }
+            #endregion
+            
+            #region LoadingButtonUrl
+            /// <summary>
+            /// This property gets or sets the value for 'LoadingButtonUrl'.
+            /// </summary>
+            public string LoadingButtonUrl
+            {
+                get { return loadingButtonUrl; }
+                set { loadingButtonUrl = value; }
+            }
+            #endregion
+            
+            #region LoadingExamples
+            /// <summary>
+            /// This property gets or sets the value for 'LoadingExamples'.
+            /// </summary>
+            public string LoadingExamples
+            {
+                get { return loadingExamples; }
+                set { loadingExamples = value; }
+            }
+            #endregion
+            
             #region Logo
             /// <summary>
             /// This property gets or sets the value for 'Logo'.
@@ -1047,6 +1268,68 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return logo; }
                 set { logo = value; }
+            }
+            #endregion
+            
+            #region MainContent
+            /// <summary>
+            /// This property gets or sets the value for 'MainContent'.
+            /// </summary>
+            public string MainContent
+            {
+                get { return mainContent; }
+                set { mainContent = value; }
+            }
+            #endregion
+            
+            #region MainContentDisplay
+            /// <summary>
+            /// This property gets or sets the value for 'MainContentDisplay'.
+            /// </summary>
+            public MainContentDisplayEnum MainContentDisplay
+            {
+                get { return mainContentDisplay; }
+                set 
+                {
+                    // set the value
+                    mainContentDisplay = value;
+
+                    // all are blue for MainContentDisplayEnum.None, which only happens if Hide is clicked
+                    InstructionButtonUrl = "../Images/Tab.png";
+                    LoadingButtonUrl = "../Images/Tab.png";
+                    SavingButtonUrl = "../Images/Tab.png";
+
+                    // Now the ButtonTextColors
+                    InstructionButtonTextColor = Color.GhostWhite;
+                    LoadingButtonTextColor = Color.GhostWhite;
+                    SavingButtonTextColor = Color.GhostWhite;
+
+                    // if Instructions Button is selected
+                    if (mainContentDisplay == MainContentDisplayEnum.Instructions)
+                    {
+                        // Instructions is the SelectedTab
+                        InstructionButtonUrl = "../Images/TabSelected.png";
+
+                        // Selected Button Text Color
+                        InstructionButtonTextColor = Color.Black;
+                    }
+                    else if (mainContentDisplay == MainContentDisplayEnum.LoadingExamples)
+                    {
+                        // Loading Examples Button is the SelectedTab
+                        LoadingButtonUrl = "../Images/TabSelected.png";
+
+                        // Selected Button Text Color
+                        LoadingButtonTextColor = Color.Black;
+                    }
+                    else if (mainContentDisplay == MainContentDisplayEnum.SavingExamples)
+                    {
+                        // Saving Examples Button is the SelectedTab
+                        SavingButtonUrl = "../Images/TabSelected.png";
+
+                         // Selected Button Text Color
+                        SavingButtonTextColor = Color.Black;
+                    }
+                }
             }
             #endregion
             
@@ -1155,10 +1438,54 @@ namespace Blazor.Excelerate.Pages
             /// <summary>
             /// This property gets or sets the value for 'Response'.
             /// </summary>
-            public CodeGenerationResponse Response
+            public CreateZipFileResponse Response
             {
                 get { return response; }
                 set { response = value; }
+            }
+            #endregion
+            
+            #region Responses
+            /// <summary>
+            /// This property gets or sets the value for 'Responses'.
+            /// </summary>
+            public List<CodeGenerationResponse> Responses
+            {
+                get { return responses; }
+                set { responses = value; }
+            }
+            #endregion
+            
+            #region SavingButtonTextColor
+            /// <summary>
+            /// This property gets or sets the value for 'SavingButtonTextColor'.
+            /// </summary>
+            public Color SavingButtonTextColor
+            {
+                get { return savingButtonTextColor; }
+                set { savingButtonTextColor = value; }
+            }
+            #endregion
+            
+            #region SavingButtonUrl
+            /// <summary>
+            /// This property gets or sets the value for 'SavingButtonUrl'.
+            /// </summary>
+            public string SavingButtonUrl
+            {
+                get { return savingButtonUrl; }
+                set { savingButtonUrl = value; }
+            }
+            #endregion
+            
+            #region SavingExamples
+            /// <summary>
+            /// This property gets or sets the value for 'SavingExamples'.
+            /// </summary>
+            public string SavingExamples
+            {
+                get { return savingExamples; }
+                set { savingExamples = value; }
             }
             #endregion
             
@@ -1173,14 +1500,14 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
-            #region SelectedSheetItem
+            #region SelectedSheets
             /// <summary>
-            /// This property gets or sets the value for 'SelectedSheetItem'.
+            /// This property gets or sets the value for 'SelectedSheets'.
             /// </summary>
-            public Item SelectedSheetItem
+            public List<Item> SelectedSheets
             {
-                get { return selectedSheetItem; }
-                set { selectedSheetItem = value; }
+                get { return selectedSheets; }
+                set { selectedSheets = value; }
             }
             #endregion
             
@@ -1324,6 +1651,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return statusStyle; }
                 set { statusStyle = value; }
+            }
+            #endregion
+            
+            #region Timer
+            /// <summary>
+            /// This property gets or sets the value for 'Timer'.
+            /// </summary>
+            public Timer Timer
+            {
+                get { return timer; }
+                set { timer = value; }
             }
             #endregion
             

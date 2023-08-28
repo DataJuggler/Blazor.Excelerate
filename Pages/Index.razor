@@ -5,7 +5,20 @@
 @using DataJuggler.Blazor.FileUpload
 @using DataJuggler.Blazor.Components.Enumerations
 @using System.Drawing
+@using Blazor.Excelerate.Enumerations
+@using Blazor.Excelerate.Models
+@inject IJSRuntime JSRuntime
 
+<Styled @bind-Classname="@CheckMarkClassName">
+    width: 32px;
+    height: 32px;
+    position: fixed;
+    bottom: 4.8vh;
+    left: 60%;
+    background-image: url('../Images/Check.png');
+    z-index: 100;
+    visibility: @CheckVisibility;
+</Styled>
 <Styled @bind-Classname="DownloadLink">    
     color: white;
     background: none!important;
@@ -45,19 +58,19 @@
     display: inline-block;
     height: auto;
     width: 80%;
-    font-size: 12px;
+    font-size: 13.6px;
     position: relative;
     left: -12%;
     top: 8vh;
 </Styled>
-<Styled @bind-Classname="Instructions">
+<Styled @bind-Classname="MainContent">
     font-size: 1em;
     line-height: 1em;
     color: white;
     position: fixed;
     top: 40vh;
     left: 26%;
-    display: @InstructionsDisplay;
+    display: grid;
     z-index: 52;
 </Styled>
 <Styled @bind-Classname="OrangeButton">
@@ -74,14 +87,15 @@
     background-size: 100% 100%;    
     cursor: pointer;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
+    font-family: Verdana;
 </Styled>
 <Styled @bind-Classname="SelectClasses">
     display: @DisplayStyle;
     width: 20%;
     height: 6vh;
     position: fixed;
-    top: 8.8vh;    
+    top: 16vh;    
     z-index: 40;   
 </Styled>
 <Styled @bind-Classname="SideBarElementText">
@@ -223,31 +237,44 @@
 </div>
 <div class="topright">
     <div class="@VersionStyle">
-        Version 1.9.0
+        Version 2.0.0
     </div>    
     <a class="noborder" href="https://datajuggler.com"><div class="businesscard"></div></a>
 </div>
 <div class="contentmain">
+    <div class="tabrow">
+        <ImageButton TextColor="@InstructionButtonTextColor" ButtonNumber="4" Name="InstructionsButton" Unit="vw"
+            HeightUnit="vh" Height="4.8" Width="8.8" ButtonText="Instructions" ImageUrl="@InstructionButtonUrl"
+            TextSize="TextSizeEnum.MediumLarge" ClickHandler="@ButtonClicked"></ImageButton>
+        <ImageButton TextColor="@LoadingButtonTextColor" ButtonNumber="5" Name="LoadingButton" Unit="vw"            
+            HeightUnit="vh" Height="4.8" Width="8.8" ButtonText="How To Load" ImageUrl="@LoadingButtonUrl"
+            TextSize="TextSizeEnum.MediumLarge" ClickHandler="@ButtonClicked"></ImageButton>
+        <ImageButton TextColor="@SavingButtonTextColor" ButtonNumber="6" Name="SavingButton" Unit="vw"
+            HeightUnit ="vh" Height="4.8" Width="8.8" ButtonText="How To Save" ImageUrl="@SavingButtonUrl"
+            TextSize="TextSizeEnum.MediumLarge" ClickHandler="@ButtonClicked"></ImageButton>
+    </div>
     <div class="@SelectClasses">
-        <ComboBox OnChange="SheetSelected" Parent="this" Name="SheetNamesComboBox" Theme=ThemeEnum.Blue
-            LabelColor="Color.White" Position="relative" Visible="true" Left="120" Top="10.8" ZIndex="40" VisibleCount="6"            
-            Width="160" LabelMarginRightList="2.4" ButtonTextColor="Color.Black" HeightUnit="vh" Height="16"
-            LabelText="Sheets:">
-        </ComboBox>   
-     </div>
+        <ComboBox Name="SheetNamesComboBox" Theme=ThemeEnum.Blue
+            CheckListMode=true LabelColor="Color.White" Position="relative" HeightUnit="px"
+            Visible="true" Left="120" Top="20" ZIndex="40" VisibleCount="6" Width="160"
+            ListItemHeight="12" LabelMarginRightList="2.4" ButtonText="Select Sheet" 
+            TextSize="TextSizeEnum.Medium"
+            ButtonTextColor="Color.Black" Height="128" LabelText="Sheets:" Parent="this">
+        </ComboBox>
+    </div>
     <div class="row displayinline contentmaintoprow">
-        <ValidationComponent Name="NamespaceComponent" Caption="Namespace:" LabelFontSizeUnit="vh" LabelFontSize="2"
+        <ValidationComponent Name="NamespaceComponent" Caption="Namespace:" LabelFontSizeUnit="vh" LabelFontSize="2.4"
             Position="relative" Unit="%" HeightUnit="vh" Height="3" LabelColor="white" Top="14.8" Left="-14" 
             IsRequired="true" Width="8" LabelWidth="30" TextBoxWidth="44" LabelClassName="down4" Parent="this">
         </ValidationComponent>            
     </div>     
      <div>
         <div class="row">                
-            <ImageButton ButtonNumber="2" ButtonText="Generate Class" Name="GenerateClassesButton"
-                Left="38" Top="22.8" Height="4" Position="fixed" ZIndex="41"
+            <ImageButton ButtonNumber="1" ButtonText="Generate Class" Name="GenerateClassesButton"
+                Left="38" Top="22.8" HeightUnit="vh" Height="4" Position="fixed" ZIndex="41"
                 Width="120" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
-             <ImageButton ButtonNumber="4" ButtonText="Reset" Name="ResetFileUploadButton"
-                Left="50" Top="22.8" Height="4" Position="fixed" ZIndex="44"
+             <ImageButton ButtonNumber="2" ButtonText="Reset" Name="ResetFileUploadButton"
+                Left="50" Top="22.8" HeightUnit="vh" Height="4" Position="fixed" ZIndex="44"
                 Width="96" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
         </div>
     </div>
@@ -259,7 +286,7 @@
                 ShowCustomButton="true"  ButtonText="Upload Excel" OnChange="OnFileUploaded"
                 CustomButtonClassName="@OrangeButton" AllowedExtensions=".xlsx"
                 ShowResetButton="false" AppendPartialGuid="true" Parent="this"
-                CustomExtensionMessage="Only .xlsx extensions are allowed." 
+                CustomExtensionMessage="Only .xlsx extensions are allowed."
                 InputFileClassName="customfileupload" Visible=false Status="Refresh"
                 FileTooLargeMessage=@FileTooLargeMessage>
             </FileUpload>
@@ -271,44 +298,104 @@
     @if ((HasResponse) && (Response.Success) && (Response.HasFileName) && (Response.HasFullPath))
      { 
          <div class="smallicon2 text-white text-nowrap">
-            <a class="@DownloadLink2 downloadlink2hover" download="@Response.FileName" href="@DownloadPath" target="_blank">@Response.FileName</a><br />
+            <a class="@DownloadLink2 downloadlink2hover" download="@Response.FileName" 
+                href="@DownloadPath" target="_blank">@Response.FileName</a><br />
             <span class="small text-white movedownsmall">
                  Browsers do not allow downloading files with .cs extensions, so download this zip file and extract to a folder.
             </span>
         </div>
     }
-    <div class="@Instructions">
+    <div class="@MainContent">
         <div class="@Grid">
-            <div class="column instructionscolumn1">
-                <ImageButton ButtonNumber="3" ButtonText="Hide" Name="HideInstructionsButton"
-                    TextSize="TextSizeEnum.Large" Height="4" ZIndex="52"
-                    Width="120" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
-            </div>
-            <div class="column instructionscolumn2">
-                <div class="marginsmall @Smallheader">Instructions</div>
-                <div class="blankline"></div>
-                1. Prepare your spreadsheet (save as .xlsx extension) and ensure you have a header row, and the 
-                column names make good property names. Download MemberData.xlsx to see an example.<br />
-                2. Upload your spreadsheet and select the sheet to code generate a class for.<br />
-                3. Type in a namespace for your project and click the 'Generate Class' button.<br />
-                4. Download the zip file and extract the contents to get your .cs file.<br />
-                <div class="blankline"></div>
-                <div class="marginsmall @Smallheader">Tips / Troubleshooting</div>
-                <div class="blankline"></div>
-                It helps to have some rows of data to attempt to determine the data type. Getting the data type is kind of a hack,
-                as I could not find away with EPP Plus to get the column data types.<br />
-                <div class="blankline"></div>
-                <div class="blankline"></div>
-                If you have a problem generating classes, create an issue here or to clone or star:<br />
-                <a class="orangetext" href="https://github.com/DataJuggler/Excelerate">DataJuggler.Excelerate Git Hub</a><br />
-                <div class="blankline"></div>
-                If you have a problem with this site, create an issue here or to clone or star:<br />
-                <a class="orangetext" href="https://github.com/DataJuggler/Blazor.Excelerate">Blazor.Excelerate Git Hub</a><br />
-                <div class="blankline"></div>
-                <div class="marginsmall @Smallheader">Data Privacy</div>
-                <div class="blankline"></div>
-                No one has access to my server except me and my dog.<br />                
-            </div>
+            @if (MainContentDisplay != MainContentDisplayEnum.None)
+            {
+                <div class="column instructionscolumn1">
+                    <ImageButton ButtonNumber="3" ButtonText="Hide" Name="HideButton"
+                        TextSize="TextSizeEnum.Large" HeightUnit="vh" Height="4" ZIndex="52"
+                        Width="120" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
+                </div>
+            }
+            @if (MainContentDisplay == MainContentDisplayEnum.Instructions)
+            {
+                <div class="column instructionscolumn2">
+                    <div class="marginsmall @Smallheader">Instructions</div>
+                    <div class="blankline"></div>
+                    1. Prepare your spreadsheet (save as .xlsx extension) and ensure you have a header row, and the 
+                    column names make good property names.<br>Download MemberData.xlsx to see an example.<br />
+                    2. Upload your spreadsheet and select the sheet to code generate a class for.<br />
+                    3. Type in a namespace for your project and click the 'Generate Class' button.<br />
+                    4. Download the zip file and extract the contents to get your .cs file.<br />
+                    <div class="blankline"></div>
+                    <div class="marginsmall @Smallheader">Tips / Troubleshooting</div>
+                    <div class="blankline"></div>
+                    You must have some rows of data in each column to attempt to determine the data type. Getting the data type<br />is kind of a hack,
+                    as I could not find a way with EPP Plus to get the column data types.<br />
+                    <div class="blankline"></div>
+                    <div class="blankline"></div>
+                    If you have a problem generating classes, create an issue here or to clone or star:<br />
+                    <a class="orangetext" href="https://github.com/DataJuggler/Excelerate">DataJuggler.Excelerate Git Hub</a><br />
+                    <div class="blankline"></div>
+                    If you have a problem with this site, create an issue here or to clone or star:<br />
+                    <a class="orangetext" href="https://github.com/DataJuggler/Blazor.Excelerate">Blazor.Excelerate Git Hub</a><br />
+                    <div class="blankline"></div>
+                    <div class="marginsmall @Smallheader">Data Privacy</div>
+                    <div class="blankline"></div>
+                    No one has access to my server except me and my dog.<br />                
+                </div>
+            }
+            else if (MainContentDisplay == MainContentDisplayEnum.LoadingExamples)
+            {  
+                <div class="loadingexamplesgrid">
+                    <div class="smalltext up32">
+                        The following code example is from my opensource project StockData<br>
+                        https://github.com/DataJuggler/StockData
+                    </div>
+                    <div class="height24"></div>
+                    <div>
+                        <div class="commenttext">
+                            // Create a new instance of a 'WorksheetInfo' object.
+                        </div>
+                        <div class="codetext">
+                            WorksheetInfo worksheetInfo = new WorksheetInfo();
+                        </div>
+                        <div class="height10"></div>
+                        <div class="commenttext">
+                            // set the properties
+                        </div>                        
+                        <div class="codetext">
+                            worksheetInfo.SheetName = "NASDAQ";<br>
+                        </div>
+                        <div class="codetext">
+                            worksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;<br>
+                        </div>
+                        <div class="codetext">
+                            worksheetInfo.Path = "C:\\Projects\\GitHub\\StockData\\Documents\\Stocks\\NASDAQ.xlsx";<br>
+                        </div>
+                        <div class="height10"></div>
+                        <div class="commenttext">
+                            // load the worksheet
+                        </div>
+                        <div class="codetext">
+                            Worksheet worksheet = ExcelDataLoader.LoadWorksheet(worksheetInfo);
+                        </div>
+                        <div class="height10"></div>
+                        <div class="commenttext">
+                            // Load the NASDAQ entries
+                        </div>
+                        <div class="codetext">
+                            @LoadExample
+                        </div>                        
+                    </div>
+                </div>
+                <ImageButton ButtonNumber="7" ButtonText="Copy" Name="CopyButton" Position="fixed"
+                    Left="52" Top="92" HeightUnit="vh" Height="4"  ZIndex="120" ClickHandler="@ButtonClicked"
+                    Width="96" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
+                <div class="@CheckMarkClassName"></div>
+            }
+            else if (MainContentDisplay == MainContentDisplayEnum.SavingExamples)
+            {
+                  
+            }
         </div>
     </div>
 </div>

@@ -51,25 +51,24 @@
     background-size: 100% 100%;
     z-index: -1;
 }
-.downloadlink2hover
+.codetext
 {
-    color: white;
+    color: black;
+    font-size: 13.6px;
+    font-family: Verdana;
+    margin-bottom: 4px;
+    position: relative;
+    top: -32px;
+    white-space: nowrap;
 }
-.downloadlink2hover:hover
+.commenttext
 {
-    color: orange !important;
-}
-.instructionscolumn1
-{
-    position: fixed;
-    left: 18%;
-    top: 48vh;
-}
-.instructionscolumn2
-{
-    position: fixed;
-    left: 28%;
-    top: 48vh;
+    color: green;
+    font-size: 13.6px;
+    font-family: Verdana;
+    margin-bottom: 4px;
+    position: relative;
+    top: -32px;
 }
 .contentmain
 {
@@ -111,12 +110,46 @@
 {
     display: inline-block;
 }
+.downloadlink2hover
+{
+    color: white;
+}
+.downloadlink2hover:hover
+{
+    color: orange !important;
+}
 .horizontal-center 
 {
   margin: 0;
   position: absolute;
   left: 50%;  
   transform: translateX(-50%);
+}
+.instructionscolumn1
+{
+    position: fixed;
+    left: 18%;
+    top: 48vh;
+}
+.instructionscolumn2
+{
+    position: fixed;
+    left: 28%;
+    top: 48vh;
+}
+.loadingexamplesgrid
+{
+    background-color: white;
+    font-size: 1em;
+    line-height: 1em;
+    color: white;
+    position: fixed;
+    top: 47.2vh;
+    left: 28.8vw;
+    width: 54vw;
+    height: 42vh;
+    display: block;
+    z-index: 60;
 }
 .logo
 {
@@ -185,6 +218,17 @@ margintopsmall
     transform: scale(.9);
     transform-origin: left;
 }
+.savingexamplesgrid
+{
+    font-size: 1em;
+    line-height: 1em;
+    color: white;
+    position: fixed;
+    top: 40vh;
+    left: 26%;
+    display: grid;
+    z-index: 52;
+}
 .sidebar 
 {
     width: clamp(280px, 14%, 14%);
@@ -233,6 +277,20 @@ margintopsmall
 .smallicon2:hover
 {
     color: white !important;
+}
+.smalltext
+{
+    font-size: 12px;
+    font-family: Verdana;
+    color: white;
+}
+.tabrow
+{
+    position: fixed;
+    top: 9.24vh;
+    left: 58vw;
+    height: 48px;
+    width: 600px;
 }
 .topbar 
 {

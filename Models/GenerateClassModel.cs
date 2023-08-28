@@ -22,23 +22,26 @@ namespace Blazor.Excelerate.Models
     {
         
         #region Private Variables
-        private string sheetName;
+        private List<string> sheetNames;
         private string namespaceName;
         private string excelPath;
         private string newFolderPath;
-        private CodeGenerationResponse response;
+        private List<CodeGenerationResponse> responses;
         #endregion
         
-        #region Constructor(string sheetName, string namespaceName, string excelPath)
+        #region Constructor(List<string> sheetNames, string namespaceName, string excelPath)
         /// <summary>
         /// Create a new instance of a 'GenerateClassModel' object.
         /// </summary>
-        public GenerateClassModel(string sheetName, string namespaceName, string excelPath)
+        public GenerateClassModel(List<string> sheetNames, string namespaceName, string excelPath)
         {
             // store
-            SheetName = sheetName;
+            SheetNames = sheetNames;
             NamespaceName = namespaceName;
             ExcelPath = excelPath;
+
+            // Create a list to store the Responses
+            Responses = new List<CodeGenerationResponse>();
         }
         #endregion
         
@@ -77,25 +80,25 @@ namespace Blazor.Excelerate.Models
             }
             #endregion
             
-            #region Response
+            #region Responses
             /// <summary>
-            /// This property gets or sets the value for 'Response'.
+            /// This property gets or sets the value for 'Responses'.
             /// </summary>
-            public CodeGenerationResponse Response
+            public List<CodeGenerationResponse> Responses
             {
-                get { return response; }
-                set { response = value; }
+                get { return responses; }
+                set { responses = value; }
             }
             #endregion
             
-            #region SheetName
+            #region SheetNames
             /// <summary>
-            /// This property gets or sets the value for 'SheetName'.
+            /// This property gets or sets the value for 'SheetNames'.
             /// </summary>
-            public string SheetName
+            public List<string> SheetNames
             {
-                get { return sheetName; }
-                set { sheetName = value; }
+                get { return sheetNames; }
+                set { sheetNames = value; }
             }
             #endregion
             

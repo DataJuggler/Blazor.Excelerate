@@ -20,9 +20,9 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorStyled" Version="3.1.0" />
-    <PackageReference Include="DataJuggler.Blazor.Components" Version="7.10.0" />
-    <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="7.2.0" />
-    <PackageReference Include="DataJuggler.Net7" Version="7.2.8" />
+    <PackageReference Include="DataJuggler.Blazor.Components" Version="7.12.6" />
+    <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="7.2.3" />
+    <PackageReference Include="DataJuggler.Net7" Version="7.3.1" />
   </ItemGroup>
 
   <ItemGroup>
