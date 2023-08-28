@@ -144,10 +144,10 @@
     line-height: 1em;
     color: white;
     position: fixed;
-    top: 47.2vh;
+    top: 54vh;
     left: 28.8vw;
-    width: 54vw;
-    height: 42vh;
+    width: 52vw;
+    height: 36vh;
     display: block;
     z-index: 60;
 }
@@ -225,10 +225,10 @@ margintopsmall
     line-height: 1em;
     color: white;
     position: fixed;
-    top: 47.2vh;
+    top: 54vh;
     left: 28.8vw;
     width: 60vw;
-    height: 24vh;
+    height: 20vh;
     display: block;
     z-index: 60;
 }

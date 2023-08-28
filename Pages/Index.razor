@@ -13,7 +13,7 @@
     width: 32px;
     height: 32px;
     position: fixed;
-    bottom: 4.8vh;
+    bottom: 4vh;
     left: 60%;
     background-image: url('../Images/Check.png');
     z-index: 100;
@@ -23,7 +23,7 @@
     width: 32px;
     height: 32px;
     position: fixed;
-    top: 74vh;
+    top: 76vh;
     left: 60%;
     background-image: url('../Images/Check.png');
     z-index: 100;
@@ -71,7 +71,7 @@
     font-size: 13.6px;
     position: relative;
     left: -12%;
-    top: 8vh;
+    top: 12vh;
 </Styled>
 <Styled @bind-Classname="MainContent">
     font-size: 1em;
@@ -247,7 +247,7 @@
 </div>
 <div class="topright">
     <div class="@VersionStyle">
-        Version 2.0.1
+        Version 2.0.2
     </div>    
     <a class="noborder" href="https://datajuggler.com"><div class="businesscard"></div></a>
 </div>
@@ -356,11 +356,11 @@
             else if (MainContentDisplay == MainContentDisplayEnum.LoadingExamples)
             {  
                 <div class="loadingexamplesgrid">
-                    <div class="smalltext up32">
+                    <div class="smalltext up40">
                         The following code example is from my opensource project StockData<br>
                         https://github.com/DataJuggler/StockData
                     </div>
-                    <div class="height24"></div>
+                    <div class="height16"></div>
                     <div>
                         <div class="commenttext">
                             // Create a new instance of a 'WorksheetInfo' object.
@@ -405,7 +405,7 @@
             else if (MainContentDisplay == MainContentDisplayEnum.SavingExamples)
             {
                 <div class="savingexamplesgrid">
-                    <div class="smalltext up32">
+                    <div class="smalltext up40">
                         This example is from ExcelerateWinApp and shows how to save your changes back to Excel.
                         https://github.com/DataJuggler/ExcelerateWinApp
                     </div>
@@ -428,8 +428,8 @@
                         </div>
                     </div>
                 </div>
-                <ImageButton ButtonNumber="8" ButtonText="Copy" Name="CopyButton" Position="fixed"
-                        Left="52" Top="74" HeightUnit="vh" Height="4" ZIndex="120" ClickHandler="@ButtonClicked"
+                <ImageButton ButtonNumber="8" ButtonText="Copy" Name="CopyButton2" Position="fixed"
+                        Left="52" Top="76.4" HeightUnit="vh" Height="4" ZIndex="120" ClickHandler="@ButtonClicked"
                              Width="96" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
                 <div class="@CheckMarkClassName2"></div>
             }
