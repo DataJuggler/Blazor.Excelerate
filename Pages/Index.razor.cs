@@ -7,7 +7,7 @@ using System.ComponentModel;
 using DataJuggler.Blazor.Components.Util;
 using DataJuggler.Blazor.FileUpload;
 using Blazor.Excelerate.Models;
-using DataJuggler.Net7.Enumerations;
+using DataJuggler.NET8.Enumerations;
 using Microsoft.AspNetCore.Components;
 using System.IO.Compression;
 using System.Runtime.Versioning;
