@@ -90,23 +90,25 @@
     outline: none;
     background-image: url('../images/OrangeButton.png');
     background-repeat: no-repeat;
-    top: 23vh;
-    left: 26.8%;
+    top: 27vh;
+    left: 26.8vw;
     width: 10%;
-    height: 3.6%;
+    height: 3.6vh;
     background-size: 100% 100%;    
     cursor: pointer;
     text-align: center;
     font-size: 14px;
     font-family: Verdana;
+    z-index: 6;
 </Styled>
 <Styled @bind-Classname="SelectClasses">
     display: @DisplayStyle;
     width: 20%;
     height: 6vh;
     position: fixed;
-    top: 16vh;    
-    z-index: 40;   
+    top: 27vh;
+    left: 6vw;
+    z-index: 40;
 </Styled>
 <Styled @bind-Classname="SideBarElementText">
     text-align: center;
@@ -147,7 +149,7 @@
 <Styled @bind-Classname="StatusStyle">  
     text-align: center;
     position: absolute;
-    top: 16vh;
+    top: 18vh;
     left: -4%;
     width: 60%;
     height: 2.8vh;
@@ -247,7 +249,7 @@
 </div>
 <div class="topright">
     <div class="@VersionStyle">
-        Version 2.0.5
+        Version 2.2.0
     </div>    
     <a class="noborder" href="https://datajuggler.com"><div class="businesscard"></div></a>
 </div>
@@ -262,29 +264,39 @@
         <ImageButton TextColor="@SavingButtonTextColor" ButtonNumber="6" Name="SavingButton" Unit="vw"
             HeightUnit ="vh" Height="4.8" Width="8.8" ButtonText="How To Save" ImageUrl="@SavingButtonUrl"
             TextSize="TextSizeEnum.MediumLarge" ClickHandler="@ButtonClicked"></ImageButton>
-    </div>
-    <div class="@SelectClasses">
-        <ComboBox Name="SheetNamesComboBox" Theme=ThemeEnum.Blue
-            CheckListMode=true LabelColor="Color.White" Position="relative" HeightUnit="px"
-            Visible="true" Left="120" Top="20" ZIndex="40" VisibleCount="6" Width="160"
-            ListItemHeight="12" LabelMarginRightList="2.4" ButtonText="Select Sheet" 
-            TextSize="TextSizeEnum.Medium"
-            ButtonTextColor="Color.Black" Height="128" LabelText="Sheets:" Parent="this">
-        </ComboBox>
-    </div>
-    <div class="row displayinline contentmaintoprow">
-        <ValidationComponent Name="NamespaceComponent" Caption="Namespace:" LabelFontSizeUnit="vh" LabelFontSize="2.4"
-            Position="relative" Unit="%" HeightUnit="vh" Height="3" LabelColor="white" Top="14.8" Left="-14" 
-            IsRequired="true" Width="8" LabelWidth="30" TextBoxWidth="44" LabelClassName="down4" Parent="this">
+    </div>    
+    <div class="text-nowrap @SelectClasses">        
+            <ComboBox Name="SheetNamesComboBox" Theme=ThemeEnum.Blue Unit="vw" Width=10
+                HeightUnit="vh" ListItemHeight=3 LabelColor="Color.White" ComboBoxLeft="2" ComboBoxHeight="3"               
+                CheckListMode="true" CheckedListheight=8 Position="fixed" Left="25.5" Top=27 
+                ListItemBackgroundColor="Color.White" ListBackgroundColor="Color.Transparent" ListItemTop="-2"                
+                ListItemLeft="6" ListItemWidth="10" ComboBoxWidth="2" VisibleCount=5
+                ButtonPosition="relative"ButtonLeft="4.5" ButtonTop="-2" LabelClassName="textalignright"
+                ButtonTextColor="Color.Black" Height="10" LabelText="Sheets:" Parent="this">
+            </ComboBox>
+    </div>    
+    <div class="row displayinline contentmaintoprow">        
+        <ValidationComponent Name="NamespaceComponent" Caption="Namespace:" LabelFontSizeUnit="vh" 
+            LabelFontSize="2.4" Position="relative" Unit="%" HeightUnit="vh" Height="3" LabelColor="white"
+            Top="14.8" Left="-14" IsRequired="true" Width="8" LabelWidth="30" TextBoxWidth="32"
+            LabelClassName="down2 right2" Parent="this">
         </ValidationComponent>            
-    </div>     
+    </div>
+    <div class="ontop">
+    <ComboBox Name="TargetFrameworkComboBox" Theme=ThemeEnum.Blue LabelColor="Color.White"
+              Position="fixed" Unit="vw" HeightUnit="vh" Visible="true" Left="23" Top="20.5" ZIndex="150"
+              Width="10" TextSize="TextSizeEnum.Medium" ButtonText=".Net8" Height="4" ComboBoxLeft="7"              
+              ButtonPosition="relative"ButtonLeft="7" ButtonTop="-2" ButtonTextColor="Color.Black" 
+              VisibleCount="6" LabelText="Framework:" Parent="this" ListItemLeft="8" ListItemTop="-5">
+    </ComboBox>
+    </div>
      <div>
         <div class="row">                
             <ImageButton ButtonNumber="1" ButtonText="Generate Classes" Name="GenerateClassesButton"
-                Left="37.8" Top="22.8" HeightUnit="vh" Height="4" Position="fixed" ZIndex="41"
+                Left="42" Top="26.8" HeightUnit="vh" Height="4" Position="fixed" ZIndex="41"
                 Width="132" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
              <ImageButton ButtonNumber="2" ButtonText="Reset" Name="ResetFileUploadButton"
-                Left="50" Top="22.8" HeightUnit="vh" Height="4" Position="fixed" ZIndex="44"
+                Left="58" Top="26.8" HeightUnit="vh" Height="4" Position="fixed" ZIndex="44"
                 Width="96" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
         </div>
     </div>

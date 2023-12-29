@@ -43,6 +43,7 @@ namespace Blazor.Excelerate.Pages
         private string slogan;
         private List<IBlazorComponent> children;        
         private ComboBox sheetNamesComboBox;
+        private ComboBox targetFrameworkComboBox;
         private ImageButton uploadExcelButton;
         private ImageButton generateClassesButton;
         private ImageButton hideButton;
@@ -339,6 +340,42 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
 
+            #region GetSelectedTargetFramework()
+            /// <summary>
+            /// returns the Selected Target Framework
+            /// </summary>
+            public TargetFrameworkEnum GetSelectedTargetFramework()
+            {
+                // initial value
+                TargetFrameworkEnum targetFramework = TargetFrameworkEnum.Net8;
+
+                // if the value for HasTargetFrameworkComboBox is true
+                if (HasTargetFrameworkComboBox)
+                {
+                    // get the selected item
+                    string selectedText = TargetFrameworkComboBox.ButtonText;
+
+                    // If the selectedText string exists
+                    if (TextHelper.Exists(selectedText))
+                    {
+                        if (TextHelper.IsEqual(selectedText, "Net7"))
+                        {
+                            // .NET7
+                            targetFramework = TargetFrameworkEnum.Net7;
+                        }
+                        else if (TextHelper.IsEqual(selectedText, "Net6"))
+                        {
+                            // .NET6
+                            targetFramework = TargetFrameworkEnum.Net6;
+                        }
+                    }
+                }
+                
+                // return value
+                return targetFramework;
+            }
+            #endregion
+            
             #region GetSheetNames(string path)
             /// <summary>
             /// returns the Sheet Names
@@ -420,8 +457,11 @@ namespace Blazor.Excelerate.Pages
                             InvisibleSprite.Start();
                         }
 
+                        // Get the selected TargetFramework
+                        TargetFrameworkEnum targetFramework = GetSelectedTargetFramework();
+
                         // Create a new instance of a 'GenerateClassModel' object.
-                        GenerateClassModel model = new GenerateClassModel(sheetNames, namespaceName, excelPath);
+                        GenerateClassModel model = new GenerateClassModel(sheetNames, namespaceName, excelPath, targetFramework);
 
                         // Launch Background Worker here
 
@@ -636,6 +676,24 @@ namespace Blazor.Excelerate.Pages
                         // Setup the ClickHandler
                         this.GenerateClassesButton.SetClickHandler(ButtonClicked);
                     }
+                    else if (TextHelper.IsEqual(component.Name, "TargetFrameworkComboBox"))
+                    {
+                        // Store this object
+                        TargetFrameworkComboBox = component as ComboBox;
+
+                        // if the value for HasTargetFrameworkComboBox is true
+                        if (HasTargetFrameworkComboBox)
+                        {
+                            // Load the Items
+                            targetFrameworkComboBox.LoadItems(typeof(TargetFrameworkEnum));
+
+                            // Remove .NET Framework and .NET5 (not supported)
+                            targetFrameworkComboBox.Items.RemoveAt(0);
+                            targetFrameworkComboBox.Items.RemoveAt(0);
+
+                            targetFrameworkComboBox.SetSelectedItem(".Net8");
+                        }                        
+                    }
                     else if (TextHelper.IsEqual(component.Name, "SheetNamesComboBox"))
                     {
                         // Register the SheetNamesComboBox
@@ -699,7 +757,7 @@ namespace Blazor.Excelerate.Pages
                     else
                     {
                         // cast as a GenerateClassModel
-                        GenerateClassModel generateClassModel = e.Argument as GenerateClassModel;
+                        GenerateClassModel generateClassesModel = e.Argument as GenerateClassModel;
 
                         // Get the selected items from the ComboBox
                         SelectedSheets = SheetNamesComboBox.SelectedItems;
@@ -714,41 +772,41 @@ namespace Blazor.Excelerate.Pages
                         Directory.CreateDirectory(newFolder);
 
                         // Set the newFolder
-                        generateClassModel.NewFolderPath = newFolder;
+                        generateClassesModel.NewFolderPath = newFolder;
 
                         // if there are one or more sheets
                         if (ListHelper.HasOneOrMoreItems(selectedSheets))
                         {
-                            foreach (string sheetName in generateClassModel.SheetNames)
+                            foreach (Item sheet in selectedSheets)
                             {
                                 // Create a new instance of a 'LoadWorksheetInfo' object.
                                 WorksheetInfo worksheetInfo = new WorksheetInfo();
 
                                 // Set the SheetName
-                                worksheetInfo.SheetName = sheetName;
+                                worksheetInfo.SheetName = sheet.Text;
 
                                 // Load all columns
                                 worksheetInfo.LoadColumnOptions = LoadColumnOptionsEnum.LoadAllColumnsExceptExcluded;
 
                                 // Load the worksheet
-                                Worksheet worksheet = ExcelDataLoader.LoadWorksheet(generateClassModel.ExcelPath, worksheetInfo);
+                                Worksheet worksheet = ExcelDataLoader.LoadWorksheet(generateClassesModel.ExcelPath, worksheetInfo);
 
                                 // Create a new codeGenerator
-                                CodeGenerator codeGenerator = new CodeGenerator(worksheet, newFolder, sheetName);
+                                CodeGenerator codeGenerator = new CodeGenerator(worksheet, newFolder, sheet.Text);
 
                                 // Generate a class and set the Namespace
-                                CodeGenerationResponse response = codeGenerator.GenerateClassFromWorksheet(generateClassModel.NamespaceName, TargetFrameworkEnum.Net7, false);
+                                CodeGenerationResponse response = codeGenerator.GenerateClassFromWorksheet(generateClassesModel.NamespaceName, generateClassesModel.TargetFramework, false);
 
                                 // if the response exists
                                 if (NullHelper.Exists(response))
                                 {
                                     // Add this response to the Responses collection
-                                    generateClassModel.Responses.Add(response);
+                                    generateClassesModel.Responses.Add(response);
                                 }
                             }
 
                             // Set the result
-                            e.Result = generateClassModel;
+                            e.Result = generateClassesModel;
                         }
                     }
                 }
@@ -1206,6 +1264,23 @@ namespace Blazor.Excelerate.Pages
                     
                     // return value
                     return hasSheetNamesComboBox;
+                }
+            }
+            #endregion
+            
+            #region HasTargetFrameworkComboBox
+            /// <summary>
+            /// This property returns true if this object has a 'TargetFrameworkComboBox'.
+            /// </summary>
+            public bool HasTargetFrameworkComboBox
+            {
+                get
+                {
+                    // initial value
+                    bool hasTargetFrameworkComboBox = (this.TargetFrameworkComboBox != null);
+                    
+                    // return value
+                    return hasTargetFrameworkComboBox;
                 }
             }
             #endregion
@@ -1700,6 +1775,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return statusStyle; }
                 set { statusStyle = value; }
+            }
+            #endregion
+            
+            #region TargetFrameworkComboBox
+            /// <summary>
+            /// This property gets or sets the value for 'TargetFrameworkComboBox'.
+            /// </summary>
+            public ComboBox TargetFrameworkComboBox
+            {
+                get { return targetFrameworkComboBox; }
+                set { targetFrameworkComboBox = value; }
             }
             #endregion
             

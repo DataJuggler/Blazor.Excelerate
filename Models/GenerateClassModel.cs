@@ -2,11 +2,8 @@
 
 #region using statements
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DataJuggler.Excelerate;
+using DataJuggler.NET8.Enumerations;
 
 #endregion
 
@@ -26,19 +23,21 @@ namespace Blazor.Excelerate.Models
         private string namespaceName;
         private string excelPath;
         private string newFolderPath;
+        private TargetFrameworkEnum targetFramework;
         private List<CodeGenerationResponse> responses;
         #endregion
         
-        #region Constructor(List<string> sheetNames, string namespaceName, string excelPath)
+        #region Constructor(List<string> sheetNames, string namespaceName, string excelPath, TargetFrameworkEnum targetFramework)
         /// <summary>
         /// Create a new instance of a 'GenerateClassModel' object.
         /// </summary>
-        public GenerateClassModel(List<string> sheetNames, string namespaceName, string excelPath)
+        public GenerateClassModel(List<string> sheetNames, string namespaceName, string excelPath, TargetFrameworkEnum targetFramework)
         {
             // store
             SheetNames = sheetNames;
             NamespaceName = namespaceName;
             ExcelPath = excelPath;
+            TargetFramework = targetFramework;
 
             // Create a list to store the Responses
             Responses = new List<CodeGenerationResponse>();
@@ -99,6 +98,17 @@ namespace Blazor.Excelerate.Models
             {
                 get { return sheetNames; }
                 set { sheetNames = value; }
+            }
+            #endregion
+            
+            #region TargetFramework
+            /// <summary>
+            /// This property gets or sets the value for 'TargetFramework'.
+            /// </summary>
+            public TargetFrameworkEnum TargetFramework
+            {
+                get { return targetFramework; }
+                set { targetFramework = value; }
             }
             #endregion
             
