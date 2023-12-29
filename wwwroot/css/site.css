@@ -219,11 +219,9 @@ margintopsmall
 }
 .progresscontainer
 {
-    position: fixed;
-    left: 56%;
-    top: 19.2vh;
-    transform: scale(.9);
-    transform-origin: left;
+    position: relative;
+    left: 35vw;
+    top: 30vh;
 }
 .savingexamplesgrid
 {
