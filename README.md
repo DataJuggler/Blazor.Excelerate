@@ -12,6 +12,8 @@ Code Generate C# Classes From Excel Header Rows
 Live Demo:
 <a href=https://excelerate.datajuggler.com target="_blank">https://excelerate.datajuggler.com</a>
 
+Update 1.14.2024: New Video - Import a Cities Database in Excel to SQL Server: https://youtu.be/6LsFP0puuyA
+
 Blazor Excelerate is an open source Blazor demo for Nuget DataJuggler.Excelerate, which is built on top of EPP Plus 4.5.3.3 (last free version).
 
 Instructions (copied from Index.razor.cs)
