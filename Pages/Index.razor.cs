@@ -17,7 +17,6 @@ using Microsoft.JSInterop;
 using System.Text;
 using Timer = System.Timers.Timer;
 using DataJuggler.Excelerate.Interfaces;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using System.Collections.Generic;
 
 #endregion
@@ -56,7 +55,7 @@ namespace Blazor.Excelerate.Pages
         private bool finishedLoading;
         private string selectClasses;                
         private string excelPath;        
-        private ValidationComponent namespaceComponent;
+        private TextBoxComponent namespaceComponent;
         private string status;
         private string statusStyle;
         private string labelColor;
@@ -353,7 +352,7 @@ namespace Blazor.Excelerate.Pages
                 if (HasTargetFrameworkComboBox)
                 {
                     // get the selected item
-                    string selectedText = TargetFrameworkComboBox.ButtonText;
+                    string selectedText = TargetFrameworkComboBox.SelectedText;
 
                     // If the selectedText string exists
                     if (TextHelper.Exists(selectedText))
@@ -702,7 +701,7 @@ namespace Blazor.Excelerate.Pages
                     else if (TextHelper.IsEqual(component.Name, "NamespaceComponent"))
                     {
                         // Store the NamespaceComponent
-                        NamespaceComponent = component as ValidationComponent;                    
+                        NamespaceComponent = component as TextBoxComponent;                    
                     }
                     else if (TextHelper.IsEqual(component.Name, "HideButton"))
                     {
@@ -1461,7 +1460,7 @@ namespace Blazor.Excelerate.Pages
             /// <summary>
             /// This property gets or sets the value for 'NamespaceComponent'.
             /// </summary>
-            public ValidationComponent NamespaceComponent
+            public TextBoxComponent NamespaceComponent
             {
                 get { return namespaceComponent; }
                 set { namespaceComponent = value; }
