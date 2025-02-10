@@ -15,14 +15,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\**" />
+    <Content Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BlazorStyled" Version="3.1.0" />
-    <PackageReference Include="DataJuggler.Blazor.Components" Version="9.0.0" />
-    <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="8.0.2" />
-    <PackageReference Include="DataJuggler.Excelerate" Version="9.0.0" />
+    <PackageReference Include="DataJuggler.Blazor.Components" Version="9.9.12" />
+    <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="9.0.2" />
+    <PackageReference Include="DataJuggler.Excelerate" Version="9.0.2" />
   </ItemGroup>
 
   <ItemGroup>

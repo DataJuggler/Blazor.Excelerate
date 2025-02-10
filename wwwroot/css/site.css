@@ -41,8 +41,8 @@
 {
     float: right;
     position: fixed;    
-    top: 16vh;  
-    right: 4%;    
+    bottom: 2vh;  
+    right: 2%;    
     width: 22%;    
     height: auto;
     min-height: 22vh;
@@ -50,6 +50,80 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
     z-index: -1;
+}
+.orangebutton
+{
+    background-color: transparent;
+    border: 0px;
+    outline: none;
+    background-image: url('../images/OrangeButton.png');
+    background-repeat: no-repeat;
+    width: 10vw;
+    height: 4vh;
+    background-size: 100% 100%;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    font-family: Verdana;
+    z-index: 0;
+}
+.row1
+{
+    display: inline-block;    
+    width: 40vw;
+    min-width: 40vw;
+    height: 6vh;
+    min-height: 6vh;
+    position: fixed;
+    top: 16vh;
+    left: 16vw;    
+}
+.row2
+{
+    display: inline-block;    
+    width: 40vw;
+    min-width: 40vw;
+    height: 6vh;
+    min-height: 6vh;
+    position: fixed;
+    top: 20vh;
+    left: 16vw;
+    vertical-align: top;
+    z-index: 1000 !important;    
+}
+.row3Column1
+{
+    display: inline-block;        
+    width: 12vw;
+    min-width: 12vw;
+    height: 6vh;
+    min-height: 6vh;
+    position: fixed;
+    top: 30vh;
+    left: 24vw;
+    vertical-align: top;    
+}
+.row3Column2
+{
+    display: inline-block;        
+    width: 12vw;
+    min-width: 12vw;
+    height: 6vh;
+    min-height: 6vh;
+    position: fixed;
+    top: 30vh;
+    left: 38vw;    
+}
+.row3Column3
+{
+    display: inline-block;        
+    width: 12vw;
+    min-width: 12vw;
+    height: 6vh;
+    min-height: 6vh;
+    position: fixed;
+    top: 30vh;
+    left: 52vw;    
 }
 .codetext
 {
@@ -81,14 +155,6 @@
     background-image: url('../images/BlueBody.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;    
-}
-.contentmaintoprow
-{
-    width: 100%;
-    position: fixed;
-    height: 12vh;    
-    left: 14%;
-    top: 0vh;
 }
 .customfileupload
 {  
@@ -220,8 +286,10 @@ margintopsmall
 .progresscontainer
 {
     position: relative;
-    left: 35vw;
-    top: 30vh;
+    left: 40vw;
+    top: 12vh;
+    transform: scale(0.75); /* Scales the element to 75% */
+    transform-origin: center; /* Transformation occurs from the center */
 }
 .savingexamplesgrid
 {
@@ -270,16 +338,24 @@ margintopsmall
     position: relative;
     left: 0%;
 }
+.downloadlocation
+{
+    position: fixed;
+    top: 16vh;
+    left: 38vw;
+    width: 46vw;
+    height: 8vh;    
+}
 .smallicon2
 {  
     background-image: url('../images/Zip.png');
     height: 4.2vh;
-    width: 4.2%;
+    width: 6.2%;
     background-size: 100% 100%;
     display: inline-block;
-    position: relative;
-    left: 6.4%;
-    top: 22vh;
+    position: absolute;
+    left: 0;
+    top: 0vh;
     color: white !important;
 }
 .smallicon2:hover
@@ -337,10 +413,6 @@ margintopsmall
 {
     color: white !important;
     font-size: 11.4px;
-}
-.zindex5
-{
-    z-index: 5;
 }
 
 a:link {

@@ -17,8 +17,7 @@ Code Generate C# Classes From Excel Header Rows
 Live Demo:
 <a href=https://excelerate.datajuggler.com target="_blank">https://excelerate.datajuggler.com</a>
 
-Blazor Excelerate is an open source Blazor demo for Nuget DataJuggler.Excelerate, which is built on top of EPP Plus 4.5.3.3 (last free version).
-
+Blazor Excelerate is an open source Blazor demo for Nuget DataJuggler.Excelerate, which is built on top of NPOI.
 Instructions (copied from Index.razor.cs)
 1. Prepare your spreadsheet (save as .xlsx extension) and ensure you have a header row, and the column names make good property names. 
    Download MemberData.xlsx to see an example (Downloads\MemberData.xlsx comes with this project and contains 20,000 random names and addresses).
@@ -36,7 +35,7 @@ Instructions (copied from Index.razor.cs)
    <img src =https://github.com/DataJuggler/SharedRepo/blob/master/Shared/Images/ExcelerateStep3.png><br>
 
 Tips / Troubleshooting
-It helps to have some rows of data to attempt to determine the data type. Getting the data type is kind of a hack, as I could not find away with EPP Plus to get the column data types.
+It helps to have some rows of data to attempt to determine the data type. Getting the data type is kind of a hack.
 
 # News
 

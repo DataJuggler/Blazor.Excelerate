@@ -2,22 +2,19 @@
 
 #region using statements
 
-using DataJuggler.Excelerate;
-using System.ComponentModel;
+using Blazor.Excelerate.Enumerations;
+using Blazor.Excelerate.Models;
 using DataJuggler.Blazor.Components.Util;
 using DataJuggler.Blazor.FileUpload;
-using Blazor.Excelerate.Models;
-using DataJuggler.NET8.Enumerations;
+using DataJuggler.Excelerate;
+using DataJuggler.NET9.Enumerations;
 using Microsoft.AspNetCore.Components;
+using System.ComponentModel;
+using System.Drawing;
 using System.IO.Compression;
 using System.Runtime.Versioning;
-using Blazor.Excelerate.Enumerations;
-using System.Drawing;
-using Microsoft.JSInterop;
 using System.Text;
 using Timer = System.Timers.Timer;
-using DataJuggler.Excelerate.Interfaces;
-using System.Collections.Generic;
 
 #endregion
 
@@ -33,6 +30,7 @@ namespace Blazor.Excelerate.Pages
     {
         
         #region Private Variables
+        private string labelColor;
         private string sideBarElementText;
         private string sideBarSmallText;
         private string sideBarLargeText;
@@ -55,18 +53,15 @@ namespace Blazor.Excelerate.Pages
         private bool finishedLoading;
         private string selectClasses;                
         private string excelPath;        
-        private TextBoxComponent namespaceComponent;
-        private string status;
-        private string statusStyle;
-        private string labelColor;
+        private TextBoxComponent namespaceComponent;        
+        private string statusStyle;        
         private List<CodeGenerationResponse> responses;
         private string downloadPath;
         private string mainContent;
         private string smallheader;
         private string instructionsLineHeight;
         private string grid;
-        private Sprite logo;
-        private string orangeButton;        
+        private Sprite logo;        
         private bool showProgress;
         private double proressPercent;
         private string versionStyle;
@@ -92,6 +87,8 @@ namespace Blazor.Excelerate.Pages
         private Timer timer;
         private string checkMarkClassName;
         private string checkMarkClassName2;
+        private bool showStatusMessage;
+        private Label statusLabel;
         
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -162,10 +159,14 @@ namespace Blazor.Excelerate.Pages
                     Response = null;
 
                     // Hide the "This class will only be available for the next hour"
-                    Status = "";
+                    ShowStatusMessage = false;
 
                     // reset back to gray                     
                     ButtonUrl = "../Images/ButtonDisabled.png";
+
+                    // Reset
+                    SheetItems = null;
+                    SheetNames = null;
 
                     // Reset
                     FileUpload.Reset();
@@ -415,14 +416,15 @@ namespace Blazor.Excelerate.Pages
             /// </summary>
             public void HandleGenerateClasses()
             {
-                // local
+                // locals
                 string namespaceName = "";
+                string status = "";
 
                 // if the NamespaceComponent exists
-                if ((HasNamespaceComponent) && (ListHelper.HasOneOrMoreItems(SheetNamesComboBox.SelectedItems)))
+                if ((HasNamespaceComponent) && (NamespaceComponent.HasText) && (ListHelper.HasOneOrMoreItems(SheetNamesComboBox.SelectedItems)))
                 {
                     // Make sure we have a Namespace
-                    bool isValid = NamespaceComponent.Validate();
+                    bool isValid = NamespaceComponent.HasText;
 
                     // Set the value
                     NamespaceComponent.IsValid = isValid;
@@ -454,6 +456,9 @@ namespace Blazor.Excelerate.Pages
                        {
                             // Start the Timer
                             InvisibleSprite.Start();
+
+                            // Update the UI
+                            Refresh();
                         }
 
                         // Get the selected TargetFramework
@@ -477,33 +482,44 @@ namespace Blazor.Excelerate.Pages
                         Worker.RunWorkerAsync(model);
 
                         // erase any validation messages
-                        Status = "";                        
+                        ShowStatusMessage = finishedLoading;                        
                     }
                     else
                     {
-                        // erase
-                        Status = "";
+                        // Show validation errors
+                        
 
                         // this is first
                         if (!FileHelper.Exists(ExcelPath))
                         {
                             // Set Status
-                            Status = "Upload an Excel file with a .xlsx extension.";
+                            status = "Upload an Excel file with a .xlsx extension.";
                         }
-                        else if (!NamespaceComponent.IsValid)
+                        else if (!NamespaceComponent.HasText)
                         {
-                            // use a red color
-                            LabelColor = "tomato";
-
                             // Set Status
-                            Status = "Namespace is required.";
+                            status = "Namespace is required.";
                         }
                         else if (!ListHelper.HasOneOrMoreItems(sheetNames))
                         {
                             // Set the Status if the SheetNames are not selected
-                            Status = "Select one or more sheets to continue.";
+                            status = "Select one or more sheets to continue.";
                         }
+
+                        // Display the message
+                        DisplayMessage(status, "tomato");
+
+                        // Updte the UI
+                        Refresh();
                     }                   
+                }
+                else if (!NamespaceComponent.HasText)
+                {
+                    // Set Status
+                    DisplayMessage("Namespace is required.", "tomato");
+
+                    // Update the UI
+                    Refresh();
                 }
             }
             #endregion
@@ -521,13 +537,32 @@ namespace Blazor.Excelerate.Pages
                 ButtonUrl = "../Images/ButtonDisabled.png";
 
                 // Default to hidden for the ComboBox
-                DisplayStyle = "none";
+                DisplayStyle = "inline-block";
 
                 // Default to Instructions
                 MainContentDisplay = MainContentDisplayEnum.Instructions;
 
                 // Hide the checkmark
                 CheckVisibility = "hidden";
+            }
+            #endregion
+
+            #region OnAfterRenderAsync(bool firstRender)
+            /// <summary>
+            /// This method is used to verify a user
+            /// </summary>
+            /// <param name="firstRender"></param>
+            /// <returns></returns>
+            protected async override Task OnAfterRenderAsync(bool firstRender)
+            {
+                if (firstRender)
+                {
+                    // Hide the SheetNamesComboBox
+                    DisplayStyle = "none";
+                }
+
+                // call the base
+                await base.OnAfterRenderAsync(firstRender);
             }
             #endregion
             
@@ -657,6 +692,11 @@ namespace Blazor.Excelerate.Pages
                     // store the FileUpload
                     FileUpload = component as FileUpload;
                 }
+                else if (component is Label tempLabel)
+                {
+                    // Set the StatusLabel
+                    StatusLabel = tempLabel;
+                }
                 else
                 {
                     if (TextHelper.IsEqual(component.Name, "UploadExcelButton"))
@@ -670,10 +710,10 @@ namespace Blazor.Excelerate.Pages
                     else if (TextHelper.IsEqual(component.Name, "GenerateClassesButton"))
                     {
                         // Store this object
-                        this.GenerateClassesButton = component as ImageButton;
+                        GenerateClassesButton = component as ImageButton;
 
                         // Setup the ClickHandler
-                        this.GenerateClassesButton.SetClickHandler(ButtonClicked);
+                        GenerateClassesButton.SetClickHandler(ButtonClicked);
                     }
                     else if (TextHelper.IsEqual(component.Name, "TargetFrameworkComboBox"))
                     {
@@ -690,7 +730,8 @@ namespace Blazor.Excelerate.Pages
                             targetFrameworkComboBox.Items.RemoveAt(0);
                             targetFrameworkComboBox.Items.RemoveAt(0);
 
-                            targetFrameworkComboBox.SetSelectedItem(".Net8");
+                            // Set the SelectedItem                            
+                            targetFrameworkComboBox.SetSelectedItem(TargetFrameworkEnum.Net9.ToString());
                         }                        
                     }
                     else if (TextHelper.IsEqual(component.Name, "SheetNamesComboBox"))
@@ -723,6 +764,36 @@ namespace Blazor.Excelerate.Pages
                             ResetFileUploadButton.SetClickHandler(ButtonClicked);
                         }
                     }        
+                }
+            }
+            #endregion
+
+            #region DisplayMessage(string messageText, string color)
+            /// <summary>
+            /// Display Message
+            /// </summary>
+            public async void DisplayMessage(string messageText, string color)
+            {
+                // if the value for HasStatusLabel is true
+                if (HasStatusLabel)
+                {
+                    // Set the LabelColor
+                    LabelColor = color;
+
+                    // Set the Text
+                    StatusLabel.SetTextValue(messageText);
+
+                    // Display the message
+                    ShowStatusMessage = true;
+
+                    // Show the StatusLabel
+                    StatusLabel.SetVisibility(true);
+
+                    // Update the UI
+                    Refresh();
+
+                    // Set the visibility to fade away
+                    await StatusLabel.ShowThenHide();
                 }
             }
             #endregion
@@ -798,7 +869,7 @@ namespace Blazor.Excelerate.Pages
 
                                 // if the response exists
                                 if (NullHelper.Exists(response))
-                                {
+                                {  
                                     // Add this response to the Responses collection
                                     generateClassesModel.Responses.Add(response);
                                 }
@@ -865,11 +936,6 @@ namespace Blazor.Excelerate.Pages
 
                             // Set the Items
                             SheetNamesComboBox.Items = SheetItems;
-
-                            // Select the first sheet
-                            ChangeEventArgs changeEventArgs = new ChangeEventArgs();
-                            changeEventArgs.Value = SheetItems[0].Text;
-                            SheetNamesComboBox.SelectionChanged(changeEventArgs);                        
                         }                       
                     }
                     else if (NullHelper.Exists(generateClassModel))
@@ -890,7 +956,7 @@ namespace Blazor.Excelerate.Pages
                             Response.Success = true;
 
                             // Set the Status
-                            Status = "This zip file will only be available for download for the next hour.";
+                            DisplayMessage("This zip file will only be available to download for the next hour.", "GhostWhite");
 
                             // reference System.IO.Compression
                             using (var zip = ZipFile.Open(newFileName, ZipArchiveMode.Create))
@@ -934,17 +1000,11 @@ namespace Blazor.Excelerate.Pages
 
                             // Set the FullPath
                             Response.FullPath = DownloadPath;
-
-                            // use white
-                            LabelColor = "white";                            
                         }
                         else
                         {
                             // Set the Status
-                            Status = "Oops! Something went wrong.";
-
-                            // use a red color
-                            LabelColor = "tomato";
+                            DisplayMessage("Oops! Something went wrong.", "tomato");
                         }
                     }
 
@@ -1250,6 +1310,23 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region HasSheetItems
+            /// <summary>
+            /// This property returns true if this object has a 'SheetItems'.
+            /// </summary>
+            public bool HasSheetItems
+            {
+                get
+                {
+                    // initial value
+                    bool hasSheetItems = (SheetItems != null);
+
+                    // return value
+                    return hasSheetItems;
+                }
+            }
+            #endregion
+            
             #region HasSheetNamesComboBox
             /// <summary>
             /// This property returns true if this object has a 'SheetNamesComboBox'.
@@ -1263,6 +1340,23 @@ namespace Blazor.Excelerate.Pages
                     
                     // return value
                     return hasSheetNamesComboBox;
+                }
+            }
+            #endregion
+            
+            #region HasStatusLabel
+            /// <summary>
+            /// This property returns true if this object has a 'StatusLabel'.
+            /// </summary>
+            public bool HasStatusLabel
+            {
+                get
+                {
+                    // initial value
+                    bool hasStatusLabel = (StatusLabel != null);
+
+                    // return value
+                    return hasStatusLabel;
                 }
             }
             #endregion
@@ -1467,17 +1561,6 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
-            #region OrangeButton
-            /// <summary>
-            /// This property gets or sets the value for 'OrangeButton'.
-            /// </summary>
-            public string OrangeButton
-            {
-                get { return orangeButton; }
-                set { orangeButton = value; }
-            }
-            #endregion
-
             #region Percent
             /// <summary>
             /// This property gets or sets the value for 'Percent'.
@@ -1689,6 +1772,17 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
+            #region ShowStatusMessage
+            /// <summary>
+            /// This property gets or sets the value for 'ShowStatusMessage'.
+            /// </summary>
+            public bool ShowStatusMessage
+            {
+                get { return showStatusMessage; }
+                set { showStatusMessage = value; }
+            }
+            #endregion
+            
             #region SideBarElementText
             /// <summary>
             /// This property gets or sets the value for 'SideBarElementText'.
@@ -1755,14 +1849,14 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
-            #region Status
+            #region StatusLabel
             /// <summary>
-            /// This property gets or sets the value for 'Status'.
+            /// This property gets or sets the value for 'StatusLabel'.
             /// </summary>
-            public string Status
+            public Label StatusLabel
             {
-                get { return status; }
-                set { status = value; }
+                get { return statusLabel; }
+                set { statusLabel = value; }
             }
             #endregion
             
