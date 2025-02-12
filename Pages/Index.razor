@@ -126,7 +126,7 @@
     text-align: center;
     position: absolute;
     top: 24vh;
-    left: -4%;
+    left: -20vw;
     width: 60%;
     height: 2.8vh;
     line-height: 2.8vh;
@@ -257,19 +257,19 @@ Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
     <div class="row3Column1">
         <div class="@SelectClasses">
             <ComboBox Name="SheetNamesComboBox" Theme=ThemeEnum.BlueGold Unit="px" HeightUnit="px"
-                Height="32" LabelText="Select Classes:" Width="224" LabelPosition="relative" LabelLeft="32"
-                Parent="this" ButtonHeight=24 ButtonWidth=24 Left="-100" Top="0" LabelColor="Color.GhostWhite"
-                ListItemHeight="2.4" ZIndex=201 ControlHeight=32 ListContainerLeft="36" ListContainerTop="1"
+                Height="32" LabelText="Select Sheets:" Width="224" LabelPosition="relative" LabelLeft="32"
+                Parent="this" ButtonHeight=24 ButtonWidth=24 Left="-100" Top="0" LabelColor="Color.GhostWhite"                       
+                ListItemHeight="3.6" ZIndex=1201 ControlHeight=32 ListContainerLeft="36" ListContainerTop="1"
                 CheckedListClassName="container border1gray textdonotwrap" TextBoxLeft="-2"
-                ButtonTop=1 ButtonLeft="-4" Column2Width="128" Position="relative"
-                LabelFontSize="14" 
+                ButtonTop=0 ButtonLeft="-4" Column2Width="128" Position="relative"
+                LabelFontSize="14" ListItemMarginBottom="1" NotifyParentOnBlur="true"
                 LabelClassName="down4 left32" TextBoxWidth="@GlobalDefaults.TextBoxWidth" LabelFontName="Calibri"
-                CheckListMode=true CheckedListUnit="vw" CheckedListHeightUnit="vh" CheckedListheight="20"
-                CheckedListItemLeft="0" CheckedListItemTop=0
-                CheckBoxXPosition="-1.6" CheckBoxYPosition=".4" CheckBoxTextXPosition="-1.6"
+                CheckListMode=true CheckedListUnit="vw" CheckedListHeightUnit="vh" CheckedListheight="24"
+                CheckedListItemLeft="0" CheckedListItemTop=0 CheckBoxHeight="1.85" CheckBoxWidth="1.85"
+                CheckBoxXPosition="0" CheckBoxYPosition=".32" CheckBoxTextXPosition=".4"
                 CheckBoxTextYPosition="0" CheckedListWidth=9.3 CheckedListTop="26"
                 CheckedListLeft="5" ListItemWidth=4>
-            </ComboBox>            
+        </ComboBox>
         </div>
         <FileUpload CustomSuccessMessage="Your file uploaded successfully."
                 OnReset="OnReset" ResetButtonClassName="localbutton" ShowStatus="false"
