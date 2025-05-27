@@ -347,7 +347,7 @@ namespace Blazor.Excelerate.Pages
             public TargetFrameworkEnum GetSelectedTargetFramework()
             {
                 // initial value
-                TargetFrameworkEnum targetFramework = TargetFrameworkEnum.Net8;
+                TargetFrameworkEnum targetFramework = TargetFrameworkEnum.Net9;
 
                 // if the value for HasTargetFrameworkComboBox is true
                 if (HasTargetFrameworkComboBox)
@@ -358,7 +358,12 @@ namespace Blazor.Excelerate.Pages
                     // If the selectedText string exists
                     if (TextHelper.Exists(selectedText))
                     {
-                        if (TextHelper.IsEqual(selectedText, "Net7"))
+                        if (TextHelper.IsEqual(selectedText, "Net8"))
+                        {
+                            // .NET8
+                            targetFramework = TargetFrameworkEnum.Net8;
+                        }
+                        else if (TextHelper.IsEqual(selectedText, "Net7"))
                         {
                             // .NET7
                             targetFramework = TargetFrameworkEnum.Net7;

@@ -225,50 +225,50 @@ Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
 </div>
 <div class="topright">
     <div class="@VersionStyle">
-        Version 3.0.0
+        Version 3.1.0
     </div>    
     <a class="noborder" href="https://datajuggler.com"><div class="businesscard"></div></a>
 </div>
 <div class="contentmain">
     <div class="tabrow">
         <ImageButton TextColor="@InstructionButtonTextColor" ButtonNumber="4" Name="InstructionsButton" Unit="vw"
-        HeightUnit="vh" Height="4.8" Width="8.8" ButtonText="Instructions" ImageUrl="@InstructionButtonUrl"
-        TextSize="TextSizeEnum.MediumLarge" ClickHandler="@ButtonClicked"></ImageButton>
+        HeightUnit="vh" Height="4.8" Width="8.8" Text="Instructions" ImageUrl="@InstructionButtonUrl"
+        FontSize="1.4" ClickHandler="@ButtonClicked"></ImageButton>
         <ImageButton TextColor="@LoadingButtonTextColor" ButtonNumber="5" Name="LoadingButton" Unit="vw"            
-        HeightUnit="vh" Height="4.8" Width="8.8" ButtonText="How To Load" ImageUrl="@LoadingButtonUrl"
-        TextSize="TextSizeEnum.MediumLarge" ClickHandler="@ButtonClicked"></ImageButton>
+        HeightUnit="vh" Height="4.8" Width="8.8" Text="How To Load" ImageUrl="@LoadingButtonUrl"
+        FontSize="1.4" ClickHandler="@ButtonClicked"></ImageButton>
         <ImageButton TextColor="@SavingButtonTextColor" ButtonNumber="6" Name="SavingButton" Unit="vw"
-        HeightUnit ="vh" Height="4.8" Width="8.8" ButtonText="How To Save" ImageUrl="@SavingButtonUrl"
-        TextSize="TextSizeEnum.MediumLarge" ClickHandler="@ButtonClicked"></ImageButton>
+        HeightUnit ="vh" Height="4.8" Width="8.8" Text="How To Save" ImageUrl="@SavingButtonUrl"
+        FontSize="1.4" ClickHandler="@ButtonClicked"></ImageButton>
     </div>        
     <div class="row row1">
         <TextBoxComponent Name="NamespaceComponent" Caption="Namespace:" Parent="this"
         LabelColor="GhostWhite" LabelFontName="Calibri" LabelFontSize="14" 
-        LabelLeft="0">
-        </TextBoxComponent>
+        LabelLeft="0"></TextBoxComponent>
     </div>
     <div class="row row2">
         <ComboBox Name="TargetFrameworkComboBox" Parent="this" LabelText=".NET Framework:"
-        LabelColor="Color.GhostWhite" Theme="ThemeEnum.BlueGold" ListItemLeft="0"            
-        ListItemTop="0" ListContainerPosition="absolute" ZIndex="100"
-        LabelFontName="Calibri" LabelFontSize="14" ButtonHeight="24">
+        LabelColor="Color.GhostWhite" Theme="ThemeEnum.BlueGold" ListItemLeft="0" Height="28"
+        ListItemTop="0" ListContainerPosition="absolute" ZIndex="100" ButtonTop=-2 Left=-5
+        TextBoxWidth="@GlobalDefaults.TextBoxWidth"
+        LabelFontName="Calibri" LabelFontSize="14" ButtonHeight="25">
         </ComboBox>
     </div>
     <div class="row3Column1">
         <div class="@SelectClasses">
             <ComboBox Name="SheetNamesComboBox" Theme=ThemeEnum.BlueGold Unit="px" HeightUnit="px"
-                Height="32" LabelText="Select Sheets:" Width="224" LabelPosition="relative" LabelLeft="32"
-                Parent="this" ButtonHeight=24 ButtonWidth=24 Left="-100" Top="0" LabelColor="Color.GhostWhite"                       
+                Height="28" LabelText="Select Sheets:" Width="224" LabelPosition="relative" LabelLeft="32"
+                Parent="this" ButtonHeight=25 ButtonWidth=24 Left="-101.7" Top="0" LabelColor="Color.GhostWhite"                       
                 ListItemHeight="3.6" ZIndex=1201 ControlHeight=32 ListContainerLeft="36" ListContainerTop="1"
-                CheckedListClassName="container border1gray textdonotwrap" TextBoxLeft="-2"
-                ButtonTop=0 ButtonLeft="-4" Column2Width="128" Position="relative"
+                CheckedListClassName="container border1gray textdonotwrap" TextBoxLeft="-4"
+                ButtonTop=-2 ButtonLeft="-6" Column2Width="128" Position="relative"                
                 LabelFontSize="14" ListItemMarginBottom="1" NotifyParentOnBlur="true"
                 LabelClassName="down4 left32" TextBoxWidth="@GlobalDefaults.TextBoxWidth" LabelFontName="Calibri"
-                CheckListMode=true CheckedListUnit="vw" CheckedListHeightUnit="vh" CheckedListheight="24"
-                CheckedListItemLeft="0" CheckedListItemTop=0 CheckBoxHeight="1.85" CheckBoxWidth="1.85"
-                CheckBoxXPosition="0" CheckBoxYPosition=".32" CheckBoxTextXPosition=".4"
-                CheckBoxTextYPosition="0" CheckedListWidth=9.3 CheckedListTop="26"
-                CheckedListLeft="5" ListItemWidth=4>
+                CheckListMode=true CheckedListUnit="vw" CheckedListHeightUnit="vh" CheckedListheight="24"                
+                CheckedListItemLeft="-.2" CheckedListItemTop=0 CheckBoxHeight="1.85" CheckBoxWidth="1.85"                
+                CheckBoxXPosition="0" CheckBoxYPosition=".32" CheckBoxTextXPosition="-.4"
+                CheckBoxTextYPosition="0" CheckedListWidth=8.8 CheckedListTop="26"
+                CheckedListLeft="5.28" ListItemWidth=8>
         </ComboBox>
         </div>
         <FileUpload CustomSuccessMessage="Your file uploaded successfully."
@@ -283,13 +283,13 @@ Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
         </FileUpload>
     </div>
     <div class="row3Column2">
-        <ImageButton ButtonNumber="1" ButtonText="Generate Classes" Name="GenerateClassesButton"
-            Unit="vw" HeightUnit="vh" Height="4" ZIndex="0" Position="relative" Left="0"
-            Width="12" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>    
+        <ImageButton ButtonNumber="1" Text="Generate Classes" Name="GenerateClassesButton"
+            Unit="vw" HeightUnit="vh" Height="4" ZIndex="0" FontSize="1.4" Position="relative" Left="0"
+            Width="12" ImageUrl="@ButtonUrl" TextColor="Color.Black" Parent="this"></ImageButton>    
     </div>
     <div class="row3Column3">
-        <ImageButton ButtonNumber="2" ButtonText="Reset" Name="ResetFileUploadButton"
-            Unit="vw" HeightUnit="vh" Height="4" ZIndex="0" Position="relative" Left="0"
+        <ImageButton ButtonNumber="2" Text="Reset" Name="ResetFileUploadButton"
+            Unit="vw" HeightUnit="vh" Height="4" ZIndex="0" FontSize=1.4 Position="relative" Left="0"
             Width="8" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>
     </div>    
     <div class="@StatusStyle">
@@ -300,10 +300,10 @@ Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
     @if ((HasResponse) && (Response.Success) && (Response.HasFileName) && (Response.HasFullPath))
      { 
         <div class="downloadlocation" >
-            <div class="smallicon2 text-white text-nowrap">
+            <div class="smallicon2 text-white textdonotwrap">
                 <a class="@DownloadLink2 downloadlink2hover" download="@Response.FileName" 
                 href="@DownloadPath" target="_blank">@Response.FileName</a><br />
-                <span class="small text-white movedownsmall">
+                <span class="fontsize16 fontnamecalibri text-white down18">
                     Browsers do not allow downloading .cs extensions. Download this zip file and extract contents.
                 </span>
             </div>
@@ -314,8 +314,8 @@ Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
             @if (MainContentDisplay != MainContentDisplayEnum.None)
             {
                 <div class="column instructionscolumn1">
-                    <ImageButton ButtonNumber="3" ButtonText="Hide" Name="HideButton"
-                        TextSize="TextSizeEnum.Large" HeightUnit="vh" Height="4" ZIndex="52"
+                    <ImageButton ButtonNumber="3" Text="Hide" Name="HideButton"
+                        FontSize="16" HeightUnit="vh" Height="4" ZIndex="52"
                         Width="120" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
                 </div>
             }
@@ -391,7 +391,7 @@ Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
                         </div>                        
                     </div>
                 </div>
-                <ImageButton ButtonNumber="7" ButtonText="Copy" Name="CopyButton" Position="fixed"
+                <ImageButton ButtonNumber="7" Text="Copy" Name="CopyButton" Position="fixed"
                     Left="52" Top="92" HeightUnit="vh" Height="4"  ZIndex="120" ClickHandler="@ButtonClicked"
                     Width="96" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
                 <div class="@CheckMarkClassName"></div>
@@ -422,7 +422,7 @@ Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
                         </div>
                     </div>
                 </div>
-                <ImageButton ButtonNumber="8" ButtonText="Copy" Name="CopyButton2" Position="fixed"
+                <ImageButton ButtonNumber="8" Text="Copy" Name="CopyButton2" Position="fixed"
                         Left="52" Top="76.4" HeightUnit="vh" Height="4" ZIndex="120" ClickHandler="@ButtonClicked"
                              Width="96" ImageUrl="../Images/OrangeButton.png" Parent="this"></ImageButton>
                 <div class="@CheckMarkClassName2"></div>

@@ -1,15 +1,17 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using Blazor.Excelerate;
 using BlazorStyled;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor().AddInteractiveServerComponents();
 builder.Services.AddBlazorStyled();
 
 var app = builder.Build();
+
+// app.MapRazorComponents<App>()
+    // .AddInteractiveServerRenderMode();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
