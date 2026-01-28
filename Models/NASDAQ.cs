@@ -3,7 +3,7 @@
 #region using statements
 
 using DataJuggler.Excelerate;
-using DataJuggler.NET9;
+using DataJuggler.NET.Data;
 using DataJuggler.Excelerate.Interfaces;
 
 #endregion

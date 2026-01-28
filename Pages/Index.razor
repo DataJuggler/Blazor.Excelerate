@@ -140,6 +140,15 @@
     color: white;
     font-size: 14px;
 </Styled>
+<Styled @bind-Classname="DownloadContainer">
+    position: fixed;
+    top: 36vh;
+    left: 20vw;
+    width: 48vw;
+    min-width: 40vw;
+    height: 10.8vh;
+    min-height: 12vh;
+</Styled>
 
 <div class="sidebar">
     <div class="sidebarelement">
@@ -213,8 +222,8 @@
     </div>    
 </div>
 <Sprite Name="Logo" Parent="this" Height="10.8" Width="8.4"
-XPosition="2.68" YPosition="2" Visible="true" Position="fixed" 
-Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
+    X="2.68" Y="2" Visible="true" Position="fixed" 
+    Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
 </Sprite>
 <div class="topbar">
     <div class="logotext">
@@ -243,53 +252,54 @@ Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
     </div>        
     <div class="row row1">
         <TextBoxComponent Name="NamespaceComponent" Caption="Namespace:" Parent="this"
-        LabelColor="GhostWhite" LabelFontName="Calibri" LabelFontSize="14" 
-        LabelLeft="0"></TextBoxComponent>
+        LabelColor=@Color.GhostWhite LabelFontName="Calibri" LabelFontSize="14" 
+        LabelLeft="0" LabelClassName="textalignright"></TextBoxComponent>
     </div>
     <div class="row row2">
         <ComboBox Name="TargetFrameworkComboBox" Parent="this" LabelText=".NET Framework:"
-        LabelColor="Color.GhostWhite" Theme="ThemeEnum.BlueGold" ListItemLeft="0" Height="28"
-        ListItemTop="0" ListContainerPosition="absolute" ZIndex="100" ButtonTop=-2 Left=-5
-        TextBoxWidth="@GlobalDefaults.TextBoxWidth"
-        LabelFontName="Calibri" LabelFontSize="14" ButtonHeight="25">
+        LabelColor="Color.GhostWhite" Theme="ThemeEnum.BlueGold" ListItemLeft="80" Height="28"
+        TextBoxLeft="8" ListItemTop="26" ListContainerPosition="absolute" ZIndex="100" ButtonTop=-5 Left=-2
+        LabelClassName="textallignright"
+        TextBoxWidth="@GlobalDefaults.TextBoxWidth" ButtonLeft="11" ListItemWidth="@GlobalDefaults.TextBoxWidth"
+        LabelFontName="Calibri" LabelFontSize="14" ButtonHeight="21">
         </ComboBox>
     </div>
     <div class="row3Column1">
         <div class="@SelectClasses">
             <ComboBox Name="SheetNamesComboBox" Theme=ThemeEnum.BlueGold Unit="px" HeightUnit="px"
-                Height="28" LabelText="Select Sheets:" Width="224" LabelPosition="relative" LabelLeft="32"
-                Parent="this" ButtonHeight=25 ButtonWidth=24 Left="-101.7" Top="0" LabelColor="Color.GhostWhite"                       
-                ListItemHeight="3.6" ZIndex=1201 ControlHeight=32 ListContainerLeft="36" ListContainerTop="1"
-                CheckedListClassName="container border1gray textdonotwrap" TextBoxLeft="-4"
-                ButtonTop=-2 ButtonLeft="-6" Column2Width="128" Position="relative"                
-                LabelFontSize="14" ListItemMarginBottom="1" NotifyParentOnBlur="true"
-                LabelClassName="down4 left32" TextBoxWidth="@GlobalDefaults.TextBoxWidth" LabelFontName="Calibri"
-                CheckListMode=true CheckedListUnit="vw" CheckedListHeightUnit="vh" CheckedListheight="24"                
-                CheckedListItemLeft="-.2" CheckedListItemTop=0 CheckBoxHeight="1.85" CheckBoxWidth="1.85"                
-                CheckBoxXPosition="0" CheckBoxYPosition=".32" CheckBoxTextXPosition="-.4"
-                CheckBoxTextYPosition="0" CheckedListWidth=8.8 CheckedListTop="26"
-                CheckedListLeft="5.28" ListItemWidth=8>
+                Height="28" LabelText="Select Sheets:" Width="@GlobalDefaults.TextBoxWidth" LabelPosition="relative"
+                Parent="this" ButtonHeight=24 ButtonWidth=24 Left="-104" Top="-2" LabelColor="Color.GhostWhite"                       
+                ListItemHeight="28" ZIndex=1201 ControlHeight=32 ListContainerLeft="104" ListContainerTop="-1"                
+                CheckedListClassName="container border1gray textdonotwrap" TextBoxLeft="-4" ListContainerHeight="256"
+                ButtonTop=-5 ButtonLeft="12" Column2Width="@GlobalDefaults.TextBoxWidth" Position="relative"           
+                LabelFontSize="14" ListItemMarginBottom="1" NotifyParentOnBlur="true" 
+                LabelClassName="textallignright down4" TextBoxWidth="@GlobalDefaults.TextBoxWidth" LabelFontName="Calibri"
+                CheckListMode=true CheckedListUnit="px" CheckedListHeightUnit="px" CheckedListheight="24"                
+                CheckedListItemLeft="-.16" CheckedListItemTop=0 CheckBoxHeight="16" CheckBoxWidth="16"                
+                CheckBoxX="0" CheckBoxY=".32" CheckBoxTextX="-.4" 
+                CheckBoxTextY="3.2" CheckedListWidth=8.8 CheckedListTop="26"
+                CheckedListLeft="5.28" ListItemWidth="@GlobalDefaults.TextBoxWidth">
         </ComboBox>
         </div>
         <FileUpload CustomSuccessMessage="Your file uploaded successfully."
                 OnReset="OnReset" ResetButtonClassName="localbutton" ShowStatus="false"
                 PartialGuidLength="12" MaxFileSize=@UploadLimit FilterByExtension="true"
                 ShowCustomButton="true" ButtonText="Upload Excel" OnChange="OnFileUploaded"
-                CustomButtonClassName="orangebutton" AllowedExtensions=".xlsx"
+                CustomButtonClassName="orangebutton positionrelative right48" AllowedExtensions=".xlsx"                
                 ShowResetButton="false" AppendPartialGuid="true" Parent="this"
                 CustomExtensionMessage="Only .xlsx extensions are allowed."
-                InputFileClassName="customfileupload" Status="Refresh"
+                InputFileClassName="customfileupload" Status="Refresh"                
                 FileTooLargeMessage=@FileTooLargeMessage>
         </FileUpload>
     </div>
     <div class="row3Column2">
         <ImageButton ButtonNumber="1" Text="Generate Classes" Name="GenerateClassesButton"
-            Unit="vw" HeightUnit="vh" Height="4" ZIndex="0" FontSize="1.4" Position="relative" Left="0"
+            Unit="vw" HeightUnit="vh" Height="4" ZIndex="0" FontSize="1.4" Position="relative" Left="2"
             Width="12" ImageUrl="@ButtonUrl" TextColor="Color.Black" Parent="this"></ImageButton>    
     </div>
     <div class="row3Column3">
         <ImageButton ButtonNumber="2" Text="Reset" Name="ResetFileUploadButton"
-            Unit="vw" HeightUnit="vh" Height="4" ZIndex="0" FontSize=1.4 Position="relative" Left="0"
+            Unit="vw" HeightUnit="vh" Height="4" ZIndex="0" FontSize=1.4 Position="relative" Left="2"
             Width="8" ImageUrl="@ButtonUrl" Parent="this"></ImageButton>
     </div>    
     <div class="@StatusStyle">
@@ -297,18 +307,18 @@ Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
             Left="20" TextColor="@LabelColor" FontSize="20" TextAlign="center" ClientId="statuslabel"
             Width="60" Visible="@ShowStatusMessage"></Label>
     </div>
-    @if ((HasResponse) && (Response.Success) && (Response.HasFileName) && (Response.HasFullPath))
-     { 
-        <div class="downloadlocation" >
-            <div class="smallicon2 text-white textdonotwrap">
-                <a class="@DownloadLink2 downloadlink2hover" download="@Response.FileName" 
+    <div class="@DownloadContainer">
+        @if ((HasResponse) && (Response.Success) && (Response.HasFileName) && (Response.HasFullPath))
+        {
+            <div class="displayinline smallicon2 text-white textdonotwrap">
+                <a class="@DownloadLink2 downloadlink2hover down2" download="@Response.FileName" 
                 href="@DownloadPath" target="_blank">@Response.FileName</a><br />
-                <span class="fontsize16 fontnamecalibri text-white down18">
+                <span class="displayinline fontsize16 fontnamecalibri text-white down16">
                     Browsers do not allow downloading .cs extensions. Download this zip file and extract contents.
                 </span>
             </div>
-        </div>
-    }
+        }
+    </div>
     <div class="@MainContent">
         <div class="@Grid">
             @if (MainContentDisplay != MainContentDisplayEnum.None)
@@ -443,5 +453,5 @@ Subscriber=this ImageUrl="../images/ExcelerateLogoSmallWhite.png">
     </div>
 }
 <Sprite Subscriber=this Visible="true" Interval="60" Position="fixed" Name="InvisibleSprite"
-        XPosition="-500" YPosition="100" Width="120" Height="120" ZIndex="-1">
+        X="-500" Y="100" Width="120" Height="120" ZIndex="-1">
 </Sprite>

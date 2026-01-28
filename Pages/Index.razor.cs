@@ -7,7 +7,7 @@ using Blazor.Excelerate.Models;
 using DataJuggler.Blazor.Components.Util;
 using DataJuggler.Blazor.FileUpload;
 using DataJuggler.Excelerate;
-using DataJuggler.NET9.Enumerations;
+using DataJuggler.NET.Data.Enumerations;
 using Microsoft.AspNetCore.Components;
 using System.ComponentModel;
 using System.Drawing;
@@ -30,7 +30,7 @@ namespace Blazor.Excelerate.Pages
     {
         
         #region Private Variables
-        private string labelColor;
+        private Color labelColor;
         private string sideBarElementText;
         private string sideBarSmallText;
         private string sideBarLargeText;
@@ -89,6 +89,7 @@ namespace Blazor.Excelerate.Pages
         private string checkMarkClassName2;
         private bool showStatusMessage;
         private Label statusLabel;
+        private string downloadContainer;
         
         // 20 megs hard coded for now
         private const int UploadLimit = 20971520;
@@ -330,16 +331,6 @@ namespace Blazor.Excelerate.Pages
             }
             #endregion
             
-            #region FindChildByName(string name)
-            /// <summary>
-            /// method Find Child By Name
-            /// </summary>
-            public IBlazorComponent FindChildByName(string name)
-            {
-                return ComponentHelper.FindChildByName(children, name);
-            }
-            #endregion
-
             #region GetSelectedTargetFramework()
             /// <summary>
             /// returns the Selected Target Framework
@@ -512,7 +503,7 @@ namespace Blazor.Excelerate.Pages
                         }
 
                         // Display the message
-                        DisplayMessage(status, "tomato");
+                        DisplayMessage(status, Color.Tomato);
 
                         // Updte the UI
                         Refresh();
@@ -521,7 +512,7 @@ namespace Blazor.Excelerate.Pages
                 else if (!NamespaceComponent.HasText)
                 {
                     // Set Status
-                    DisplayMessage("Namespace is required.", "tomato");
+                    DisplayMessage("Namespace is required.", Color.Tomato);
 
                     // Update the UI
                     Refresh();
@@ -736,7 +727,7 @@ namespace Blazor.Excelerate.Pages
                             targetFrameworkComboBox.Items.RemoveAt(0);
 
                             // Set the SelectedItem                            
-                            targetFrameworkComboBox.SetSelectedItem(TargetFrameworkEnum.Net9.ToString());
+                            targetFrameworkComboBox.SetSelectedItem(TargetFrameworkEnum.Net10.ToString());
                         }                        
                     }
                     else if (TextHelper.IsEqual(component.Name, "SheetNamesComboBox"))
@@ -777,7 +768,7 @@ namespace Blazor.Excelerate.Pages
             /// <summary>
             /// Display Message
             /// </summary>
-            public async void DisplayMessage(string messageText, string color)
+            public async void DisplayMessage(string messageText, Color color)
             {
                 // if the value for HasStatusLabel is true
                 if (HasStatusLabel)
@@ -792,7 +783,7 @@ namespace Blazor.Excelerate.Pages
                     ShowStatusMessage = true;
 
                     // Show the StatusLabel
-                    StatusLabel.SetVisibility(true);
+                    StatusLabel.SetVisible(true);
 
                     // Update the UI
                     Refresh();
@@ -961,7 +952,7 @@ namespace Blazor.Excelerate.Pages
                             Response.Success = true;
 
                             // Set the Status
-                            DisplayMessage("This zip file will only be available to download for the next hour.", "GhostWhite");
+                            DisplayMessage("This zip file will only be available to download for the next hour.", Color.GhostWhite);
 
                             // reference System.IO.Compression
                             using (var zip = ZipFile.Open(newFileName, ZipArchiveMode.Create))
@@ -1009,7 +1000,7 @@ namespace Blazor.Excelerate.Pages
                         else
                         {
                             // Set the Status
-                            DisplayMessage("Oops! Something went wrong.", "tomato");
+                            DisplayMessage("Oops! Something went wrong.", Color.Tomato);
                         }
                     }
 
@@ -1105,6 +1096,17 @@ namespace Blazor.Excelerate.Pages
             {
                 get { return displayStyle; }
                 set { displayStyle = value; }
+            }
+            #endregion
+            
+            #region DownloadContainer
+            /// <summary>
+            /// This property gets or sets the value for 'DownloadContainer'.
+            /// </summary>
+            public string DownloadContainer
+            {
+                get { return downloadContainer; }
+                set { downloadContainer = value; }
             }
             #endregion
             
@@ -1442,7 +1444,7 @@ namespace Blazor.Excelerate.Pages
             /// <summary>
             /// This property gets or sets the value for 'LabelColor'.
             /// </summary>
-            public string LabelColor
+            public Color LabelColor
             {
                 get { return labelColor; }
                 set { labelColor = value; }

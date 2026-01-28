@@ -1,4 +1,4 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
 
 .blankline
 {
@@ -99,7 +99,7 @@
     height: 6vh;
     min-height: 6vh;
     position: fixed;
-    top: 30vh;
+    top: 26vh;
     left: 24vw;
     vertical-align: top;    
     z-index: 900 !important;
@@ -112,7 +112,7 @@
     height: 6vh;
     min-height: 6vh;
     position: fixed;
-    top: 30vh;
+    top: 26vh;
     left: 38vw;    
 }
 .row3Column3
@@ -123,7 +123,7 @@
     height: 6vh;
     min-height: 6vh;
     position: fixed;
-    top: 30vh;
+    top: 26vh;
     left: 52vw;    
 }
 .codetext
@@ -338,14 +338,6 @@ margintopsmall
     display: inline-block;
     position: relative;
     left: 0%;
-}
-.downloadlocation
-{
-    position: fixed;
-    top: 16vh;
-    left: 38vw;
-    width: 46vw;
-    height: 8vh;    
 }
 .smallicon2
 {  

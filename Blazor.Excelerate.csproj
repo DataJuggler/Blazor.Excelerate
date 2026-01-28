@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -27,13 +27,9 @@
 
   <ItemGroup>
     <PackageReference Include="BlazorStyled" Version="3.1.0" />
-    <PackageReference Include="DataJuggler.Blazor.Components" Version="9.14.1" />
+    <PackageReference Include="DataJuggler.Blazor.Components" Version="10.0.52" />
     <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="9.0.3" />
-    <PackageReference Include="DataJuggler.Excelerate" Version="9.0.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Excelerate\DataJuggler.Excelerate.csproj" />
+    <PackageReference Include="DataJuggler.Excelerate" Version="10.0.9" />
   </ItemGroup>
 
   <ItemGroup>
