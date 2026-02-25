@@ -29,11 +29,7 @@
     <PackageReference Include="BlazorStyled" Version="3.1.0" />
     <PackageReference Include="DataJuggler.Blazor.Components" Version="10.0.52" />
     <PackageReference Include="DataJuggler.Blazor.FileUpload" Version="9.0.3" />
-    <PackageReference Include="DataJuggler.Excelerate" Version="10.0.11" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Excelerate\DataJuggler.Excelerate.csproj" />
+    <PackageReference Include="DataJuggler.Excelerate" Version="10.0.14" />
   </ItemGroup>
 
   <ItemGroup>
